@@ -14,6 +14,7 @@
 - `GridColors`
 - `DisplayOptions`
 - `TaskPage_Display_SelectionOptions`
+- `TaskPage_General` — базовые параметры решателя и сетки
 - `PanelName` — заголовки окон сетки
 - `Scene` — подпись прозрачности
 - `fluent` — выбранные общие подписи и кнопки
