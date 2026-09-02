@@ -63,5 +63,6 @@
   "Dynamic Mesh": "Динамическая сетка",
   "Remeshing": "Перестроение сетки",
   "Layering": "Послойное перестроение",
-  "Parameters and Customization": "Параметры и настройка"
+  "Parameters and Customization": "Параметры и настройка",
+  "Particles Mass Fraction": "Массовая доля частиц"
 }
