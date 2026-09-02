@@ -325,6 +325,12 @@
     {"id": "TaskPage_Materials:35d9117121965b66", "module": "TaskPage_Materials", "qt_context": "QObject", "source": "Materials/Help", "translation": "Справка", "status": "translated", "context": "Materials; кнопка", "comment": ""},
     {"id": "TaskPage_Materials:b8dff675d8a3dfa0", "module": "TaskPage_Materials", "qt_context": "QObject", "source": "Materials/Materials", "translation": "Материалы", "status": "translated", "context": "Materials; заголовок страницы и группы", "comment": ""},
     {"id": "TaskPage_Materials:3f50512475482bb5", "module": "TaskPage_Materials", "qt_context": "QObject", "source": "Materials/Cancel", "translation": "Отмена", "status": "translated", "context": "Materials; кнопка", "comment": ""},
-    {"id": "TaskPage_Materials:67d3837e4a34a195", "module": "TaskPage_Materials", "qt_context": "QObject", "source": "Materials/Delete", "translation": "Удалить", "status": "translated", "context": "Materials; команда удаления материала", "comment": ""}
+    {"id": "TaskPage_Materials:67d3837e4a34a195", "module": "TaskPage_Materials", "qt_context": "QObject", "source": "Materials/Delete", "translation": "Удалить", "status": "translated", "context": "Materials; команда удаления материала", "comment": ""},
+    {"id": "TaskPage_Models:9a6c6996cab1dbc9", "module": "TaskPage_Models", "qt_context": "QObject", "source": "Models/Close", "translation": "Закрыть", "status": "translated", "context": "Models; кнопка закрытия страницы", "comment": ""},
+    {"id": "TaskPage_Models:c47a5224e1c543a5", "module": "TaskPage_Models", "qt_context": "QObject", "source": "Models/Help", "translation": "Справка", "status": "translated", "context": "Models; кнопка", "comment": ""},
+    {"id": "TaskPage_Models:f8bfdb8cfa0da856", "module": "TaskPage_Models", "qt_context": "QObject", "source": "Models/Cancel", "translation": "Отмена", "status": "translated", "context": "Models; кнопка", "comment": ""},
+    {"id": "TaskPage_Models:f3790a154526bcc2", "module": "TaskPage_Models", "qt_context": "QObject", "source": "Models/Models", "translation": "Модели", "status": "translated", "context": "Models; заголовок страницы и группы", "comment": ""},
+    {"id": "TaskPage_Models:fba3d3b5a92ff8d1", "module": "TaskPage_Models", "qt_context": "QObject", "source": "Models/Edit...", "translation": "Изменить...", "status": "translated", "context": "Models; команда изменения выбранной физической модели", "comment": ""},
+    {"id": "TaskPage_Models:aa7498d90813e39a", "module": "TaskPage_Models", "qt_context": "QObject", "source": "Models/Models/<", "translation": "<", "status": "do_not_translate", "context": "Models; служебный символ навигации", "comment": "Символ сохранён без изменений."}
   ]
 }
