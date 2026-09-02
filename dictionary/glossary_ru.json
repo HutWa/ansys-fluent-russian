@@ -52,5 +52,12 @@
   "Turbulent Kinetic Energy": "Турбулентная кинетическая энергия",
   "Volume Fraction": "Объёмная доля",
   "Velocity Formulation": "Формулировка скорости",
-  "Wall Shear Stress": "Касательное напряжение на стенке"
+  "Wall Shear Stress": "Касательное напряжение на стенке",
+  "Boundary Conditions": "Граничные условия",
+  "Cell Zone Conditions": "Условия в ячеечных зонах",
+  "Operating Conditions": "Рабочие условия",
+  "Periodic Conditions": "Периодические условия",
+  "Porous Formulation": "Формулировка для пористой среды",
+  "Superficial Velocity": "Приведённая скорость",
+  "Physical Velocity": "Истинная скорость"
 }
