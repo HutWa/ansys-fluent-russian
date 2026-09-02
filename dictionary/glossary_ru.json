@@ -62,5 +62,6 @@
   "Physical Velocity": "Истинная скорость",
   "Dynamic Mesh": "Динамическая сетка",
   "Remeshing": "Перестроение сетки",
-  "Layering": "Послойное перестроение"
+  "Layering": "Послойное перестроение",
+  "Parameters and Customization": "Параметры и настройка"
 }
