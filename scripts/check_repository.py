@@ -31,6 +31,8 @@ def inspect_file(root: Path, path: Path) -> list[str]:
     errors: list[str] = []
     if path.suffix.lower() in FORBIDDEN_SUFFIXES:
         errors.append(f"запрещённый тип файла: {portable}")
+    if path.name.lower().endswith(".extracted.json"):
+        errors.append(f"автоматически извлечённый каталог нельзя публиковать: {portable}")
     if FORBIDDEN_PARTS.intersection(part.lower() for part in portable.parts):
         errors.append(f"запрещённый каталог: {portable}")
     if path.stat().st_size > MAX_FILE_SIZE:

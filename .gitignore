@@ -22,6 +22,7 @@ install-manifest.json
 extracted-resources/
 backups/
 *.extracted.json
+*.extracted.json.tmp
 
 # Python
 __pycache__/

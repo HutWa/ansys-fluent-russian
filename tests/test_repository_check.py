@@ -29,6 +29,13 @@ class RepositoryCheckTests(unittest.TestCase):
             path.write_text('{"Residuals": "Невязки"}', encoding="utf-8")
             self.assertEqual(inspect_file(root, path), [])
 
+    def test_rejects_extracted_catalog(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = root / "block.extracted.json"
+            path.write_text('{"strings": []}', encoding="utf-8")
+            self.assertTrue(inspect_file(root, path))
+
 
 if __name__ == "__main__":
     unittest.main()

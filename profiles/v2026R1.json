@@ -1,0 +1,19 @@
+{
+  "profile_version": 1,
+  "project_version": "v2026R1",
+  "ansys_release_directory": "v261",
+  "fluent_core_directory": "fluent26.1.0",
+  "resource_layout": {
+    "qt_catalogs": "cortex/resources/language/{locale}",
+    "locale_setting": "commonfiles/Language/languagesettings.txt",
+    "locale_environment_variable": "AWP_LOCALE261",
+    "qt_major_version": 5,
+    "lconvert": "tp/qt/5.15.19/winx64/bin/lconvert.exe",
+    "lrelease": "tp/qt/5.15.19/winx64/bin/lrelease.exe"
+  },
+  "observed_catalogs": {
+    "ja": 559,
+    "ko": 557,
+    "zh": 557
+  }
+}
