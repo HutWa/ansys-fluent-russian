@@ -59,5 +59,8 @@
   "Periodic Conditions": "Периодические условия",
   "Porous Formulation": "Формулировка для пористой среды",
   "Superficial Velocity": "Приведённая скорость",
-  "Physical Velocity": "Истинная скорость"
+  "Physical Velocity": "Истинная скорость",
+  "Dynamic Mesh": "Динамическая сетка",
+  "Remeshing": "Перестроение сетки",
+  "Layering": "Послойное перестроение"
 }
