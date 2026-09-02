@@ -20,9 +20,11 @@
     "entry": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "source", "translation", "status", "context", "comment"],
+      "required": ["id", "module", "qt_context", "source", "translation", "status", "context", "comment"],
       "properties": {
         "id": {"type": "string", "minLength": 1},
+        "module": {"type": "string", "minLength": 1},
+        "qt_context": {"type": "string", "minLength": 1},
         "source": {"type": "string", "minLength": 1},
         "translation": {"type": "string"},
         "status": {

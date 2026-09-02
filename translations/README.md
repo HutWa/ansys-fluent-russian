@@ -7,6 +7,8 @@
 ```json
 {
   "id": "solver.example",
+  "module": "SolverExample",
+  "qt_context": "QObject",
   "source": "Example %1",
   "translation": "Пример %1",
   "status": "translated",
@@ -16,3 +18,5 @@
 ```
 
 Для `needs_review` укажите причину сомнения в `comment`, а возможные варианты — в `alternatives`. Для `needs_context` укажите, какого контекста интерфейса не хватает. Запись со статусом `reviewed` обязана содержать отдельный объект `review` с полями `reviewer` и `checked_at`.
+
+`module` задаёт имя выходного `.qm`, `qt_context` — точный контекст Qt, а обычное поле `context` содержит понятное инженеру описание расположения и смысла строки.

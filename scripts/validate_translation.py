@@ -42,6 +42,8 @@ def check_catalog(
             errors.append(f"{location}: запись должна быть объектом")
             continue
         identifier = entry.get("id")
+        module = entry.get("module")
+        qt_context = entry.get("qt_context")
         source = entry.get("source")
         translation = entry.get("translation")
         status = entry.get("status")
@@ -54,6 +56,12 @@ def check_catalog(
             errors.append(f"{location}: повторяющийся id {identifier!r}")
         else:
             identifiers.add(identifier)
+        if not isinstance(module, str) or not module.strip():
+            errors.append(f"{location}: отсутствует имя module")
+        elif isinstance(identifier, str) and not identifier.startswith(f"{module}:"):
+            errors.append(f"{location}: id должен начинаться с имени module")
+        if not isinstance(qt_context, str) or not qt_context.strip():
+            errors.append(f"{location}: отсутствует точный qt_context")
         if not isinstance(source, str) or not source.strip():
             errors.append(f"{location}: отсутствует исходная строка")
             continue

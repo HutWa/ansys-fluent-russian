@@ -12,7 +12,7 @@ FORBIDDEN_SUFFIXES = {
     ".7z", ".bin", ".cab", ".dat", ".dll", ".dylib", ".exe", ".iso",
     ".lic", ".lib", ".msi", ".pak", ".rar", ".so", ".zip",
 }
-FORBIDDEN_PARTS = {"backups", "extracted-resources"}
+FORBIDDEN_PARTS = {"backups", "build", "extracted-resources"}
 
 
 def tracked_files(root: Path) -> list[Path]:

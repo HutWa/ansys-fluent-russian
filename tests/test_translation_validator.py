@@ -33,7 +33,9 @@ class TranslationValidatorTests(unittest.TestCase):
             "source_locale": "en",
             "target_locale": "ru",
             "entries": [{
-                "id": "solver.residuals",
+                "id": "solver:residuals",
+                "module": "solver",
+                "qt_context": "QObject",
                 "source": "Residuals",
                 "translation": "Невязки",
                 "status": "reviewed",
@@ -46,7 +48,9 @@ class TranslationValidatorTests(unittest.TestCase):
 
     def test_catalog_rejects_duplicate_id(self) -> None:
         entry = {
-            "id": "same.id",
+            "id": "same:id",
+            "module": "same",
+            "qt_context": "QObject",
             "source": "Residuals",
             "translation": "Невязки",
             "status": "translated",
@@ -70,7 +74,9 @@ class TranslationValidatorTests(unittest.TestCase):
             "source_locale": "en",
             "target_locale": "ru",
             "entries": [{
-                "id": "solver.residuals",
+                "id": "solver:residuals",
+                "module": "solver",
+                "qt_context": "QObject",
                 "source": "Residuals",
                 "translation": "Остатки",
                 "status": "translated",

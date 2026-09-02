@@ -21,6 +21,7 @@ local-config.json
 install-manifest.json
 extracted-resources/
 backups/
+build/
 *.extracted.json
 *.extracted.json.tmp
 

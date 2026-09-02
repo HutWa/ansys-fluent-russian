@@ -4,5 +4,177 @@
   "fluent_version": "2026 R1",
   "source_locale": "en",
   "target_locale": "ru",
-  "entries": []
+  "entries": [
+    {
+      "id": "DisplayProperties:b27cf83a02b68fe8",
+      "module": "DisplayProperties",
+      "qt_context": "QObject",
+      "source": "Visibility/Visible",
+      "translation": "Отображать",
+      "status": "needs_review",
+      "context": "DisplayProperties / QObject; подпись булевого свойства в группе «Видимость»",
+      "comment": "Без снимка панели неясно, оформлено ли свойство как действие или признак объекта.",
+      "alternatives": ["Видимый", "Видимость"]
+    },
+    {
+      "id": "DisplayProperties:fffc6c419b33ecb6",
+      "module": "DisplayProperties",
+      "qt_context": "QObject",
+      "source": "Visibility/Outer Faces",
+      "translation": "Наружные грани",
+      "status": "translated",
+      "context": "DisplayProperties / QObject; свойство отображения геометрии",
+      "comment": ""
+    },
+    {
+      "id": "DisplayProperties:86115a78a5f1591a",
+      "module": "DisplayProperties",
+      "qt_context": "QObject",
+      "source": "Colors/Green",
+      "translation": "Зелёный",
+      "status": "translated",
+      "context": "DisplayProperties / QObject; компонент цвета RGB",
+      "comment": ""
+    },
+    {
+      "id": "DisplayProperties:bbdfc4f76555165a",
+      "module": "DisplayProperties",
+      "qt_context": "QObject",
+      "source": "Colors/Color",
+      "translation": "Цвет",
+      "status": "translated",
+      "context": "DisplayProperties / QObject; свойство цвета",
+      "comment": ""
+    },
+    {
+      "id": "DisplayProperties:f5804799a61e68d9",
+      "module": "DisplayProperties",
+      "qt_context": "QObject",
+      "source": "Geometry Name",
+      "translation": "Имя геометрии",
+      "status": "translated",
+      "context": "DisplayProperties / QObject; имя геометрического объекта",
+      "comment": ""
+    },
+    {
+      "id": "DisplayProperties:e6a66ee24ffd0063",
+      "module": "DisplayProperties",
+      "qt_context": "QObject",
+      "source": "Colors",
+      "translation": "Цвета",
+      "status": "translated",
+      "context": "DisplayProperties / QObject; группа свойств",
+      "comment": ""
+    },
+    {
+      "id": "DisplayProperties:6a8eccb290dc7dee",
+      "module": "DisplayProperties",
+      "qt_context": "QObject",
+      "source": "Visibility/Faces",
+      "translation": "Грани",
+      "status": "translated",
+      "context": "DisplayProperties / QObject; элементы сетки или геометрии",
+      "comment": ""
+    },
+    {
+      "id": "DisplayProperties:6c0235465afb2b86",
+      "module": "DisplayProperties",
+      "qt_context": "QObject",
+      "source": "Visibility/Edges",
+      "translation": "Рёбра",
+      "status": "translated",
+      "context": "DisplayProperties / QObject; элементы геометрии",
+      "comment": ""
+    },
+    {
+      "id": "DisplayProperties:da49ff8faadcc50b",
+      "module": "DisplayProperties",
+      "qt_context": "QObject",
+      "source": "Visibility/Nodes",
+      "translation": "Узлы",
+      "status": "translated",
+      "context": "DisplayProperties / QObject; узлы сетки",
+      "comment": ""
+    },
+    {
+      "id": "DisplayProperties:1ca2e2fd3262db9f",
+      "module": "DisplayProperties",
+      "qt_context": "QObject",
+      "source": "Visibility/Lines",
+      "translation": "Линии",
+      "status": "translated",
+      "context": "DisplayProperties / QObject; элементы отображения",
+      "comment": ""
+    },
+    {
+      "id": "DisplayProperties:ddd9fb49301b9cb5",
+      "module": "DisplayProperties",
+      "qt_context": "QObject",
+      "source": "Colors/Red",
+      "translation": "Красный",
+      "status": "translated",
+      "context": "DisplayProperties / QObject; компонент цвета RGB",
+      "comment": ""
+    },
+    {
+      "id": "DisplayProperties:1b924bda5e8fabbd",
+      "module": "DisplayProperties",
+      "qt_context": "QObject",
+      "source": "Visibility/Feature Edges",
+      "translation": "Характерные рёбра",
+      "status": "translated",
+      "context": "DisplayProperties / QObject; топологические рёбра, выделяющие особенности формы",
+      "comment": ""
+    },
+    {
+      "id": "DisplayProperties:e26e2b708bb3aa44",
+      "module": "DisplayProperties",
+      "qt_context": "QObject",
+      "source": "Colors/Transparency",
+      "translation": "Прозрачность",
+      "status": "translated",
+      "context": "DisplayProperties / QObject; свойство отображения",
+      "comment": ""
+    },
+    {
+      "id": "DisplayProperties:c28a2f59e1a3909e",
+      "module": "DisplayProperties",
+      "qt_context": "QObject",
+      "source": "Colors/Blue",
+      "translation": "Синий",
+      "status": "translated",
+      "context": "DisplayProperties / QObject; компонент цвета RGB",
+      "comment": ""
+    },
+    {
+      "id": "DisplayProperties:b3a115358cc7b937",
+      "module": "DisplayProperties",
+      "qt_context": "QObject",
+      "source": "Visibility/Perimeter Edges",
+      "translation": "Рёбра периметра",
+      "status": "translated",
+      "context": "DisplayProperties / QObject; граничные рёбра отображаемой геометрии",
+      "comment": ""
+    },
+    {
+      "id": "DisplayProperties:0e014e3714c8d8a2",
+      "module": "DisplayProperties",
+      "qt_context": "QObject",
+      "source": "Visibility",
+      "translation": "Видимость",
+      "status": "translated",
+      "context": "DisplayProperties / QObject; группа свойств",
+      "comment": ""
+    },
+    {
+      "id": "DisplayProperties:160659028928bdc3",
+      "module": "DisplayProperties",
+      "qt_context": "QObject",
+      "source": "Visibility/Lighting",
+      "translation": "Освещение",
+      "status": "translated",
+      "context": "DisplayProperties / QObject; свойство отображения",
+      "comment": ""
+    }
+  ]
 }
