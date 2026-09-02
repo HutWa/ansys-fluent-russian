@@ -80,6 +80,7 @@ def main() -> int:
     parser.add_argument("--fluent-root", type=Path, required=True, help="Каталог <release>/fluent")
     parser.add_argument("--output-dir", type=Path, required=True, help="Новый или пустой staging-каталог")
     parser.add_argument("--lrelease", type=Path, help="Явный путь к Qt lrelease.exe")
+    parser.add_argument("--module", action="append", default=[], help="Собрать только указанный модуль; можно повторять")
     args = parser.parse_args()
 
     fluent_root = args.fluent_root.resolve()
@@ -104,6 +105,11 @@ def main() -> int:
     modules: dict[str, list[dict[str, object]]] = defaultdict(list)
     for entry in catalog["entries"]:
         modules[str(entry["module"])].append(entry)
+    if args.module:
+        unknown = sorted(set(args.module) - modules.keys())
+        if unknown:
+            raise ValueError(f"Неизвестные модули: {', '.join(unknown)}")
+        modules = {name: modules[name] for name in args.module}
     lrelease = find_lrelease(fluent_root, args.lrelease)
     built: list[dict[str, object]] = []
     with tempfile.TemporaryDirectory(prefix="afrloc-build-") as temporary:

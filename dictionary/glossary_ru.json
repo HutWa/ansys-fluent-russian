@@ -2,7 +2,13 @@
   "Boundary Layer": "Пограничный слой",
   "Courant Number": "Число Куранта",
   "Discrete Phase Model": "Модель дискретной фазы",
+  "Edges": "Рёбра",
+  "Faces": "Грани",
+  "Feature Edges": "Характерные рёбра",
+  "Nodes": "Узлы",
   "Pressure-Based Solver": "Решатель на основе давления",
   "Residuals": "Невязки",
+  "Shrink Factor": "Коэффициент сжатия",
+  "Surfaces": "Поверхности",
   "Wall Shear Stress": "Касательное напряжение на стенке"
 }
