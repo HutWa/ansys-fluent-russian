@@ -1,0 +1,37 @@
+# Never commit Ansys software, licenses, or extracted proprietary resources
+*.exe
+*.dll
+*.lib
+*.so
+*.dylib
+*.lic
+*.dat
+*.zip
+*.7z
+*.rar
+*.iso
+*.bak
+*.backup
+*.log
+*.tmp
+*.swp
+
+# Local installation discovery and generated extraction output
+local-config.json
+install-manifest.json
+extracted-resources/
+backups/
+*.extracted.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Editors and OS files
+.vscode/
+.idea/
+.vs/
+Thumbs.db
+.DS_Store

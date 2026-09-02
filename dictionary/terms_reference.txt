@@ -1,0 +1,10 @@
+# Нормативные источники и решения по терминологии
+#
+# Формат записи:
+# EN | RU | статус | контекст Fluent | обоснование / источник
+#
+# Не копируйте сюда крупные фрагменты проприетарной документации Ansys.
+Residuals | Невязки | reviewed | Monitors / solution convergence | Устоявшийся CFD-термин
+Boundary Layer | Пограничный слой | reviewed | Mesh / physics | Устоявшийся CFD-термин
+Wall Shear Stress | Касательное напряжение на стенке | reviewed | Reports / post-processing | Устоявшийся CFD-термин
+Courant Number | Число Куранта | reviewed | Solver controls | Устоявшийся CFD-термин
