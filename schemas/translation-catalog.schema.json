@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/HutWa/ansys-fluent-russian/schemas/translation-catalog.schema.json",
+  "title": "Ansys Fluent Russian translation catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format_version", "fluent_version", "source_locale", "target_locale", "entries"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "format_version": {"const": 1},
+    "fluent_version": {"type": "string", "minLength": 1},
+    "source_locale": {"const": "en"},
+    "target_locale": {"const": "ru"},
+    "entries": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/entry"}
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "source", "translation", "status", "context", "comment"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "source": {"type": "string", "minLength": 1},
+        "translation": {"type": "string"},
+        "status": {
+          "enum": ["translated", "reviewed", "needs_context", "needs_review", "do_not_translate"]
+        },
+        "context": {"type": "string"},
+        "comment": {"type": "string"},
+        "alternatives": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "review": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["reviewer", "checked_at"],
+          "properties": {
+            "reviewer": {"type": "string", "minLength": 1},
+            "checked_at": {"type": "string", "format": "date"},
+            "comment": {"type": "string"}
+          }
+        }
+      }
+    }
+  }
+}

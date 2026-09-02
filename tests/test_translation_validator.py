@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.validate_translation import check_json, check_xml
+from scripts.validate_translation import check_catalog, check_json, check_xml
 
 
 class TranslationValidatorTests(unittest.TestCase):
@@ -25,6 +25,61 @@ class TranslationValidatorTests(unittest.TestCase):
             path = Path(directory) / "bad.ts"
             path.write_text("<TS><context></TS>", encoding="utf-8")
             self.assertTrue(check_xml(path))
+
+    def test_catalog_rejects_review_without_reviewer(self) -> None:
+        data = {
+            "format_version": 1,
+            "fluent_version": "2026 R1",
+            "source_locale": "en",
+            "target_locale": "ru",
+            "entries": [{
+                "id": "solver.residuals",
+                "source": "Residuals",
+                "translation": "Невязки",
+                "status": "reviewed",
+                "context": "Solver",
+                "comment": "",
+            }],
+        }
+        errors, _ = check_catalog(Path("catalog.json"), data)
+        self.assertTrue(any("review.reviewer" in error for error in errors))
+
+    def test_catalog_rejects_duplicate_id(self) -> None:
+        entry = {
+            "id": "same.id",
+            "source": "Residuals",
+            "translation": "Невязки",
+            "status": "translated",
+            "context": "Solver",
+            "comment": "",
+        }
+        data = {
+            "format_version": 1,
+            "fluent_version": "2026 R1",
+            "source_locale": "en",
+            "target_locale": "ru",
+            "entries": [entry, entry],
+        }
+        errors, _ = check_catalog(Path("catalog.json"), data)
+        self.assertTrue(any("повторяющийся id" in error for error in errors))
+
+    def test_catalog_enforces_glossary(self) -> None:
+        data = {
+            "format_version": 1,
+            "fluent_version": "2026 R1",
+            "source_locale": "en",
+            "target_locale": "ru",
+            "entries": [{
+                "id": "solver.residuals",
+                "source": "Residuals",
+                "translation": "Остатки",
+                "status": "translated",
+                "context": "Solver",
+                "comment": "",
+            }],
+        }
+        errors, _ = check_catalog(Path("catalog.json"), data, {"Residuals": "Невязки"})
+        self.assertTrue(any("расходится с глоссарием" in error for error in errors))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,8 @@
+{
+  "$schema": "../../schemas/translation-catalog.schema.json",
+  "format_version": 1,
+  "fluent_version": "2026 R1",
+  "source_locale": "en",
+  "target_locale": "ru",
+  "entries": []
+}
