@@ -18,6 +18,8 @@
 3. Храните переводы конкретной версии в `translations/vYYYYRN/`.
 4. Перед Pull Request запустите `python scripts/validate_translation.py translations/v2026R1`.
 
+Репозиторий также автоматически блокирует типичные бинарные файлы Ansys и файлы крупнее 20 MiB командой `python scripts/check_repository.py`. Проверка выполняется при каждом Pull Request через GitHub Actions. Жёсткий лимит одного файла на обычном GitHub составляет 100 MiB, но проект использует более строгий собственный предел.
+
 Инструкции для пользователя будут дополнены после определения реального формата ресурсных файлов Fluent 2026 R1: [RU](docs/INSTALLATION_RU.md) · [EN](docs/INSTALLATION_EN.md).
 
 ## Поддерживаемые версии

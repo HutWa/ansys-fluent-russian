@@ -1,0 +1,40 @@
+name: Предложение перевода
+description: Предложить новый термин или исправление перевода
+title: "[Translation]: "
+labels: [translation]
+body:
+  - type: input
+    id: source
+    attributes:
+      label: Исходный текст
+      placeholder: Wall Shear Stress
+    validations:
+      required: true
+  - type: input
+    id: translation
+    attributes:
+      label: Предлагаемый перевод
+      placeholder: Касательное напряжение на стенке
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Версия Fluent
+      placeholder: 2026 R1
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Контекст интерфейса и обоснование
+      description: Укажите панель, tooltip или модуль. Не прикладывайте проприетарные ресурсы Ansys.
+    validations:
+      required: true
+  - type: checkboxes
+    id: legal
+    attributes:
+      label: Проверка материалов
+      options:
+        - label: Я не прикладываю бинарные файлы, лицензии или извлечённые ресурсы Ansys.
+          required: true

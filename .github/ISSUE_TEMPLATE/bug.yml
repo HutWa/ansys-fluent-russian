@@ -1,0 +1,41 @@
+name: Ошибка проекта
+description: Сообщить об ошибке скрипта, установки или перевода
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Область
+      options:
+        - Перевод интерфейса
+        - Установка или удаление
+        - Извлечение строк
+        - Валидатор
+        - Документация
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Версия Fluent и Windows
+      placeholder: Fluent 2026 R1, Windows 11 24H2
+  - type: textarea
+    id: steps
+    attributes:
+      label: Как воспроизвести
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Ожидаемый и фактический результат
+    validations:
+      required: true
+  - type: checkboxes
+    id: legal
+    attributes:
+      label: Проверка материалов
+      options:
+        - label: В приложениях нет проприетарных файлов или лицензий Ansys.
+          required: true
