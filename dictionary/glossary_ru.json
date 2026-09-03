@@ -58,6 +58,8 @@
   "Stationary Wall": "Неподвижная стенка",
   "Moving Wall": "Подвижная стенка",
   "Sand-Grain Roughness": "Эквивалентная песочная шероховатость",
+  "No Slip": "Условие прилипания",
+  "Heat Transfer Coefficient": "Коэффициент теплоотдачи",
   "Boundary Conditions": "Граничные условия",
   "Cell Zone Conditions": "Условия в ячеечных зонах",
   "Operating Conditions": "Рабочие условия",
