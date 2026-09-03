@@ -77,5 +77,8 @@
   "Remeshing": "Перестроение сетки",
   "Layering": "Послойное перестроение",
   "Parameters and Customization": "Параметры и настройка",
-  "Particles Mass Fraction": "Массовая доля частиц"
+  "Particles Mass Fraction": "Массовая доля частиц",
+  "Weber Number": "Число Вебера",
+  "Critical Shear Stress": "Критическое касательное напряжение",
+  "Film Height": "Толщина плёнки"
 }
