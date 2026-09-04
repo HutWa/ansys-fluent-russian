@@ -102,5 +102,9 @@
   "Heat Source": "Источник теплоты",
   "Viscous Model": "Модель вязкости",
   "Free Surface": "Свободная поверхность",
-  "Moving Interface": "Подвижная граница раздела"
+  "Moving Interface": "Подвижная граница раздела",
+  "Static Pressure": "Статическое давление",
+  "Porous Region": "Пористая область",
+  "Shear Rate": "Скорость сдвига",
+  "Local Sizing": "Локальное задание размера"
 }
