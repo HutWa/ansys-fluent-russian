@@ -97,5 +97,10 @@
   "Legend": "Легенда",
   "Boundary Marker": "Маркер границы",
   "Graphics Window": "Графическое окно",
-  "Line Width": "Толщина линии"
+  "Line Width": "Толщина линии",
+  "Boundary Layer": "Пограничный слой",
+  "Heat Source": "Источник теплоты",
+  "Viscous Model": "Модель вязкости",
+  "Free Surface": "Свободная поверхность",
+  "Moving Interface": "Подвижная граница раздела"
 }
