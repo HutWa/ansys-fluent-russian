@@ -106,5 +106,9 @@
   "Static Pressure": "Статическое давление",
   "Porous Region": "Пористая область",
   "Shear Rate": "Скорость сдвига",
-  "Local Sizing": "Локальное задание размера"
+  "Local Sizing": "Локальное задание размера",
+  "Population Balance": "Баланс популяции",
+  "Specific Dissipation Rate": "Удельная скорость диссипации",
+  "Gauge Pressure": "Избыточное давление",
+  "Reference Frame": "Система отсчёта"
 }
