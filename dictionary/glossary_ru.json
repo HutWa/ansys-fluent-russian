@@ -92,5 +92,10 @@
   "Friction Coefficient": "Коэффициент трения",
   "Laplace Number": "Число Лапласа",
   "Wall Roughness Length": "Длина шероховатости стенки",
-  "Passive Scalar": "Пассивный скаляр"
+  "Passive Scalar": "Пассивный скаляр",
+  "Colormap": "Цветовая карта",
+  "Legend": "Легенда",
+  "Boundary Marker": "Маркер границы",
+  "Graphics Window": "Графическое окно",
+  "Line Width": "Толщина линии"
 }
