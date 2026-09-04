@@ -88,5 +88,9 @@
   "Reaction Mechanism": "Механизм реакции",
   "Mass Fraction": "Массовая доля",
   "Ablation": "Абляция",
-  "Potential Jump": "Скачок потенциала"
+  "Potential Jump": "Скачок потенциала",
+  "Friction Coefficient": "Коэффициент трения",
+  "Laplace Number": "Число Лапласа",
+  "Wall Roughness Length": "Длина шероховатости стенки",
+  "Passive Scalar": "Пассивный скаляр"
 }
