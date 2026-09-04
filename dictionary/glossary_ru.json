@@ -83,5 +83,10 @@
   "Film Height": "Толщина плёнки",
   "Granular Temperature": "Температура гранулированной фазы",
   "Marangoni Stress": "Напряжение Марангони",
-  "Surface Tension Gradient": "Градиент поверхностного натяжения"
+  "Surface Tension Gradient": "Градиент поверхностного натяжения",
+  "Current Density": "Плотность тока",
+  "Reaction Mechanism": "Механизм реакции",
+  "Mass Fraction": "Массовая доля",
+  "Ablation": "Абляция",
+  "Potential Jump": "Скачок потенциала"
 }
