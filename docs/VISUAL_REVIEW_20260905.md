@@ -1,6 +1,6 @@
 # Проверка интерфейса Fluent 2026 R1 по скриншотам
 
-Проверка выполнена пользователем в Fluent Student; наблюдения основаны на присланных скриншотах. Новый пакет ниже ещё не проверен в запущенном Fluent.
+Проверка выполнена пользователем в Fluent Student; наблюдения основаны на присланных скриншотах. Для каждого прохода ниже отдельно указана установленная сборка.
 
 ## Пакет переводов
 
@@ -22,6 +22,58 @@
 ## Следующая визуальная проверка
 
 После отдельной установки сборки проверить Colormap, Adjacency и HybridInitialization: компактность подписей, вкладки, сохранение исходных имён объектов и отсутствие цепочек групп. Остались английские подписи Fluid, Wall, навигационного дерева и динамических заголовков графики.
+
+## Проход после установки `release-5009` (2026-09-07)
+
+### Идентификация установленного пакета
+
+- Fluent был закрыт перед установкой.
+- Собран текущий каталог `translations/v2026R1/catalog.json`: 134 модуля `.qm`.
+- Пакет установлен с резервной копией `backups/release-5009/install-manifest.json`.
+- SHA-256 совпали у всех 134 установленных файлов; 126 прежних русских файлов сохранены в резервной копии.
+- Fluent запущен с дочерней переменной `lang=ru`.
+- Для прохода загружена только сетка `samples/Bioreactor-Mixing-Tank/run-bioreactor-mixing-tank.msh.gz`; файл case или data не загружался.
+
+### Проверено визуально в установленном пакете
+
+| Окно Fluent | Наблюдаемый результат |
+| --- | --- |
+| Главная страница | Основные подписи страницы «Общие» и кнопки сетки отображаются по-русски. |
+| `Physics → Viscous…` | Основные группы, параметры k-omega, флажки и кнопки переведены. Окно только просмотрено. |
+| `Physics → Cell Zones` и зона `fluid_mrf` | Заголовки и базовые параметры переведены; имена зон и материал `air` сохранены. |
+| `Physics → Boundaries` и `sparger_inlet` | Страница и список зон переведены; диалог открыт как `Wall`, без применения изменений. |
+| `Results → Graphics` | Заголовки, кнопки и настройки страницы переведены. |
+| `Results → Surfaces` | Заголовок, фильтр и базовые команды переведены; объекты не изменялись. |
+| `Domain → Mesh…` | Окно «Интерфейсы сетки» переведено по основным заголовкам, фильтрам и командам. |
+| `Domain → Dynamic Mesh…` | Основные подписи переведены; флажок включения динамической сетки не менялся. |
+| `Motion Definitions` | Окно открылось с пустым списком; русифицированы часть команд. |
+| `Reference Frames` | Основные подписи и кнопки переведены; значения не менялись. |
+| `Curvilinear Coordinate System` | Основные параметры и команды переведены; имена объектов и зон сохранены. |
+| `Solution → Methods`, `Controls`, `Initialization` | Основные заголовки, параметры и команды переведены. Инициализация не запускалась. |
+
+### Подтверждённые английские строки и проблемы отображения
+
+- Верхняя лента и дерево навигации: большинство пунктов, включая `Physics`, `Results`, `Setup`, `Solution` и `Graphics`.
+- `Physics → Viscous…`: технические обозначения `Alpha*_inf`, `Beta*_inf`, `TKE`, `Prandtl #`, а также значения `correlation`, `none`.
+- Диалог `Fluid`: `Fluid`, `Rotation-Axis Origin`, вкладка `Multiphase`.
+- `Boundary Conditions`: значение `mixture`; в диалоге `Wall` — заголовок `Wall` и вкладка `Structure`.
+- В диалоге `Wall` и на странице граничных условий отображаются полные цепочки ключей, например `Стенка/Количество движения/...` и `Граничные условия/...`, вместо коротких подписей.
+- `Results → Graphics`: `Mesh`, `Contours`, `Vectors`, `Pathlines`, `Particle Tracks`, `LICs`, `Sweep Surface`, `Scene Animation`, `Playback`, `Unavailable`.
+- `Results → Surfaces`: `Fluid`, `Internal`, `Iso-surface`, `Point-surface`, `Wall`, `Surface Type`, `Points`, `0D/1D/2D Facets`, `Rendering Priority`, `Medium`, `Group`, `UnGroup`.
+- `Mesh Interfaces`: `Fluid`, `Wall`, `Options…`.
+- `Quality`: `Evaluate Mesh Quality…`, `Improve Mesh Quality…`.
+- `Dynamic Mesh`: `In-Cylinder` и полные цепочки `Динамическая сетка/...` на части кнопок.
+- `Motion Definitions`: `Manage Motion Definitions`, `Motion Definitions`, `New…`.
+- `Reference Frames`: `Reference Frame`, `global`, `direction`.
+- `Curvilinear Coordinate System`: `Curvilinear Coordinate System`, `Select Cell Zones`, `Cell Zones`, `Diffusion`, `Start and End`, `Display Face Zones`, `Visualize Direction Vectors`, `Direction`, `Auto Scale`, `Draw Mesh`, `Skip`.
+- `Solution → Methods`: `Coupled`, `Rhie-Chow: momentum based`, `Least Squares Cell Based`, `Second Order`, `Second Order Upwind`, `Global Time Step`.
+
+### Границы прохода
+
+- Открытие окон и выбор зон не меняли граничные условия, материалы, параметры моделей или пользовательский case.
+- Не запускались инициализация, расчёт, адаптация сетки, создание интерфейсов и сохранение case.
+- Недоступность отдельных пунктов и пустой список определений движения зафиксированы только как наблюдаемое состояние; причина не устанавливалась.
+- Проверка не подтверждает физическую корректность модели биореактора.
 
 ## Проход после установки `release-3009`
 
