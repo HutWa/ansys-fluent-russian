@@ -1,45 +1,47 @@
-# Ansys Fluent Russian Localization
+# Русификация Ansys Fluent
 
-This is an unofficial community project translating the Ansys Fluent interface into Russian. It is suitable for testing and review, but it does not yet replace the English interface in full.
+Это неофициальный проект перевода интерфейса Ansys Fluent на русский язык. Его можно использовать для проверки перевода, но он пока не заменяет английский интерфейс целиком.
 
-## Translation progress
+English version: [README_ENG.md](README_ENG.md).
 
-**5,009 of 28,786 Fluent strings are translated — 17.4% of the Fluent Student 2026 R1 interface.**
+## Насколько готов перевод
 
-Some major windows are already displayed in Russian, while many dialogs still contain English text. A string is not considered complete until its meaning has been confirmed in context.
+**Переведено 5 009 из 28 786 строк Fluent — 17,4 % интерфейса Fluent Student 2026 R1.**
 
-| Work status | Strings |
+Часть основных окон уже отображается по-русски, но во многих диалогах ещё встречается английский текст. Строка не считается готовой, пока её смысл не подтверждён в интерфейсе.
+
+| Состояние работы | Строк |
 |---|---:|
-| Translated | **5,009** |
-| Needs context | 651 |
-| Needs editorial review | 218 |
-| Not yet added to the project catalog | 22,361 |
+| Переведено | **5 009** |
+| Требует контекста | 651 |
+| Требует редакторской проверки | 218 |
+| Ещё не добавлено в каталог проекта | 22 361 |
 
-The [visual review log](docs/VISUAL_REVIEW_20260905.md) records which windows have been checked in Fluent and which English strings remain.
+[Журнал визуальной проверки](docs/VISUAL_REVIEW_20260905.md) фиксирует окна, проверенные в Fluent, и оставшиеся английские строки.
 
-## For Fluent users
+## Для пользователей Fluent
 
-**Fluent Student 2026 R1** is supported experimentally. The localization loads in Fluent, but visual coverage is still incomplete.
+Экспериментально поддерживается **Fluent Student 2026 R1**. Локализация загружается в Fluent, но визуальная проверка охватывает не весь интерфейс.
 
-Close Fluent before installing a new build. The installer creates a backup, so the original interface can be restored safely.
+Перед установкой новой сборки закройте Fluent. Установщик создаёт резервную копию, поэтому исходный интерфейс можно безопасно восстановить.
 
-- [Installation, Russian-language launch, and rollback — Russian](docs/INSTALLATION_RU.md)
+- [Установка, запуск с русским языком и откат — русский](docs/INSTALLATION_RU.md)
 - [Installation, launch, and rollback — English](docs/INSTALLATION_EN.md)
 
-## What is translated
+## Что переводится
 
-The project translates UI labels for buttons, tabs, settings, and messages. Your zone, phase, surface, material, and other object names are left unchanged. Formulas, variable names, and internal identifiers are also preserved.
+Проект переводит подписи кнопок, вкладок, параметров и сообщений интерфейса. Имена зон, фаз, поверхностей, материалов и других объектов не меняются. Формулы, имена переменных и служебные идентификаторы также сохраняются.
 
-This repository contains no Ansys files. It stores only project-created translations, a terminology glossary, and build tools.
+В репозитории нет файлов Ansys: здесь хранятся только переводы, созданные проектом, глоссарий терминов и инструменты сборки.
 
-## How to contribute
+## Как помочь
 
-1. Read the [translation guide](docs/TRANSLATION_GUIDE.md) and [contribution guidelines](docs/CONTRIBUTING.md).
-2. Use the [CFD glossary](dictionary/glossary_ru.json) to keep terminology consistent.
-3. Check translated windows in Fluent and record remaining English strings in the visual review log.
+1. Прочитайте [руководство по переводу](docs/TRANSLATION_GUIDE.md) и [правила участия](docs/CONTRIBUTING.md).
+2. Используйте [глоссарий CFD-терминов](dictionary/glossary_ru.json), чтобы терминология оставалась единообразной.
+3. Проверяйте переведённые окна в Fluent и фиксируйте оставшиеся английские строки в журнале проверки.
 
-Technical validation steps are documented in the [translation guide](docs/TRANSLATION_GUIDE.md).
+Технические проверки для изменений описаны в [руководстве по переводу](docs/TRANSLATION_GUIDE.md).
 
-## Important notice
+## Важно
 
-This is an independent community project. It is not affiliated with, endorsed by, or supported by Ansys, Inc. Ansys and Fluent are trademarks of their respective owners. A project license has not yet been selected; the options are described in [LICENSE_DECISION.md](docs/LICENSE_DECISION.md).
+Это независимый проект сообщества. Он не связан с Ansys, Inc., не одобрен и не поддерживается компанией Ansys. Ansys и Fluent являются товарными знаками соответствующих правообладателей. Лицензия проекта пока не выбрана; варианты описаны в [LICENSE_DECISION.md](docs/LICENSE_DECISION.md).
