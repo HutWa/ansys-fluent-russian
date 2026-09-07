@@ -4,6 +4,7 @@ import unittest
 
 from scripts.check_visual_review import render_summary, validate_review
 from scripts.report_progress import metrics, module_rows, render_markdown
+from scripts.apply_translation_batch import object_bounds
 
 
 class ProgressReportTests(unittest.TestCase):
@@ -74,6 +75,17 @@ class VisualQaTests(unittest.TestCase):
             }
         )
         self.assertTrue(errors)
+
+
+class TranslationBatchTests(unittest.TestCase):
+    def test_object_bounds_accepts_compact_and_indented_entries(self) -> None:
+        compact = '{"entries":[{"id":"One:a","source":"A"}]}'
+        start, end = object_bounds(compact, "One:a")
+        self.assertEqual(compact[start:end], '{"id":"One:a","source":"A"}')
+
+        indented = '{\n  "entries": [\n    {\n      "id": "One:b",\n      "source": "B"\n    }\n  ]\n}'
+        start, end = object_bounds(indented, "One:b")
+        self.assertIn('"source": "B"', indented[start:end])
 
 
 if __name__ == "__main__":
