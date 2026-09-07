@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -33,3 +35,23 @@ jobs:
 
       - name: Validate Fluent 2026 R1 translations
         run: python scripts/validate_translation.py translations/v2026R1
+
+      - name: Generate translation progress report
+        env:
+          BASE_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if git cat-file -e "$BASE_REF^{commit}" 2>/dev/null; then
+            python scripts/report_progress.py --github-summary --base-ref "$BASE_REF"
+          else
+            python scripts/report_progress.py --github-summary
+          fi
+
+      - name: Check visual QA status
+        env:
+          BASE_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if git cat-file -e "$BASE_REF^{commit}" 2>/dev/null; then
+            python scripts/check_visual_review.py --github-summary --base-ref "$BASE_REF"
+          else
+            python scripts/check_visual_review.py --github-summary
+          fi

@@ -19,6 +19,19 @@ Some major windows are already displayed in Russian, while many dialogs still co
 
 The [visual review log](docs/VISUAL_REVIEW_20260905.md) records which windows have been checked in Fluent and which English strings remain.
 
+## Automated progress and visual QA
+
+GitHub Actions validates the catalog and publishes exact progress, PR-base deltas, and visual-QA status in its run summary. CI warns when translations in a previously verified window change without an accompanying visual-review update.
+
+You can generate the same reports locally:
+
+```powershell
+python scripts/report_progress.py --all-modules
+python scripts/check_visual_review.py
+```
+
+Window status and observations live in [reviews/v2026R1/windows.yml](reviews/v2026R1/windows.yml), with a shared checklist in [reviews/v2026R1/checklist.md](reviews/v2026R1/checklist.md). Module coverage is reported for modules already represented in the catalog.
+
 ## For Fluent users
 
 **Fluent Student 2026 R1** is supported experimentally. The localization loads in Fluent, but visual review does not yet cover the whole interface.
