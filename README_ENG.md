@@ -6,17 +6,17 @@ Russian version: [README.md](README.md).
 
 ## Translation progress
 
-**7,011 of 28,786 Fluent strings are translated — 24.4% of the Fluent Student 2026 R1 interface.**
+**8,030 of 28,786 Fluent strings are translated — 27.9% of the Fluent Student 2026 R1 interface.**
 
 Some major windows are already displayed in Russian, while many dialogs still contain English text. A string is not considered complete until its meaning has been confirmed in the interface.
 
 | Work status | Strings |
 |---|---:|
-| Translated | **7,011** |
+| Translated | **8,030** |
 | Needs context | 165 |
 | Needs editorial review | 218 |
 | Do not translate | 547 |
-| Not yet added to the project catalog | 20,845 |
+| Not yet added to the project catalog | 19,826 |
 
 The [visual review log](docs/VISUAL_REVIEW_20260905.md) records which windows have been checked in Fluent and which English strings remain.
 
