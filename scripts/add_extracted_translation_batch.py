@@ -57,6 +57,8 @@ def main() -> int:
     batch = json.loads(args.batch.read_text(encoding="utf-8"))
     if not isinstance(batch, dict) or not all(isinstance(key, str) and isinstance(value, str) and value.strip() for key, value in batch.items()):
         raise ValueError("The batch must map extracted IDs to non-empty translations.")
+    if not batch:
+        raise ValueError("The batch must contain at least one translation.")
 
     existing_ids = {entry["id"] for entry in catalog["entries"]}
     sources = {item["id"]: item for item in extracted.get("strings", [])}

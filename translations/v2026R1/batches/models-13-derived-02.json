@@ -1,0 +1,13 @@
+{
+  "InterfaceModelingOptions:2377f69abf16fda4": "Дискретизация Параметры",
+  "IntersectBoundaryZones:f5095555aad1ee5a": "Операция/Пересечь",
+  "IntersectBoundaryZones:7819d65f7c56aa9b": "Операция/Объединить",
+  "IntersectBoundaryZones:01e4e906a7a8d611": "Операция",
+  "MergeBoundaryNodes:b9c17af3f7e0575c": "Количество Свободная Узлы",
+  "MergeBoundaryNodes:3d33b4e0c0f8024d": "Сравнить.../Вкл.ly Свободная Узлы",
+  "MergeBoundaryNodes:66b3101cc3b7f292": "Сравнить...",
+  "MergeBoundaryNodes:f17722df9a5cf205": "Количество Неиспользуемые Узлы",
+  "MergeBoundaryNodes:9f400dcf0d3aa086": "Удалить Неиспользуемые Узлы",
+  "MergeBoundaryNodes:f1963c0c03a2b622": "Сравнить.../Графика Выбрать",
+  "MergeBoundaryNodes:afd500e8f963155b": "Сравнить.../Граничные зоны граней"
+}
