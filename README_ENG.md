@@ -20,6 +20,12 @@ Some major windows are already displayed in Russian, while many dialogs still co
 
 The [visual review log](docs/VISUAL_REVIEW_20260905.md) records which windows have been checked in Fluent and which English strings remain.
 
+### Main menu
+
+**Fluent ribbon (`Ribbon/*`): 1,149 of 1,149 strings are translated.** This covers the File, Domain, Physics, User-Defined, Solution, Results, View, Parallel, Design, Parametric, and Learning and Support tabs, as well as their commands.
+
+The top ribbon was still English in a screenshot of the previously installed build. It therefore needs a visual recheck after the next build and installation.
+
 ## Automated progress and visual QA
 
 GitHub Actions validates the catalog and publishes exact progress, PR-base deltas, and visual-QA status in its run summary. CI warns when translations in a previously verified window change without an accompanying visual-review update.
