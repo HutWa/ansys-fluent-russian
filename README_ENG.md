@@ -6,23 +6,23 @@ Russian version: [README.md](README.md).
 
 ## Translation progress
 
-**23,000 of 28,786 Fluent strings are translated — 79.9% of the Fluent Student 2026 R1 interface.**
+**23,011 of 28,786 Fluent strings are translated — 79.9% of the Fluent Student 2026 R1 interface.**
 
 Some major windows are already displayed in Russian, while many dialogs still contain English text. A string is not considered complete until its meaning has been confirmed in the interface.
 
 | Work status | Strings |
 |---|---:|
-| Translated | **23,000** |
+| Translated | **23,011** |
 | Needs context | 165 |
 | Needs editorial review | 74 |
 | Do not translate | 555 |
-| Not yet added to the project catalog | 4,992 |
+| Not yet added to the project catalog | 4,981 |
 
 The [visual review log](docs/VISUAL_REVIEW_20260905.md) records which windows have been checked in Fluent and which English strings remain.
 
 ### Main menu
 
-**Fluent ribbon (`Ribbon/*`): 1,149 of 1,149 strings are translated.** This covers the File, Domain, Physics, User-Defined, Solution, Results, View, Parallel, Design, Parametric, and Learning and Support tabs, as well as their commands.
+**Fluent ribbon (`Ribbon/*`): 1,150 of 1,150 strings are translated.** This covers the File, Domain, Physics, User-Defined, Solution, Results, View, Parallel, Design, Parametric, and Learning and Support tabs, as well as their commands.
 
 The top ribbon was still English in a screenshot of the previously installed build. It therefore needs a visual recheck after the next build and installation.
 

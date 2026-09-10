@@ -10,7 +10,10 @@ import xml.etree.ElementTree as etree
 from datetime import date
 from pathlib import Path
 
-TOKEN = re.compile(r"%(?:\d+|[sdf])|\{\d+\}|\\[nt]|</?[^>]+>|&&?|&[A-Za-z]+;")
+# Keep runtime placeholders, markup and HTML entities intact.  A plain ampersand
+# is UI punctuation in Fluent labels (for example, "Case & Data"), not a
+# placeholder that has to be reproduced literally in Russian.
+TOKEN = re.compile(r"%(?:\d+|[sdf])|\{\d+\}|\\[nt]|</?[^>]+>|&[A-Za-z]+;")
 STATUSES = {"translated", "reviewed", "needs_context", "needs_review", "do_not_translate"}
 
 
@@ -119,6 +122,11 @@ def validate_json(
         return [f"{path}: некорректный JSON: {error}"], []
     if isinstance(data, dict) and "entries" in data:
         return check_catalog(path, data, glossary)
+    # Translation batches map stable catalog IDs to translations.  They are not
+    # source-to-target dictionaries, so placeholder comparison against their
+    # IDs would be meaningless; the catalog receives the actual validation.
+    if "batches" in path.parts:
+        return [], []
     errors: list[str] = []
     if isinstance(data, dict):
         for source, target in data.items():

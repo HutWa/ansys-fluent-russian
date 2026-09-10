@@ -20,6 +20,20 @@ class TranslationValidatorTests(unittest.TestCase):
             path.write_text('{"Value: %1": "Значение"}', encoding="utf-8")
             self.assertTrue(check_json(path))
 
+    def test_batch_ids_are_not_checked_as_source_strings(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            batch_directory = Path(directory) / "batches"
+            batch_directory.mkdir()
+            path = batch_directory / "fluent.json"
+            path.write_text('{"fluent:0123456789abcdef": "Записать расчётный случай и данные"}', encoding="utf-8")
+            self.assertEqual(check_json(path), [])
+
+    def test_plain_ampersand_is_not_a_required_placeholder(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "ok.json"
+            path.write_text('{"Case && Data": "Расчётный случай и данные"}', encoding="utf-8")
+            self.assertEqual(check_json(path), [])
+
     def test_xml_detects_invalid_document(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "bad.ts"
