@@ -2,8 +2,9 @@
 """Apply a reviewed, project-authored translation batch to a catalog.
 
 The batch is a JSON object mapping stable entry IDs to a translation string.
-Only entries currently awaiting context or review may be promoted.  This keeps
-large, mechanical catalog rewrites separate from the human translation data.
+By default, only entries awaiting context or review may be promoted.  An
+explicit flag also permits correcting already translated labels without a
+large, mechanical catalog rewrite.
 """
 from __future__ import annotations
 
@@ -51,6 +52,16 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Apply a translation batch")
     parser.add_argument("catalog", type=Path)
     parser.add_argument("batch", type=Path)
+    parser.add_argument(
+        "--replace-translated",
+        action="store_true",
+        help="replace the text of entries already marked translated or reviewed",
+    )
+    parser.add_argument(
+        "--set-status",
+        choices=("translated", "reviewed", "needs_context", "needs_review", "do_not_translate"),
+        help="set a status while applying the batch",
+    )
     args = parser.parse_args()
 
     original = args.catalog.read_text(encoding="utf-8")
@@ -67,12 +78,17 @@ def main() -> int:
     replacements: list[tuple[int, int, str]] = []
     for entry_id, translation in batch.items():
         entry = entries[entry_id]
-        if entry["status"] not in {"needs_context", "needs_review"}:
+        unresolved = entry["status"] in {"needs_context", "needs_review"}
+        replaceable = args.replace_translated and entry["status"] in {"translated", "reviewed"}
+        if not unresolved and not replaceable:
             raise ValueError(f"{entry_id} has status {entry['status']!r}, not an unresolved status")
         entry["translation"] = translation
-        entry["status"] = "translated"
-        entry["comment"] = "Primary translation prepared from the module and source label."
-        entry.pop("alternatives", None)
+        if args.set_status:
+            entry["status"] = args.set_status
+        elif unresolved:
+            entry["status"] = "translated"
+            entry["comment"] = "Primary translation prepared from the module and source label."
+            entry.pop("alternatives", None)
         start, end = object_bounds(original, entry_id)
         replacements.append((start, end, json.dumps(entry, ensure_ascii=False, separators=(",", ":"))))
 

@@ -1,0 +1,6 @@
+{
+  "PointSurface:d86aecc49893811c": "Система отсчёта",
+  "AdjointSolutionControls:103c2d9d9c575ea9": "Число Куранта",
+  "AdjointSolutionControls:069220d0c9d416b0": "Коэффициенты нижней релаксации",
+  "AdjointSolutionMethods:4279c8a6d9b73551": "Количество движения"
+}

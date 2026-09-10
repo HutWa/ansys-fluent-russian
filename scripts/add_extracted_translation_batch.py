@@ -49,6 +49,12 @@ def main() -> int:
     parser.add_argument("catalog", type=Path)
     parser.add_argument("extracted", type=Path)
     parser.add_argument("batch", type=Path)
+    parser.add_argument(
+        "--status",
+        choices=("translated", "reviewed", "needs_context", "needs_review", "do_not_translate"),
+        default="translated",
+        help="Status assigned to every entry imported from the batch (default: translated).",
+    )
     args = parser.parse_args()
 
     raw_catalog = args.catalog.read_text(encoding="utf-8")
@@ -79,7 +85,7 @@ def main() -> int:
                 "qt_context": source["context"],
                 "source": source["source"],
                 "translation": translation,
-                "status": "translated",
+                "status": args.status,
                 "context": f"{source['module']} / {source['context']}; UI label imported from the Fluent reference module.",
                 "comment": "Primary translation prepared from the module and source label.",
             }

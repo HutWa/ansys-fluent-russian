@@ -86,6 +86,7 @@ def main() -> int:
     parser.add_argument("--reference-locale", default="ja", help="Штатный каталог-источник, по умолчанию ja")
     parser.add_argument("--lconvert", type=Path, help="Явный путь к Qt lconvert.exe")
     parser.add_argument("--list-modules", action="store_true", help="Показать доступные модули и завершить работу")
+    parser.add_argument("--all-modules", action="store_true", help="Извлечь все доступные модули")
     parser.add_argument("--module", action="append", default=[], help="Имя модуля без .qm; можно повторять")
     parser.add_argument("--output", type=Path, help="Локальный файл с окончанием .extracted.json")
     args = parser.parse_args()
@@ -104,6 +105,8 @@ def main() -> int:
             print(f"{name}\t{available[name].stat().st_size}")
         print(f"Всего модулей: {len(available)}", file=sys.stderr)
         return 0
+    if args.all_modules:
+        args.module = sorted(available, key=str.casefold)
     if not args.module:
         raise ValueError("Для безопасной блочной работы укажите хотя бы один --module.")
     if not args.output or not args.output.name.endswith(".extracted.json"):
