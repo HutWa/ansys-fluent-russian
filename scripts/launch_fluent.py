@@ -82,12 +82,18 @@ def main() -> int:
     watcher = None
     if args.capture_output:
         capture_script = Path(__file__).with_name("capture_fluent_window.py")
+        capture_output = args.capture_output.resolve()
+        capture_output.mkdir(parents=True, exist_ok=True)
         capture_command = [
             sys.executable, str(capture_script), "--watch", "--exit-when-closed",
-            "--output-dir", str(args.capture_output.resolve()),
+            "--output-dir", str(capture_output),
         ]
-        watcher = subprocess.Popen(capture_command, env=localized_environment())
-        print(f"Наблюдатель visual QA запущен, PID {watcher.pid}")
+        watcher_log = capture_output / "watcher.log"
+        with watcher_log.open("a", encoding="utf-8") as log:
+            watcher = subprocess.Popen(
+                capture_command, env=localized_environment(), stdout=log, stderr=subprocess.STDOUT,
+            )
+        print(f"Наблюдатель visual QA запущен, PID {watcher.pid}; журнал: {watcher_log}")
     process = subprocess.Popen(command, env=localized_environment())
     print(f"Fluent запущен, PID {process.pid}")
     return process.wait() if args.wait else 0

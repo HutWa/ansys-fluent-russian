@@ -18,6 +18,7 @@ python scripts/launch_fluent.py --fluent-root "D:\games\ANSYS Inc\ANSYS Student\
 ```
 
 После завершения journal Fluent остаётся открытым, а кадры лежат в `build/visual-qa-journal`. Наблюдатель завершится после закрытия Fluent. Кадры и манифест исключены из Git.
+Если кадры не появились, точная причина записывается в `build/visual-qa-journal/watcher.log`.
 
 ## Ограничение и развитие
 
