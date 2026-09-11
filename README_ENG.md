@@ -21,6 +21,7 @@ Some major windows are already displayed in Russian, while many dialogs still co
 The [visual review log](docs/VISUAL_REVIEW_20260905.md) records which windows have been checked in Fluent and which English strings remain.
 
 The beta-release criteria and current readiness are documented in the [beta release plan](docs/BETA_RELEASE_V2026R1.md).
+Known limitations and visual-recheck priorities are listed separately in [the limitations document](docs/KNOWN_LIMITATIONS_V2026R1.md).
 
 ### Main menu
 
