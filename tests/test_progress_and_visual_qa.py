@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import unittest
+from pathlib import Path
 
 from scripts.check_visual_review import render_summary, validate_review
 from scripts.report_progress import metrics, module_rows, render_markdown
 from scripts.apply_translation_batch import object_bounds
 from scripts.check_beta_readiness import readiness_issues
 from scripts.capture_fluent_window import encode_png_bgra, safe_name
+from scripts.launch_fluent import fluent_command
+from scripts.check_visual_journal import unsafe_lines
 
 
 class ProgressReportTests(unittest.TestCase):
@@ -109,6 +112,15 @@ class VisualCaptureTests(unittest.TestCase):
         png = encode_png_bgra(1, 1, bytes((10, 20, 30, 255)))
         self.assertTrue(png.startswith(b"\x89PNG\r\n\x1a\n"))
         self.assertEqual(safe_name("Fluent@Home [3d]"), "Fluent-Home-3d")
+
+    def test_launch_command_appends_journal_after_fluent_arguments(self) -> None:
+        command = fluent_command(Path("fluent.exe"), ["3d", "-t1"], Path("safe-qa.jou"))
+        self.assertEqual(command, ["fluent.exe", "3d", "-t1", "-i", "safe-qa.jou"])
+
+    def test_visual_journal_permits_navigation_and_rejects_mutation(self) -> None:
+        safe = '(cx-gui-do cx-set-list-tree-selections "NavigationPane*List_Tree1" (list "Setup|General"))\n(sleep 5)'
+        self.assertEqual(unsafe_lines(safe), [])
+        self.assertEqual(unsafe_lines('/solve/initialize/initialize-flow'), [(1, '/solve/initialize/initialize-flow')])
 
 
 if __name__ == "__main__":

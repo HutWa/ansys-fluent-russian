@@ -1,0 +1,15 @@
+; Safe GUI-navigation journal for Fluent 2026 R1 visual QA.
+; It selects task pages only. It does not load or save a case, edit a setting,
+; initialize, calculate, or modify mesh/model/material data.
+;
+; cx-gui-do paths are Fluent's internal English identifiers. Their displayed
+; Russian labels are what the visual-QA capture evaluates.
+
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*List_Tree1" (list "Setup|General"))
+(sleep 5)
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*List_Tree1" (list "Setup|Materials"))
+(sleep 5)
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*List_Tree1" (list "Results|Graphics"))
+(sleep 5)
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*List_Tree1" (list "Results|Surfaces"))
+(sleep 5)

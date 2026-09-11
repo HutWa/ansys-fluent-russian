@@ -9,6 +9,11 @@ import subprocess
 import sys
 from pathlib import Path
 
+try:  # Support both `python scripts/launch_fluent.py` and package imports in tests.
+    from scripts.check_visual_journal import unsafe_lines
+except ModuleNotFoundError:  # pragma: no cover - exercised by the direct CLI smoke test.
+    from check_visual_journal import unsafe_lines
+
 
 def find_launcher(fluent_root: Path) -> Path:
     candidates = (
@@ -27,6 +32,14 @@ def localized_environment() -> dict[str, str]:
     return environment
 
 
+def fluent_command(launcher: Path, fluent_args: list[str], journal: Path | None = None) -> list[str]:
+    """Return a Fluent command, optionally replaying a GUI-only QA journal."""
+    command = [str(launcher), *fluent_args]
+    if journal is not None:
+        command.extend(("-i", str(journal)))
+    return command
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Запуск Fluent с русскими Qt-каталогами через lang=ru"
@@ -38,6 +51,10 @@ def main() -> int:
         "--capture-output", type=Path,
         help="Локальный каталог для автоматических кадров visual QA; запускает наблюдатель окна Fluent",
     )
+    parser.add_argument(
+        "--journal", type=Path,
+        help="Fluent journal для воспроизводимой навигации; добавляется как аргумент -i",
+    )
     parser.add_argument("fluent_args", nargs=argparse.REMAINDER, help="Аргументы после --")
     args = parser.parse_args()
 
@@ -48,7 +65,15 @@ def main() -> int:
     fluent_args = list(args.fluent_args)
     if fluent_args and fluent_args[0] == "--":
         fluent_args.pop(0)
-    command = [str(launcher), *fluent_args]
+    journal = args.journal.resolve() if args.journal else None
+    if journal is not None and not journal.is_file():
+        raise ValueError(f"Journal Fluent не найден: {journal}")
+    if journal is not None:
+        violations = unsafe_lines(journal.read_text(encoding="utf-8"))
+        if violations:
+            line, content = violations[0]
+            raise ValueError(f"Journal visual QA содержит недопустимую строку {line}: {content}")
+    command = fluent_command(launcher, fluent_args, journal)
     print("Переменная процесса: lang=ru")
     print("Команда:", shlex.join(command))
     if args.dry_run:
