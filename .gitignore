@@ -24,6 +24,7 @@ install-manifest.json
 extracted-resources/
 backups/
 build/
+reviews/**/screenshots/local/
 samples/
 *.extracted.json
 *.extracted.json.tmp

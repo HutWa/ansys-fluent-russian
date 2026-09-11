@@ -6,6 +6,7 @@ from scripts.check_visual_review import render_summary, validate_review
 from scripts.report_progress import metrics, module_rows, render_markdown
 from scripts.apply_translation_batch import object_bounds
 from scripts.check_beta_readiness import readiness_issues
+from scripts.capture_fluent_window import encode_png_bgra, safe_name
 
 
 class ProgressReportTests(unittest.TestCase):
@@ -101,6 +102,13 @@ class BetaReadinessTests(unittest.TestCase):
         current = {"not_catalogued": 0, "needs_context": 0, "needs_review": 0}
         windows = [{"id": "one", "package": "current", "status": "partial"}]
         self.assertEqual(readiness_issues(current, windows, "current", ("one",)), [])
+
+
+class VisualCaptureTests(unittest.TestCase):
+    def test_png_encoder_and_safe_name(self) -> None:
+        png = encode_png_bgra(1, 1, bytes((10, 20, 30, 255)))
+        self.assertTrue(png.startswith(b"\x89PNG\r\n\x1a\n"))
+        self.assertEqual(safe_name("Fluent@Home [3d]"), "Fluent-Home-3d")
 
 
 if __name__ == "__main__":

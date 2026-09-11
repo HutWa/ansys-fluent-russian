@@ -34,6 +34,10 @@ def main() -> int:
     parser.add_argument("--fluent-root", type=Path, required=True, help="Каталог <release>/fluent")
     parser.add_argument("--dry-run", action="store_true", help="Показать команду без запуска")
     parser.add_argument("--wait", action="store_true", help="Ждать завершения Fluent")
+    parser.add_argument(
+        "--capture-output", type=Path,
+        help="Локальный каталог для автоматических кадров visual QA; запускает наблюдатель окна Fluent",
+    )
     parser.add_argument("fluent_args", nargs=argparse.REMAINDER, help="Аргументы после --")
     args = parser.parse_args()
 
@@ -50,6 +54,15 @@ def main() -> int:
     if args.dry_run:
         return 0
 
+    watcher = None
+    if args.capture_output:
+        capture_script = Path(__file__).with_name("capture_fluent_window.py")
+        capture_command = [
+            sys.executable, str(capture_script), "--watch", "--exit-when-closed",
+            "--output-dir", str(args.capture_output.resolve()),
+        ]
+        watcher = subprocess.Popen(capture_command, env=localized_environment())
+        print(f"Наблюдатель visual QA запущен, PID {watcher.pid}")
     process = subprocess.Popen(command, env=localized_environment())
     print(f"Fluent запущен, PID {process.pid}")
     return process.wait() if args.wait else 0
