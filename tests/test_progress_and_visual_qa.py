@@ -5,6 +5,7 @@ import unittest
 from scripts.check_visual_review import render_summary, validate_review
 from scripts.report_progress import metrics, module_rows, render_markdown
 from scripts.apply_translation_batch import object_bounds
+from scripts.check_beta_readiness import readiness_issues
 
 
 class ProgressReportTests(unittest.TestCase):
@@ -86,6 +87,20 @@ class TranslationBatchTests(unittest.TestCase):
         indented = '{\n  "entries": [\n    {\n      "id": "One:b",\n      "source": "B"\n    }\n  ]\n}'
         start, end = object_bounds(indented, "One:b")
         self.assertIn('"source": "B"', indented[start:end])
+
+
+class BetaReadinessTests(unittest.TestCase):
+    def test_requires_current_package_and_visual_status(self) -> None:
+        current = {"not_catalogued": 0, "needs_context": 0, "needs_review": 0}
+        windows = [{"id": "one", "package": "old", "status": "verified"}]
+        issues = readiness_issues(current, windows, "new", ("one", "missing"))
+        self.assertIn("one was not checked against new (recorded package: old).", issues)
+        self.assertIn("Required visual-QA window is missing: missing.", issues)
+
+    def test_accepts_reviewed_current_window(self) -> None:
+        current = {"not_catalogued": 0, "needs_context": 0, "needs_review": 0}
+        windows = [{"id": "one", "package": "current", "status": "partial"}]
+        self.assertEqual(readiness_issues(current, windows, "current", ("one",)), [])
 
 
 if __name__ == "__main__":

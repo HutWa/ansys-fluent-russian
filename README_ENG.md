@@ -13,18 +13,20 @@ Some major windows are already displayed in Russian, while many dialogs still co
 | Work status | Strings |
 |---|---:|
 | Translated | **27,104** |
-| Needs context | 165 |
-| Needs editorial review | 74 |
-| Do not translate | 555 |
-| Not yet added to the project catalog | 4,981 |
+| Needs context | 0 |
+| Needs editorial review | 0 |
+| Do not translate | 1,682 |
+| Not yet added to the project catalog | 0 |
 
 The [visual review log](docs/VISUAL_REVIEW_20260905.md) records which windows have been checked in Fluent and which English strings remain.
+
+The beta-release criteria and current readiness are documented in the [beta release plan](docs/BETA_RELEASE_V2026R1.md).
 
 ### Main menu
 
 **Fluent ribbon (`Ribbon/*`): 1,150 of 1,150 strings are translated.** This covers the File, Domain, Physics, User-Defined, Solution, Results, View, Parallel, Design, Parametric, and Learning and Support tabs, as well as their commands.
 
-The top ribbon was still English in a screenshot of the previously installed build. It therefore needs a visual recheck after the next build and installation.
+The top ribbon was still English in a screenshot of the previously installed build. A full package from the current catalog has now been built and installed in a test Fluent Student instance, but the ribbon still needs a visual recheck there.
 
 ## Automated progress and visual QA
 
