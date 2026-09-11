@@ -10,6 +10,7 @@ from scripts.check_beta_readiness import readiness_issues
 from scripts.capture_fluent_window import encode_png_bgra, safe_name
 from scripts.launch_fluent import fluent_command
 from scripts.check_visual_journal import unsafe_lines
+from scripts.navigate_fluent_visual_qa import HOME_STEPS, RECT, select_home_window
 
 
 class ProgressReportTests(unittest.TestCase):
@@ -121,6 +122,19 @@ class VisualCaptureTests(unittest.TestCase):
         safe = '(cx-gui-do cx-set-list-tree-selections "NavigationPane*List_Tree1" (list "Setup|General"))\n(sleep 5)'
         self.assertEqual(unsafe_lines(safe), [])
         self.assertEqual(unsafe_lines('/solve/initialize/initialize-flow'), [(1, '/solve/initialize/initialize-flow')])
+
+    def test_coordinate_navigation_is_limited_to_visible_home_tree(self) -> None:
+        self.assertEqual([step[0] for step in HOME_STEPS], ["materials", "graphics", "surfaces"])
+        for _, x, y in HOME_STEPS:
+            self.assertLess(x, 0.2)
+            self.assertGreater(y, 0.3)
+            self.assertLess(y, 0.5)
+
+    def test_coordinate_navigation_ignores_splash_window(self) -> None:
+        splash = RECT(0, 0, 2000, 1000)
+        home = RECT(0, 0, 1400, 900)
+        self.assertEqual(select_home_window([(1, "Fluent", splash), (2, "Parallel Fluent@Home", home)])[0], 2)
+        self.assertIsNone(select_home_window([(1, "Fluent", splash)]))
 
 
 if __name__ == "__main__":
