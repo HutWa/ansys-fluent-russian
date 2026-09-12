@@ -10,7 +10,7 @@ from scripts.check_beta_readiness import readiness_issues
 from scripts.capture_fluent_window import encode_png_bgra, safe_name
 from scripts.launch_fluent import fluent_command
 from scripts.check_visual_journal import unsafe_lines
-from scripts.navigate_fluent_visual_qa import FILE_RIBBON_STEPS, HOME_STEPS, MATERIALS_TREE_STEPS, MODELS_EXPAND_STEPS, MULTIPHASE_DIALOG_STEPS, MULTIPHASE_TREE_STEPS, PHYSICS_RIBBON_STEPS, RECT, SOLUTION_METHODS_STEPS, VK_RETURN, VK_RIGHT, route_steps, select_home_window
+from scripts.navigate_fluent_visual_qa import FILE_RIBBON_STEPS, HOME_STEPS, MATERIALS_TREE_STEPS, MODELS_EXPAND_STEPS, MULTIPHASE_DIALOG_STEPS, MULTIPHASE_TREE_STEPS, PHYSICS_RIBBON_STEPS, RECT, SOLUTION_CONTROLS_STEPS, SOLUTION_METHODS_STEPS, VK_DOWN, VK_RETURN, VK_RIGHT, route_steps, select_home_window
 from scripts.launch_readonly_case import read_only_journal
 
 
@@ -128,6 +128,7 @@ class VisualCaptureTests(unittest.TestCase):
         self.assertEqual([step[0] for step in HOME_STEPS], ["materials", "graphics", "surfaces"])
         self.assertEqual(VK_RETURN, 0x0D)
         self.assertEqual(VK_RIGHT, 0x27)
+        self.assertEqual(VK_DOWN, 0x28)
         for _, x, y in HOME_STEPS:
             self.assertLess(x, 0.2)
             self.assertGreater(y, 0.3)
@@ -137,6 +138,7 @@ class VisualCaptureTests(unittest.TestCase):
         self.assertEqual(route_steps("multiphase-tree"), MULTIPHASE_TREE_STEPS)
         self.assertEqual(route_steps("materials-tree"), MATERIALS_TREE_STEPS)
         self.assertEqual(route_steps("solution-methods"), SOLUTION_METHODS_STEPS)
+        self.assertEqual(route_steps("solution-controls"), SOLUTION_CONTROLS_STEPS)
         self.assertEqual(route_steps("file-ribbon"), FILE_RIBBON_STEPS)
         self.assertEqual(route_steps("models-expand"), MODELS_EXPAND_STEPS)
 

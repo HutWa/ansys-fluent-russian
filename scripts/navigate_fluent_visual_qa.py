@@ -27,6 +27,7 @@ MOUSEEVENTF_LEFTUP = 0x0004
 KEYEVENTF_KEYUP = 0x0002
 VK_RETURN = 0x0D
 VK_RIGHT = 0x27
+VK_DOWN = 0x28
 
 
 # Coordinates are fractions of the maximized Fluent home window captured on
@@ -52,6 +53,10 @@ SOLUTION_METHODS_STEPS = (
     ("solution-expand", 0.030, 0.822),
     ("solution-methods", 0.100, 0.842),
     ("solution-methods-open", 0.100, 0.842),
+)
+SOLUTION_CONTROLS_STEPS = (
+    ("solution-methods-select", 0.100, 0.842),
+    ("solution-controls-key", 0.000, 0.000),
 )
 
 
@@ -105,6 +110,12 @@ def press_right() -> None:
     user32.keybd_event(VK_RIGHT, 0, KEYEVENTF_KEYUP, 0)
 
 
+def press_down() -> None:
+    user32 = ctypes.windll.user32
+    user32.keybd_event(VK_DOWN, 0, 0, 0)
+    user32.keybd_event(VK_DOWN, 0, KEYEVENTF_KEYUP, 0)
+
+
 def wait_for_window(timeout: float) -> tuple[int, str, RECT]:
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
@@ -119,7 +130,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Safe coordinate navigation for Fluent visual QA")
     parser.add_argument("--wait-seconds", type=float, default=45, help="Maximum time to wait for Fluent")
     parser.add_argument("--settle-seconds", type=float, default=8, help="Delay after each navigation click")
-    parser.add_argument("--mode", choices=("home", "physics-ribbon", "multiphase-dialog", "multiphase-tree", "materials-tree", "solution-methods", "file-ribbon", "models-expand"), default="home", help="Safe visual-QA navigation route")
+    parser.add_argument("--mode", choices=("home", "physics-ribbon", "multiphase-dialog", "multiphase-tree", "materials-tree", "solution-methods", "solution-controls", "file-ribbon", "models-expand"), default="home", help="Safe visual-QA navigation route")
     parser.add_argument("--trace-file", type=Path, help="Write the actual click trace as a local build artifact")
     parser.add_argument("--dry-run", action="store_true", help="Print the navigation plan without clicking")
     args = parser.parse_args()
@@ -138,13 +149,20 @@ def main() -> int:
     steps = route_steps(args.mode)
     trace["mode"] = args.mode
     for name, x_fraction, y_fraction in steps:
+        if name == "solution-controls-key":
+            press_down()
+            confirm_tree_selection()
+            trace["steps"].append({"name": name, "key": "Down+Enter", "captured_after_seconds": args.settle_seconds})
+            print("Selected next solution item with Down+Enter")
+            time.sleep(args.settle_seconds)
+            continue
         if args.mode == "home":
             x, y = click_window_fraction(hwnd, rect, x_fraction, y_fraction)
             confirm_tree_selection()
             trace["steps"].append({"name": name, "screen_x": x, "screen_y": y, "click_count": 2, "key": "Enter", "captured_after_seconds": args.settle_seconds})
             print(f"Double-clicked and confirmed {name}: {x}, {y}")
         else:
-            click_count = 2 if name in {"materials-tree", "solution-methods"} else 1
+            click_count = 2 if name in {"materials-tree", "solution-methods", "solution-methods-select"} else 1
             x, y = click_window_fraction(hwnd, rect, x_fraction, y_fraction, click_count=click_count)
             key = None
             if name == "multiphase-open":
@@ -168,6 +186,12 @@ def main() -> int:
             elif name in {"solution-methods", "solution-methods-open"}:
                 confirm_tree_selection()
                 key = "Enter"
+            elif name in {"solution-controls", "solution-controls-open"}:
+                confirm_tree_selection()
+                key = "Enter"
+            elif name == "solution-methods-select":
+                confirm_tree_selection()
+                key = "Enter"
             entry = {"name": name, "screen_x": x, "screen_y": y, "click_count": click_count, "captured_after_seconds": args.settle_seconds}
             if key:
                 entry["key"] = key
@@ -189,6 +213,7 @@ def route_steps(mode: str) -> tuple[tuple[str, float, float], ...]:
         "multiphase-tree": MULTIPHASE_TREE_STEPS,
         "materials-tree": MATERIALS_TREE_STEPS,
         "solution-methods": SOLUTION_METHODS_STEPS,
+        "solution-controls": SOLUTION_CONTROLS_STEPS,
         "file-ribbon": FILE_RIBBON_STEPS,
         "models-expand": MODELS_EXPAND_STEPS,
     }
