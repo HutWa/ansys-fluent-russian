@@ -49,14 +49,21 @@ MATERIALS_TREE_STEPS = (
     ("materials-tree", 0.100, 0.622),
     ("materials-open", 0.100, 0.622),
 )
+# The loaded reference case exposes the ``Solution`` root about 61% down the
+# navigation pane.  Subsequent pages are selected by keyboard relative to that
+# root, rather than by stale absolute row positions (which vary with window
+# height and expanded model branches).
 SOLUTION_METHODS_STEPS = (
-    ("solution-expand", 0.030, 0.822),
-    ("solution-methods", 0.100, 0.842),
-    ("solution-methods-open", 0.100, 0.842),
+    ("solution-expand", 0.040, 0.610),
+    ("solution-methods-key", 0.000, 0.000),
 )
 SOLUTION_CONTROLS_STEPS = (
-    ("solution-methods-select", 0.100, 0.842),
+    ("solution-expand", 0.040, 0.610),
     ("solution-controls-key", 0.000, 0.000),
+)
+SOLUTION_INITIALIZATION_STEPS = (
+    ("solution-expand", 0.040, 0.610),
+    ("solution-initialization-key", 0.000, 0.000),
 )
 
 
@@ -130,7 +137,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Safe coordinate navigation for Fluent visual QA")
     parser.add_argument("--wait-seconds", type=float, default=45, help="Maximum time to wait for Fluent")
     parser.add_argument("--settle-seconds", type=float, default=8, help="Delay after each navigation click")
-    parser.add_argument("--mode", choices=("home", "physics-ribbon", "multiphase-dialog", "multiphase-tree", "materials-tree", "solution-methods", "solution-controls", "file-ribbon", "models-expand"), default="home", help="Safe visual-QA navigation route")
+    parser.add_argument("--mode", choices=("home", "physics-ribbon", "multiphase-dialog", "multiphase-tree", "materials-tree", "solution-methods", "solution-controls", "solution-initialization", "file-ribbon", "models-expand"), default="home", help="Safe visual-QA navigation route")
     parser.add_argument("--trace-file", type=Path, help="Write the actual click trace as a local build artifact")
     parser.add_argument("--dry-run", action="store_true", help="Print the navigation plan without clicking")
     args = parser.parse_args()
@@ -149,11 +156,16 @@ def main() -> int:
     steps = route_steps(args.mode)
     trace["mode"] = args.mode
     for name, x_fraction, y_fraction in steps:
-        if name == "solution-controls-key":
-            press_down()
+        if name in {"solution-methods-key", "solution-controls-key", "solution-initialization-key"}:
+            for _ in range({
+                "solution-methods-key": 1,
+                "solution-controls-key": 2,
+                "solution-initialization-key": 7,
+            }[name]):
+                press_down()
             confirm_tree_selection()
             trace["steps"].append({"name": name, "key": "Down+Enter", "captured_after_seconds": args.settle_seconds})
-            print("Selected next solution item with Down+Enter")
+            print("Selected solution item with Down+Enter")
             time.sleep(args.settle_seconds)
             continue
         if args.mode == "home":
@@ -162,7 +174,7 @@ def main() -> int:
             trace["steps"].append({"name": name, "screen_x": x, "screen_y": y, "click_count": 2, "key": "Enter", "captured_after_seconds": args.settle_seconds})
             print(f"Double-clicked and confirmed {name}: {x}, {y}")
         else:
-            click_count = 2 if name in {"materials-tree", "solution-methods", "solution-methods-select"} else 1
+            click_count = 2 if name in {"materials-tree", "solution-expand", "solution-methods", "solution-methods-select"} else 1
             x, y = click_window_fraction(hwnd, rect, x_fraction, y_fraction, click_count=click_count)
             key = None
             if name == "multiphase-open":
@@ -214,6 +226,7 @@ def route_steps(mode: str) -> tuple[tuple[str, float, float], ...]:
         "materials-tree": MATERIALS_TREE_STEPS,
         "solution-methods": SOLUTION_METHODS_STEPS,
         "solution-controls": SOLUTION_CONTROLS_STEPS,
+        "solution-initialization": SOLUTION_INITIALIZATION_STEPS,
         "file-ribbon": FILE_RIBBON_STEPS,
         "models-expand": MODELS_EXPAND_STEPS,
     }
