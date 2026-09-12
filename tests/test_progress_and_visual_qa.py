@@ -12,6 +12,7 @@ from scripts.launch_fluent import fluent_command
 from scripts.check_visual_journal import unsafe_lines
 from scripts.navigate_fluent_visual_qa import FILE_RIBBON_STEPS, HOME_STEPS, MATERIALS_TREE_STEPS, MODELS_EXPAND_STEPS, MULTIPHASE_DIALOG_STEPS, MULTIPHASE_TREE_STEPS, PHYSICS_RIBBON_STEPS, RECT, SOLUTION_CONTROLS_STEPS, SOLUTION_INITIALIZATION_STEPS, SOLUTION_METHODS_STEPS, VK_DOWN, VK_RETURN, VK_RIGHT, route_steps, select_home_window
 from scripts.launch_readonly_case import read_only_journal
+from scripts.navigate_fluent_uia import SAFE_TARGETS
 
 
 class ProgressReportTests(unittest.TestCase):
@@ -110,6 +111,9 @@ class BetaReadinessTests(unittest.TestCase):
 
 
 class VisualCaptureTests(unittest.TestCase):
+    def test_uia_navigation_has_only_whitelisted_task_pages(self) -> None:
+        self.assertEqual(SAFE_TARGETS, {"run-calculation": "Запуск расчёта"})
+
     def test_png_encoder_and_safe_name(self) -> None:
         png = encode_png_bgra(1, 1, bytes((10, 20, 30, 255)))
         self.assertTrue(png.startswith(b"\x89PNG\r\n\x1a\n"))
