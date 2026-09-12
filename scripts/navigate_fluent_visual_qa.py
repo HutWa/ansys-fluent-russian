@@ -24,6 +24,9 @@ except ModuleNotFoundError:  # pragma: no cover - exercised by the direct CLI sm
 
 MOUSEEVENTF_LEFTDOWN = 0x0002
 MOUSEEVENTF_LEFTUP = 0x0004
+KEYEVENTF_KEYUP = 0x0002
+VK_RETURN = 0x0D
+VK_RIGHT = 0x27
 
 
 # Coordinates are fractions of the maximized Fluent home window captured on
@@ -33,6 +36,14 @@ HOME_STEPS = (
     ("graphics", 0.060, 0.418),
     ("surfaces", 0.060, 0.401),
 )
+PHYSICS_RIBBON_STEPS = (("physics-ribbon", 0.160, 0.047),)
+MULTIPHASE_DIALOG_STEPS = PHYSICS_RIBBON_STEPS + (
+    ("multiphase-model", 0.380, 0.105),
+    ("multiphase-open", 0.380, 0.105),
+)
+FILE_RIBBON_STEPS = (("file-ribbon", 0.030, 0.047),)
+MODELS_EXPAND_STEPS = (("models-expand", 0.030, 0.347),)
+MULTIPHASE_TREE_STEPS = MODELS_EXPAND_STEPS + (("multiphase-tree", 0.100, 0.366),)
 
 
 def select_home_window(candidates: list[tuple[int, str, RECT]]) -> tuple[int, str, RECT] | None:
@@ -71,6 +82,20 @@ def click_window_fraction(hwnd: int, rect: RECT, x_fraction: float, y_fraction: 
     return x, y
 
 
+def confirm_tree_selection() -> None:
+    """Ask Fluent to open the already-selected tree page, without editing it."""
+    user32 = ctypes.windll.user32
+    user32.keybd_event(VK_RETURN, 0, 0, 0)
+    user32.keybd_event(VK_RETURN, 0, KEYEVENTF_KEYUP, 0)
+
+
+def press_right() -> None:
+    """Expand an already-selected tree node without opening a page."""
+    user32 = ctypes.windll.user32
+    user32.keybd_event(VK_RIGHT, 0, 0, 0)
+    user32.keybd_event(VK_RIGHT, 0, KEYEVENTF_KEYUP, 0)
+
+
 def wait_for_window(timeout: float) -> tuple[int, str, RECT]:
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
@@ -85,6 +110,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Safe coordinate navigation for Fluent visual QA")
     parser.add_argument("--wait-seconds", type=float, default=45, help="Maximum time to wait for Fluent")
     parser.add_argument("--settle-seconds", type=float, default=8, help="Delay after each navigation click")
+    parser.add_argument("--mode", choices=("home", "physics-ribbon", "multiphase-dialog", "multiphase-tree", "file-ribbon", "models-expand"), default="home", help="Safe visual-QA navigation route")
     parser.add_argument("--trace-file", type=Path, help="Write the actual click trace as a local build artifact")
     parser.add_argument("--dry-run", action="store_true", help="Print the navigation plan without clicking")
     args = parser.parse_args()
@@ -92,23 +118,58 @@ def main() -> int:
         parser.error("wait and settle durations must be positive")
 
     if args.dry_run:
-        for name, x, y in HOME_STEPS:
+        steps = route_steps(args.mode)
+        for name, x, y in steps:
             print(f"{name}: {x:.3f}, {y:.3f}")
         return 0
 
     ctypes.windll.user32.SetProcessDPIAware()
     hwnd, title, rect = wait_for_window(args.wait_seconds)
     trace = {"window": title, "started_at": datetime.now(timezone.utc).isoformat(), "steps": []}
-    for name, x_fraction, y_fraction in HOME_STEPS:
-        x, y = click_window_fraction(hwnd, rect, x_fraction, y_fraction)
-        trace["steps"].append({"name": name, "screen_x": x, "screen_y": y, "click_count": 2, "captured_after_seconds": args.settle_seconds})
-        print(f"Double-clicked {name}: {x}, {y}")
+    steps = route_steps(args.mode)
+    trace["mode"] = args.mode
+    for name, x_fraction, y_fraction in steps:
+        if args.mode == "home":
+            x, y = click_window_fraction(hwnd, rect, x_fraction, y_fraction)
+            confirm_tree_selection()
+            trace["steps"].append({"name": name, "screen_x": x, "screen_y": y, "click_count": 2, "key": "Enter", "captured_after_seconds": args.settle_seconds})
+            print(f"Double-clicked and confirmed {name}: {x}, {y}")
+        else:
+            click_count = 2 if name == "multiphase-tree" else 1
+            x, y = click_window_fraction(hwnd, rect, x_fraction, y_fraction, click_count=click_count)
+            key = None
+            if name == "multiphase-open":
+                confirm_tree_selection()
+                key = "Enter"
+            elif name == "multiphase-tree":
+                confirm_tree_selection()
+                key = "Enter"
+            elif name == "models-expand":
+                press_right()
+                key = "Right"
+            entry = {"name": name, "screen_x": x, "screen_y": y, "click_count": click_count, "captured_after_seconds": args.settle_seconds}
+            if key:
+                entry["key"] = key
+            trace["steps"].append(entry)
+            print(f"Clicked {name}: {x}, {y}")
         time.sleep(args.settle_seconds)
     trace["finished_at"] = datetime.now(timezone.utc).isoformat()
     if args.trace_file:
         args.trace_file.parent.mkdir(parents=True, exist_ok=True)
         args.trace_file.write_text(json.dumps(trace, ensure_ascii=False, indent=2), encoding="utf-8")
     return 0
+
+
+def route_steps(mode: str) -> tuple[tuple[str, float, float], ...]:
+    routes = {
+        "home": HOME_STEPS,
+        "physics-ribbon": PHYSICS_RIBBON_STEPS,
+        "multiphase-dialog": MULTIPHASE_DIALOG_STEPS,
+        "multiphase-tree": MULTIPHASE_TREE_STEPS,
+        "file-ribbon": FILE_RIBBON_STEPS,
+        "models-expand": MODELS_EXPAND_STEPS,
+    }
+    return routes[mode]
 
 
 if __name__ == "__main__":

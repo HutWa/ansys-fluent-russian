@@ -10,7 +10,8 @@ from scripts.check_beta_readiness import readiness_issues
 from scripts.capture_fluent_window import encode_png_bgra, safe_name
 from scripts.launch_fluent import fluent_command
 from scripts.check_visual_journal import unsafe_lines
-from scripts.navigate_fluent_visual_qa import HOME_STEPS, RECT, select_home_window
+from scripts.navigate_fluent_visual_qa import FILE_RIBBON_STEPS, HOME_STEPS, MODELS_EXPAND_STEPS, MULTIPHASE_DIALOG_STEPS, MULTIPHASE_TREE_STEPS, PHYSICS_RIBBON_STEPS, RECT, VK_RETURN, VK_RIGHT, route_steps, select_home_window
+from scripts.launch_readonly_case import read_only_journal
 
 
 class ProgressReportTests(unittest.TestCase):
@@ -125,16 +126,29 @@ class VisualCaptureTests(unittest.TestCase):
 
     def test_coordinate_navigation_is_limited_to_visible_home_tree(self) -> None:
         self.assertEqual([step[0] for step in HOME_STEPS], ["materials", "graphics", "surfaces"])
+        self.assertEqual(VK_RETURN, 0x0D)
+        self.assertEqual(VK_RIGHT, 0x27)
         for _, x, y in HOME_STEPS:
             self.assertLess(x, 0.2)
             self.assertGreater(y, 0.3)
             self.assertLess(y, 0.5)
+        self.assertEqual(PHYSICS_RIBBON_STEPS, (("physics-ribbon", 0.160, 0.047),))
+        self.assertEqual(route_steps("multiphase-dialog"), MULTIPHASE_DIALOG_STEPS)
+        self.assertEqual(route_steps("multiphase-tree"), MULTIPHASE_TREE_STEPS)
+        self.assertEqual(route_steps("file-ribbon"), FILE_RIBBON_STEPS)
+        self.assertEqual(route_steps("models-expand"), MODELS_EXPAND_STEPS)
 
     def test_coordinate_navigation_ignores_splash_window(self) -> None:
         splash = RECT(0, 0, 2000, 1000)
         home = RECT(0, 0, 1400, 900)
         self.assertEqual(select_home_window([(1, "Fluent", splash), (2, "Parallel Fluent@Home", home)])[0], 2)
         self.assertIsNone(select_home_window([(1, "Fluent", splash)]))
+
+    def test_readonly_case_bootstrap_has_only_read_command(self) -> None:
+        journal = read_only_journal(Path("build") / "case.cas.h5")
+        self.assertEqual(journal.splitlines(), ["; Visual QA read-only bootstrap", '/file/read-case "build/case.cas.h5"'])
+        self.assertNotIn("write", journal.casefold())
+        self.assertNotIn("solve", journal.casefold())
 
 
 if __name__ == "__main__":
