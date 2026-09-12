@@ -44,6 +44,10 @@ MULTIPHASE_DIALOG_STEPS = PHYSICS_RIBBON_STEPS + (
 FILE_RIBBON_STEPS = (("file-ribbon", 0.030, 0.047),)
 MODELS_EXPAND_STEPS = (("models-expand", 0.030, 0.347),)
 MULTIPHASE_TREE_STEPS = MODELS_EXPAND_STEPS + (("multiphase-tree", 0.100, 0.366),)
+MATERIALS_TREE_STEPS = (
+    ("materials-tree", 0.100, 0.622),
+    ("materials-open", 0.100, 0.622),
+)
 
 
 def select_home_window(candidates: list[tuple[int, str, RECT]]) -> tuple[int, str, RECT] | None:
@@ -110,7 +114,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Safe coordinate navigation for Fluent visual QA")
     parser.add_argument("--wait-seconds", type=float, default=45, help="Maximum time to wait for Fluent")
     parser.add_argument("--settle-seconds", type=float, default=8, help="Delay after each navigation click")
-    parser.add_argument("--mode", choices=("home", "physics-ribbon", "multiphase-dialog", "multiphase-tree", "file-ribbon", "models-expand"), default="home", help="Safe visual-QA navigation route")
+    parser.add_argument("--mode", choices=("home", "physics-ribbon", "multiphase-dialog", "multiphase-tree", "materials-tree", "file-ribbon", "models-expand"), default="home", help="Safe visual-QA navigation route")
     parser.add_argument("--trace-file", type=Path, help="Write the actual click trace as a local build artifact")
     parser.add_argument("--dry-run", action="store_true", help="Print the navigation plan without clicking")
     args = parser.parse_args()
@@ -135,13 +139,19 @@ def main() -> int:
             trace["steps"].append({"name": name, "screen_x": x, "screen_y": y, "click_count": 2, "key": "Enter", "captured_after_seconds": args.settle_seconds})
             print(f"Double-clicked and confirmed {name}: {x}, {y}")
         else:
-            click_count = 2 if name == "multiphase-tree" else 1
+            click_count = 2 if name == "materials-tree" else 1
             x, y = click_window_fraction(hwnd, rect, x_fraction, y_fraction, click_count=click_count)
             key = None
             if name == "multiphase-open":
                 confirm_tree_selection()
                 key = "Enter"
             elif name == "multiphase-tree":
+                confirm_tree_selection()
+                key = "Enter"
+            elif name == "materials-tree":
+                confirm_tree_selection()
+                key = "Enter"
+            elif name == "materials-open":
                 confirm_tree_selection()
                 key = "Enter"
             elif name == "models-expand":
@@ -166,6 +176,7 @@ def route_steps(mode: str) -> tuple[tuple[str, float, float], ...]:
         "physics-ribbon": PHYSICS_RIBBON_STEPS,
         "multiphase-dialog": MULTIPHASE_DIALOG_STEPS,
         "multiphase-tree": MULTIPHASE_TREE_STEPS,
+        "materials-tree": MATERIALS_TREE_STEPS,
         "file-ribbon": FILE_RIBBON_STEPS,
         "models-expand": MODELS_EXPAND_STEPS,
     }
