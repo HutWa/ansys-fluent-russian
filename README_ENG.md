@@ -27,9 +27,11 @@ Known limitations and visual-recheck priorities are listed separately in [the li
 
 **Fluent ribbon (`Ribbon/*`): 1,150 of 1,150 strings are translated.** This covers the File, Domain, Physics, User-Defined, Solution, Results, View, Parallel, Design, Parametric, and Learning and Support tabs, as well as their commands.
 
-The top ribbon was still English in a screenshot of the previously installed build. A full package from the current catalog has now been built and installed in a test Fluent Student instance, but the ribbon still needs a visual recheck there.
+The full `beta-1-27104-qa-fix-20260922` package is installed in a test Fluent Student instance and was visually checked on an isolated reactor case copy. Ribbon commands are Russian, but the visible navigation tree still mixes Russian and English labels. Nine visual issues block the first beta; see the [release plan](docs/BETA_RELEASE_V2026R1.md).
 
 ## Automated progress and visual QA
+
+Scenario definitions, priorities, safe launch conditions, and recheck commands are documented in [the QA scenarios guide](docs/QA_SCENARIOS_V2026R1.md). They use local SHA-256-backed captures and do not require manually sharing screenshots.
 
 GitHub Actions validates the catalog and publishes exact progress, PR-base deltas, and visual-QA status in its run summary. CI warns when translations in a previously verified window change without an accompanying visual-review update.
 

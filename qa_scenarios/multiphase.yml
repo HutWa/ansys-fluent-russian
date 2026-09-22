@@ -1,0 +1,12 @@
+{
+  "format_version": 1,
+  "id": "multiphase",
+  "name": "Многофазное течение",
+  "tier": 2,
+  "case_requirement": "requires_case",
+  "automation": "semi_automatic",
+  "limitations": ["Выключенный диалог можно открыть без изменения case; вкладки после включения модели требуют отдельный QA-case."],
+  "steps": [
+    {"id": "multiphase-model", "target": "Физика / Многофазная модель", "modules": ["MultiphaseModel"], "capture": "multiphase-model.jpg", "availability": "always_accessible", "route": "multiphase-tree"}
+  ]
+}

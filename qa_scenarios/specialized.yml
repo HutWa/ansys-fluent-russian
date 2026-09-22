@@ -1,0 +1,20 @@
+{
+  "format_version": 1,
+  "id": "specialized",
+  "name": "Специализированные панели",
+  "tier": 3,
+  "case_requirement": "requires_case",
+  "automation": "manual_only",
+  "limitations": ["Эти панели могут требовать особого типа зоны, модели или результатов. Проверять только на отдельном QA-case."],
+  "steps": [
+    {"id": "motion-definitions", "target": "Настройка / Определения движения", "modules": ["ZoneMotion"], "capture": "motion-definitions.jpg", "availability": "manual_only"},
+    {"id": "reference-frame", "target": "Настройка / Системы отсчёта", "modules": ["ReferenceFrame"], "capture": "reference-frame.jpg", "availability": "manual_only"},
+    {"id": "curvilinear-coordinate-system", "target": "Настройка / Криволинейная система", "modules": ["CurvilinearCoordinateSystem"], "capture": "curvilinear-coordinate-system.jpg", "availability": "manual_only"},
+    {"id": "expression-manager", "target": "Параметры / Именованные выражения", "modules": ["ExpressionManager"], "capture": "expression-manager.jpg", "availability": "manual_only"},
+    {"id": "cell-registers", "target": "Решение / Регистры ячеек", "modules": ["ManageCellRegisters"], "capture": "cell-registers.jpg", "availability": "manual_only"},
+    {"id": "adaptation-criteria", "target": "Решение / Адаптация сетки", "modules": ["ManageAdaptionCriteria"], "capture": "adaptation-criteria.jpg", "availability": "manual_only"},
+    {"id": "calculation-activities", "target": "Решение / Операции расчёта", "modules": ["TaskPage_CalculationActivities"], "capture": "calculation-activities.jpg", "availability": "manual_only"},
+    {"id": "display-states", "target": "Результаты / Состояния отображения", "modules": ["DisplayStates"], "capture": "display-states.jpg", "availability": "requires_operation"},
+    {"id": "specialized-panels", "target": "Специализированные физические и постобрабатывающие панели", "modules": ["AdvancedHolePatching", "Pressure-DependentReaction", "OperatingConditions", "CHEMKINMechanismImport", "ImportCADGeometry", "FourierTransform", "PopulationBalanceModel", "TurboTopology"], "capture": "specialized-panels.jpg", "availability": "manual_only"}
+  ]
+}

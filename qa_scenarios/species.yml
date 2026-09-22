@@ -1,0 +1,13 @@
+{
+  "format_version": 1,
+  "id": "species",
+  "name": "Компоненты и реакции",
+  "tier": 2,
+  "case_requirement": "requires_case",
+  "automation": "manual_only",
+  "limitations": ["Составы, реакции и инжекции не включаются на пользовательском case ради QA."],
+  "steps": [
+    {"id": "species-model", "target": "Физика / Компоненты", "modules": ["SpeciesModel"], "capture": "species-model.jpg", "availability": "requires_model"},
+    {"id": "injection-properties", "target": "Дискретная фаза / Свойства инжекции", "modules": ["SetInjectionProperties", "DiscretePhaseModel"], "capture": "injection-properties.jpg", "availability": "requires_model"}
+  ]
+}

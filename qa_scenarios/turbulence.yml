@@ -1,0 +1,12 @@
+{
+  "format_version": 1,
+  "id": "turbulence",
+  "name": "Турбулентность",
+  "tier": 2,
+  "case_requirement": "requires_case",
+  "automation": "manual_only",
+  "limitations": ["Параметры зависят от выбранной модели; не менять модель в основном case."],
+  "steps": [
+    {"id": "viscous-model", "target": "Физика / Вязкость", "modules": ["ViscousModel"], "capture": "viscous-model.jpg", "availability": "requires_model"}
+  ]
+}

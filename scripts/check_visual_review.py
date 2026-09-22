@@ -15,7 +15,10 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-STATUSES = {"unverified", "partial", "verified", "needs_recheck"}
+STATUSES = {
+    "unverified", "captured", "review_required", "partial", "verified",
+    "needs_recheck", "manual_only",
+}
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -86,6 +89,10 @@ def validate_review(data: dict[str, Any]) -> tuple[list[dict[str, Any]], list[st
                 errors.append(f"{location} needs scope")
         if status == "verified" and issues:
             errors.append(f"{location} is verified but still has issues; use partial or needs_recheck")
+        if status == "verified" and "evidence" not in window:
+            errors.append(f"{location} is verified but has no captured evidence")
+        if status in {"captured", "review_required", "partial"} and "evidence" not in window:
+            errors.append(f"{location} status {status} requires captured evidence")
         if "beta_blocker" in window:
             if not isinstance(window["beta_blocker"], bool):
                 errors.append(f"{location} beta_blocker must be a boolean")
@@ -109,6 +116,9 @@ def render_summary(windows: list[dict[str, Any]], warnings: list[str]) -> str:
         f"| Partial | {counts['partial']} |",
         f"| Needs recheck | {counts['needs_recheck']} |",
         f"| Unverified | {counts['unverified']} |",
+        f"| Captured | {counts['captured']} |",
+        f"| Review required | {counts['review_required']} |",
+        f"| Manual-only | {counts['manual_only']} |",
     ]
     if warnings:
         lines.extend(["", "### Recheck warning", ""])

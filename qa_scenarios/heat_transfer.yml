@@ -1,0 +1,12 @@
+{
+  "format_version": 1,
+  "id": "heat_transfer",
+  "name": "Теплообмен",
+  "tier": 2,
+  "case_requirement": "requires_case",
+  "automation": "semi_automatic",
+  "limitations": ["Диалог «Энергия» открывается без включения уравнения; включённое состояние требует отдельного QA-case."],
+  "steps": [
+    {"id": "energy-model", "target": "Физика / Энергия", "modules": ["Energy"], "capture": "energy-model.jpg", "availability": "always_accessible"}
+  ]
+}

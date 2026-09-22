@@ -1,0 +1,12 @@
+{
+  "format_version": 1,
+  "id": "dynamic_mesh",
+  "name": "Динамическая сетка",
+  "tier": 2,
+  "case_requirement": "requires_case",
+  "automation": "semi_automatic",
+  "limitations": ["Главная страница проверяется без включения модели; зоны, события и движение требуют отдельный QA-case."],
+  "steps": [
+    {"id": "dynamic-mesh", "target": "Настройка / Динамическая сетка", "modules": ["TaskPage_DynamicMesh", "DynamicMeshZones", "DynamicMeshEvents"], "capture": "dynamic-mesh.jpg", "availability": "always_accessible"}
+  ]
+}

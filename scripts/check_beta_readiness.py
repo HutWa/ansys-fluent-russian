@@ -11,32 +11,19 @@ from typing import Any
 try:
     from scripts.check_visual_review import validate_review
     from scripts.install import load_build
+    from scripts.qa import load_scenarios, scenario_steps
     from scripts.report_progress import load_catalog, load_inventory, metrics
 except ModuleNotFoundError:
     from check_visual_review import validate_review
     from install import load_build
+    from qa import load_scenarios, scenario_steps
     from report_progress import load_catalog, load_inventory, metrics
 
 
 ROOT = Path(__file__).resolve().parents[1]
-REQUIRED_WINDOWS = (
-    "main-ribbon",
-    "general",
-    "materials",
-    "energy-model",
-    "multiphase-model",
-    "boundary-conditions",
-    "mesh-interfaces",
-    "dynamic-mesh",
-    "solution-methods",
-    "solution-controls",
-    "solution-initialization",
-    "run-calculation",
-    "graphics",
-    "surfaces",
-    "reports",
-    "plots",
-)
+def tier1_windows() -> tuple[str, ...]:
+    """The beta gate follows scenario metadata, not a duplicate hard-coded list."""
+    return tuple(step["id"] for step in scenario_steps(load_scenarios()) if step["tier"] == 1)
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -48,7 +35,7 @@ def read_json(path: Path) -> dict[str, Any]:
 
 def readiness_issues(
     current: dict[str, int], windows: list[dict[str, Any]], package: str,
-    required_windows: tuple[str, ...] = REQUIRED_WINDOWS,
+    required_windows: tuple[str, ...] | None = None,
 ) -> list[str]:
     issues: list[str] = []
     if current["not_catalogued"]:
@@ -59,6 +46,7 @@ def readiness_issues(
             f"{current['needs_context']:,} needs-context and {current['needs_review']:,} needs-review entries."
         )
     by_id = {str(window.get("id")): window for window in windows}
+    required_windows = required_windows if required_windows is not None else tier1_windows()
     for identifier in required_windows:
         window = by_id.get(identifier)
         if window is None:
@@ -69,10 +57,12 @@ def readiness_issues(
                 f"{identifier} was not checked against {package} "
                 f"(recorded package: {window.get('package', 'none')})."
             )
-        elif window.get("status") in {"unverified", "needs_recheck"}:
+        elif window.get("status") in {"unverified", "needs_recheck", "manual_only", "captured", "review_required"}:
             issues.append(f"{identifier} still has visual-QA status {window['status']}.")
         elif window.get("beta_blocker") is True:
             issues.append(f"{identifier} has a critical visual-QA defect recorded for {package}.")
+        elif "evidence" not in window:
+            issues.append(f"{identifier} was checked against {package} without captured evidence.")
     return issues
 
 

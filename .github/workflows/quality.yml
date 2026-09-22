@@ -55,3 +55,8 @@ jobs:
           else
             python scripts/check_visual_review.py --github-summary
           fi
+
+      - name: Validate visual-QA scenarios and report coverage
+        run: |
+          python scripts/qa.py validate
+          python scripts/qa.py coverage

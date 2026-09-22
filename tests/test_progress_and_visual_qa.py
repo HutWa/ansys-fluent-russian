@@ -59,6 +59,7 @@ class VisualQaTests(unittest.TestCase):
                         "last_checked": "2026-09-07",
                         "package": "release-5009",
                         "scope": "mesh_only",
+                        "evidence": {"path": "build/visual-qa-test/general.png", "sha256": "0" * 64},
                         "issues": [],
                     }
                 ],
@@ -86,6 +87,13 @@ class VisualQaTests(unittest.TestCase):
             }
         )
         self.assertTrue(errors)
+
+    def test_verified_window_without_evidence_is_rejected(self) -> None:
+        _, errors = validate_review({"format_version": 1, "windows": [{
+            "id": "bad", "window": "Bad", "modules": ["Module"], "status": "verified",
+            "last_checked": "2026-09-22", "package": "current", "scope": "dialog", "issues": [],
+        }]})
+        self.assertTrue(any("no captured evidence" in error for error in errors))
 
     def test_beta_blocker_requires_partial_issue(self) -> None:
         _, errors = validate_review({"format_version": 1, "windows": [{
@@ -117,12 +125,12 @@ class BetaReadinessTests(unittest.TestCase):
 
     def test_accepts_reviewed_current_window(self) -> None:
         current = {"not_catalogued": 0, "needs_context": 0, "needs_review": 0}
-        windows = [{"id": "one", "package": "current", "status": "partial"}]
+        windows = [{"id": "one", "package": "current", "status": "partial", "evidence": {"path": "build/visual-qa-test/one.png", "sha256": "0" * 64}}]
         self.assertEqual(readiness_issues(current, windows, "current", ("one",)), [])
 
     def test_rejects_critical_defect_even_when_window_was_reviewed(self) -> None:
         current = {"not_catalogued": 0, "needs_context": 0, "needs_review": 0}
-        windows = [{"id": "one", "package": "current", "status": "partial", "beta_blocker": True,
+        windows = [{"id": "one", "package": "current", "status": "partial", "evidence": {"path": "build/visual-qa-test/one.png", "sha256": "0" * 64}, "beta_blocker": True,
                     "issues": ["Internal path is visible."]}]
         self.assertEqual(readiness_issues(current, windows, "current", ("one",)),
                          ["one has a critical visual-QA defect recorded for current."])
