@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import subprocess
@@ -85,6 +86,15 @@ def validate_review(data: dict[str, Any]) -> tuple[list[dict[str, Any]], list[st
                 errors.append(f"{location} needs scope")
         if status == "verified" and issues:
             errors.append(f"{location} is verified but still has issues; use partial or needs_recheck")
+        if "beta_blocker" in window:
+            if not isinstance(window["beta_blocker"], bool):
+                errors.append(f"{location} beta_blocker must be a boolean")
+            elif window["beta_blocker"] and (status != "partial" or not issues):
+                errors.append(f"{location} beta_blocker requires partial status and a described issue")
+        if "evidence" in window:
+            evidence = window["evidence"]
+            if not isinstance(evidence, dict) or not isinstance(evidence.get("path"), str) or not evidence["path"].startswith("build/visual-qa-") or not isinstance(evidence.get("sha256"), str) or len(evidence["sha256"]) != 64 or any(char not in "0123456789abcdef" for char in evidence["sha256"].lower()):
+                errors.append(f"{location} evidence needs a local build/visual-qa-* path and SHA-256")
     return [window for window in windows if isinstance(window, dict)], errors
 
 
@@ -106,17 +116,46 @@ def render_summary(windows: list[dict[str, Any]], warnings: list[str]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def verify_local_evidence(windows: list[dict[str, Any]], root: Path = ROOT) -> list[str]:
+    """Check optional, non-published screenshot evidence in the local build directory."""
+    errors: list[str] = []
+    root = root.resolve()
+    for window in windows:
+        evidence = window.get("evidence")
+        if evidence is None:
+            continue
+        path = (root / evidence["path"]).resolve()
+        if not path.is_relative_to(root / "build"):
+            errors.append(f"{window['id']}: evidence path leaves the build directory")
+            continue
+        try:
+            image = path.read_bytes()
+        except OSError as error:
+            errors.append(f"{window['id']}: cannot read evidence: {error}")
+            continue
+        if not (image.startswith(b"\xff\xd8\xff") or image.startswith(b"\x89PNG\r\n\x1a\n")):
+            errors.append(f"{window['id']}: evidence is not a JPEG or PNG image")
+        if hashlib.sha256(image).hexdigest() != evidence["sha256"].lower():
+            errors.append(f"{window['id']}: evidence SHA-256 mismatch")
+    return errors
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Check Fluent visual QA metadata")
     parser.add_argument("--reviews", type=Path, default=ROOT / "reviews" / "v2026R1" / "windows.yml")
     parser.add_argument("--catalog", type=Path, default=ROOT / "translations" / "v2026R1" / "catalog.json")
     parser.add_argument("--base-ref", help="Git ref to compare with the current catalog")
     parser.add_argument("--github-summary", action="store_true")
+    parser.add_argument("--verify-evidence", action="store_true", help="Check local, ignored screenshot files against recorded SHA-256 values")
     args = parser.parse_args()
     try:
         windows, errors = validate_review(read_json(args.reviews))
         if errors:
             raise ValueError("\n".join(errors))
+        if args.verify_evidence:
+            evidence_errors = verify_local_evidence(windows)
+            if evidence_errors:
+                raise ValueError("\n".join(evidence_errors))
         warnings: list[str] = []
         if args.base_ref:
             changed = changed_modules(args.base_ref, args.catalog)

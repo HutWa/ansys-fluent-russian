@@ -71,6 +71,8 @@ def readiness_issues(
             )
         elif window.get("status") in {"unverified", "needs_recheck"}:
             issues.append(f"{identifier} still has visual-QA status {window['status']}.")
+        elif window.get("beta_blocker") is True:
+            issues.append(f"{identifier} has a critical visual-QA defect recorded for {package}.")
     return issues
 
 

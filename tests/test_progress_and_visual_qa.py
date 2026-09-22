@@ -3,7 +3,7 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-from scripts.check_visual_review import render_summary, validate_review
+from scripts.check_visual_review import render_summary, validate_review, verify_local_evidence
 from scripts.report_progress import metrics, module_rows, render_markdown
 from scripts.apply_translation_batch import object_bounds
 from scripts.check_beta_readiness import readiness_issues
@@ -43,6 +43,9 @@ class ProgressReportTests(unittest.TestCase):
 
 
 class VisualQaTests(unittest.TestCase):
+    def test_local_evidence_is_optional(self) -> None:
+        self.assertEqual(verify_local_evidence([{"id": "old"}]), [])
+
     def test_valid_review_and_summary(self) -> None:
         windows, errors = validate_review(
             {
@@ -84,6 +87,14 @@ class VisualQaTests(unittest.TestCase):
         )
         self.assertTrue(errors)
 
+    def test_beta_blocker_requires_partial_issue(self) -> None:
+        _, errors = validate_review({"format_version": 1, "windows": [{
+            "id": "bad", "window": "Bad", "modules": ["Module"], "status": "verified",
+            "last_checked": "2026-09-22", "package": "current", "scope": "dialog",
+            "beta_blocker": True, "issues": [],
+        }]})
+        self.assertTrue(any("beta_blocker requires partial status" in error for error in errors))
+
 
 class TranslationBatchTests(unittest.TestCase):
     def test_object_bounds_accepts_compact_and_indented_entries(self) -> None:
@@ -108,6 +119,13 @@ class BetaReadinessTests(unittest.TestCase):
         current = {"not_catalogued": 0, "needs_context": 0, "needs_review": 0}
         windows = [{"id": "one", "package": "current", "status": "partial"}]
         self.assertEqual(readiness_issues(current, windows, "current", ("one",)), [])
+
+    def test_rejects_critical_defect_even_when_window_was_reviewed(self) -> None:
+        current = {"not_catalogued": 0, "needs_context": 0, "needs_review": 0}
+        windows = [{"id": "one", "package": "current", "status": "partial", "beta_blocker": True,
+                    "issues": ["Internal path is visible."]}]
+        self.assertEqual(readiness_issues(current, windows, "current", ("one",)),
+                         ["one has a critical visual-QA defect recorded for current."])
 
 
 class VisualCaptureTests(unittest.TestCase):
