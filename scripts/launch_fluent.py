@@ -52,6 +52,10 @@ def main() -> int:
         help="Локальный каталог для автоматических кадров visual QA; запускает наблюдатель окна Fluent",
     )
     parser.add_argument(
+        "--capture-title-contains", default="Fluent@Home",
+        help="Фрагмент заголовка окна, которое сохраняет наблюдатель visual QA (по умолчанию только готовый Fluent@Home)",
+    )
+    parser.add_argument(
         "--journal", type=Path,
         help="Fluent journal для воспроизводимой навигации; добавляется как аргумент -i",
     )
@@ -86,6 +90,7 @@ def main() -> int:
         capture_output.mkdir(parents=True, exist_ok=True)
         capture_command = [
             sys.executable, str(capture_script), "--watch", "--exit-when-closed",
+            "--title-contains", args.capture_title_contains,
             "--output-dir", str(capture_output),
         ]
         watcher_log = capture_output / "watcher.log"
