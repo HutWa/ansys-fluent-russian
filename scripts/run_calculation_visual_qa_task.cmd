@@ -1,0 +1,15 @@
+@echo off
+setlocal
+set "QA_ROOT=%~dp0.."
+set "QA_OUTPUT=%QA_ROOT%\build\visual-qa-run-calculation"
+pushd "%QA_ROOT%"
+if not exist "%QA_OUTPUT%" mkdir "%QA_OUTPUT%"
+echo [%date% %time%] Opening only the Run Calculation task page through UIA. > "%QA_OUTPUT%\task-run.log"
+"D:\Python312\python.exe" "%QA_ROOT%\scripts\navigate_fluent_uia.py" --target run-calculation --trace-file "%QA_OUTPUT%\navigation-trace.json" >> "%QA_OUTPUT%\task-run.log" 2>&1
+echo [%date% %time%] Navigation exit code: %ERRORLEVEL% >> "%QA_OUTPUT%\task-run.log"
+if not errorlevel 1 (
+  "D:\Python312\python.exe" "%QA_ROOT%\scripts\capture_fluent_window.py" --title-contains "Fluent@Home" --output-dir "%QA_OUTPUT%" >> "%QA_OUTPUT%\task-run.log" 2>&1
+  echo [%date% %time%] Capture exit code: %ERRORLEVEL% >> "%QA_OUTPUT%\task-run.log"
+)
+popd
+endlocal

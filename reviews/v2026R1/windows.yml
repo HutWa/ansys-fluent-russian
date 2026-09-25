@@ -434,16 +434,16 @@
         "TaskPage_RunCalculation"
       ],
       "status": "partial",
-      "last_checked": "2026-09-22",
-      "package": "beta-1-27104-qa-fix-20260922",
-      "scope": "isolated-bioreactor-copy; task page only; calculation not started",
+      "last_checked": "2026-09-25",
+      "package": "beta-1-27104-tree-qa-20260924",
+      "scope": "isolated-bioreactor-copy; task page only; calculation not started; interactive scheduled task selected the UIA item Запуск расчёта",
       "beta_blocker": true,
       "evidence": {
-        "path": "build/visual-qa-20260922-qa-fix/run-calculation.jpg",
-        "sha256": "78b3965258b776af1f98ba3b705c6840c4f1178ec2fcca9fa5343dfce0171752"
+        "path": "build/visual-qa-run-calculation/20260925T165220Z-bioreactor_2026R1_test_setup-Parallel-Fluent-Home-3d-pbns-sstkw-single-p-ee08452c903a.png",
+        "sha256": "ee08452c903aee38476a00d124b03cd208b5d295d28de56fe6da07c3e1fa59f6"
       },
       "issues": [
-        "Automatic, Conservative and Current Session remain English as visible user choices."
+        "Automatic, Conservative and Current Session remain English as visible user choices on the current package."
       ]
     },
     {

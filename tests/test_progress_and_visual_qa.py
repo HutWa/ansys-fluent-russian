@@ -153,6 +153,7 @@ class VisualCaptureTests(unittest.TestCase):
         self.assertIn("Codex Fluent QA Solution Methods", installer)
         self.assertIn("Codex Fluent QA Solution Controls", installer)
         self.assertIn("Codex Fluent QA Solution Initialization", installer)
+        self.assertIn("Codex Fluent QA Run Calculation", installer)
         capture = (ROOT / "scripts" / "capture_current_fluent_task.cmd").read_text(encoding="utf-8")
         self.assertIn('--title-contains "Fluent@Home"', capture)
         self.assertNotIn("navigate_", capture)
@@ -167,6 +168,8 @@ class VisualCaptureTests(unittest.TestCase):
         self.assertIn("--target solution-controls", controls)
         initialization = (ROOT / "scripts" / "run_solution_initialization_visual_qa_task.cmd").read_text(encoding="utf-8")
         self.assertIn("--target solution-initialization", initialization)
+        calculation = (ROOT / "scripts" / "run_calculation_visual_qa_task.cmd").read_text(encoding="utf-8")
+        self.assertIn("--target run-calculation", calculation)
 
     def test_uia_navigation_has_only_whitelisted_task_pages(self) -> None:
         self.assertEqual(SAFE_TARGETS, {
