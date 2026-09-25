@@ -3,6 +3,7 @@ from __future__ import annotations
 import unittest
 from datetime import datetime, timezone
 from pathlib import Path
+from unittest import mock
 
 from scripts.check_visual_review import render_summary, validate_review, verify_local_evidence
 from scripts.report_progress import metrics, module_rows, render_markdown
@@ -13,7 +14,7 @@ from scripts.launch_fluent import fluent_command
 from scripts.check_visual_journal import unsafe_lines
 from scripts.navigate_fluent_visual_qa import FILE_RIBBON_STEPS, HOME_STEPS, MATERIALS_TREE_STEPS, MODELS_EXPAND_STEPS, MULTIPHASE_DIALOG_STEPS, MULTIPHASE_TREE_STEPS, PHYSICS_RIBBON_STEPS, RECT, SOLUTION_CONTROLS_STEPS, SOLUTION_INITIALIZATION_STEPS, SOLUTION_METHODS_STEPS, VK_DOWN, VK_RETURN, VK_RIGHT, route_steps, select_home_window
 from scripts.launch_readonly_case import read_only_journal
-from scripts.wait_for_fluent_exit import run_directory
+from scripts.wait_for_fluent_exit import fluent_processes_present, run_directory
 from scripts.navigate_fluent_uia import SAFE_TARGETS
 
 
@@ -193,6 +194,13 @@ class VisualCaptureTests(unittest.TestCase):
             run_directory(Path("build") / "visual-qa", instant),
             Path("build/visual-qa/rerun-20260925T123456Z"),
         )
+
+    def test_queued_rerun_checks_for_existing_fluent_processes(self) -> None:
+        with mock.patch("scripts.wait_for_fluent_exit.subprocess.run") as run:
+            run.return_value.stdout = '"fluent.exe","1234","Console","1","42 K"\n'
+            self.assertTrue(fluent_processes_present())
+            run.return_value.stdout = "INFO: No tasks are running which match the specified criteria.\n"
+            self.assertFalse(fluent_processes_present())
 
 
 if __name__ == "__main__":

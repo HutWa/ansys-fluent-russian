@@ -2,41 +2,629 @@
   "format_version": 1,
   "fluent_version": "2026 R1",
   "windows": [
-    {"id": "general", "window": "General", "modules": ["TaskPage_General"], "status": "partial", "last_checked": "2026-09-22", "package": "beta-1-27104-qa-fix-20260922", "scope": "isolated-bioreactor-copy; visible task page", "evidence": {"path": "build/visual-qa-20260922-qa-fix/general.jpg", "sha256": "4a3b31f0f64ebf9b0ca418aa73f345f3eeb3f2dda88c8b17d467fbb8b51b2493"}, "issues": ["General task-page labels are Russian; the dynamically generated User Window 1 title remains English."]},
-    {"id": "viscous-model", "window": "Viscous Model", "modules": ["ViscousModel"], "status": "needs_recheck", "last_checked": "2026-09-10", "package": "release-5009", "scope": "mesh_only", "issues": ["Historical observation has no retained local capture and does not verify the current package."]},
-    {"id": "cell-zone-conditions", "window": "Cell Zone Conditions", "modules": ["TaskPage_CellZoneConditions", "Fluid"], "status": "partial", "last_checked": "2026-09-24", "package": "beta-1-27104-qa-fix-20260922", "scope": "isolated-bioreactor-copy; task page only", "evidence": {"path": "build/visual-qa-20260924-tier1/cell-zone-conditions.png", "sha256": "66cc3727de21a6c107625b09ecb18405b06fb2f3ea09fdca3f67b7fa34976f9a"}, "issues": ["Visible task-page labels and commands are Russian.", "Fluid zones fluid_mrf and fluid_tank are user-defined names and were preserved; per-zone editor dialogs were not opened."]},
-    {"id": "boundary-conditions", "window": "Boundary Conditions", "modules": ["TaskPage_BoundaryConditions", "Wall", "VelocityInlet", "PressureInlet", "Mass-FlowInlet"], "status": "partial", "last_checked": "2026-09-22", "package": "beta-1-27104-qa-fix-20260922", "scope": "isolated-bioreactor-copy; task page only", "evidence": {"path": "build/visual-qa-20260922-qa-fix/boundary-conditions.jpg", "sha256": "2f914685dbff53cd15ddefd16ac9f2029d2debacbc688e4a00e9e57d3515aa42"}, "issues": ["Previously visible full context paths are now short Russian labels; Wall and inlet dialogs were not opened in this pass.", "User-defined zone names were left unchanged."]},
-    {"id": "mesh-interfaces", "window": "Mesh Interfaces", "modules": ["Create_EditMeshInterfaces", "EditMeshInterfaces", "MeshInterfaces"], "status": "partial", "last_checked": "2026-09-22", "package": "beta-1-27104-qa-fix-20260922", "scope": "isolated-bioreactor-copy; interface manager", "beta_blocker": true, "evidence": {"path": "build/visual-qa-20260922-qa-fix/mesh-interfaces.jpg", "sha256": "bc8979163681c434f71c1f06c3a617ee7aee3ad0d224fb5acac856c01f5e7cd7"}, "issues": ["The system category headings Fluid and Wall remain English, while the manager title and commands are Russian.", "No interface was created or edited."]},
-    {"id": "dynamic-mesh", "window": "Dynamic Mesh", "modules": ["TaskPage_DynamicMesh", "DynamicMeshZones", "DynamicMeshEvents"], "status": "partial", "last_checked": "2026-09-22", "package": "beta-1-27104-qa-fix-20260922", "scope": "isolated-bioreactor-copy; task page with model off", "beta_blocker": true, "evidence": {"path": "build/visual-qa-20260922-qa-fix/dynamic-mesh.jpg", "sha256": "455a19e63204cfedf17ef558bbf3e3a56bf8062211d6da1cef918b9169e546bf"}, "issues": ["Full internal context paths are replaced by short Russian labels, but the user-facing In-Cylinder option remains English.", "Model was not enabled; subordinate dialogs were not opened."]},
-    {"id": "motion-definitions", "window": "Motion Definitions", "modules": ["ZoneMotion"], "status": "needs_recheck", "last_checked": "2026-09-07", "package": "release-5009", "scope": "mesh_only", "issues": ["Historical observation has no retained local capture and does not verify the current package."]},
-    {"id": "reference-frame", "window": "Reference Frame", "modules": ["ReferenceFrame"], "status": "needs_recheck", "last_checked": "2026-09-07", "package": "release-5009", "scope": "mesh_only", "issues": ["Historical observation has no retained local capture and does not verify the current package."]},
-    {"id": "curvilinear-coordinate-system", "window": "Curvilinear Coordinate System", "modules": ["CurvilinearCoordinateSystem"], "status": "needs_recheck", "last_checked": "2026-09-07", "package": "release-5009", "scope": "mesh_only", "issues": ["Historical observation has no retained local capture and does not verify the current package."]},
-    {"id": "graphics", "window": "Graphics and Animations", "modules": ["TaskPage_GraphicsandAnimations", "Contours", "Vectors", "Pathlines", "ParticleTracks", "SweepSurface"], "status": "partial", "last_checked": "2026-09-22", "package": "beta-1-27104-qa-fix-20260922", "scope": "isolated-bioreactor-copy; task page", "beta_blocker": true, "evidence": {"path": "build/visual-qa-20260922-qa-fix/graphics.jpg", "sha256": "f330119166b60f03fca98e5fac29f754ddc6fb5801a327b57a3b3b68ae052cb1"}, "issues": ["Task-page headings and buttons are Russian, but graphics and animation list entries and Unavailable remain English."]},
-    {"id": "surfaces", "window": "Surfaces", "modules": ["Surfaces", "PointSurface", "Iso-Surface"], "status": "partial", "last_checked": "2026-09-22", "package": "beta-1-27104-qa-fix-20260922", "scope": "isolated-bioreactor-copy; surface manager", "beta_blocker": true, "evidence": {"path": "build/visual-qa-20260922-qa-fix/surfaces.jpg", "sha256": "626d2cc35e62868f23c3b606811e5c5ff55e0663df9d021c1a5f195a10b3921a"}, "issues": ["0D/1D/2D elements, grouping commands and surface-type label are corrected, but the system categories Fluid, Internal, Iso-surface and Rendering Priority / Medium remain English.", "User-defined surface and zone names were preserved."]},
-    {"id": "solution-methods", "window": "Solution Methods", "modules": ["TaskPage_SolutionMethods"], "status": "verified", "last_checked": "2026-09-22", "package": "beta-1-27104-qa-fix-20260922", "scope": "isolated-bioreactor-copy; visible task page", "evidence": {"path": "build/visual-qa-20260922-qa-fix/solution-methods.jpg", "sha256": "360bb4d648d0ef2e2465671f1b6490c070b6670b095ecd3dedf98ca664791bb0"}, "issues": []},
-    {"id": "solution-controls", "window": "Solution Controls", "modules": ["TaskPage_SolutionControls"], "status": "verified", "last_checked": "2026-09-22", "package": "beta-1-27104-qa-fix-20260922", "scope": "isolated-bioreactor-copy; visible task page", "evidence": {"path": "build/visual-qa-20260922-qa-fix/solution-controls.jpg", "sha256": "c8e49c9cb5b343db1917eb4427fd63339b121dbc2a67c1018012c3dcf57d9000"}, "issues": []},
-    {"id": "solution-initialization", "window": "Solution Initialization", "modules": ["TaskPage_SolutionInitialization", "HybridInitialization"], "status": "verified", "last_checked": "2026-09-22", "package": "beta-1-27104-qa-fix-20260922", "scope": "isolated-bioreactor-copy; visible task page", "evidence": {"path": "build/visual-qa-20260922-qa-fix/solution-initialization.jpg", "sha256": "190d495a95601282e6d5fc2ae1b0e32ec2b6a1b1b9db7858189455aeeaf12815"}, "issues": []},
-    {"id": "mesh-display", "window": "Mesh Display", "modules": ["DisplayGrid", "MeshDisplay", "GridColors"], "status": "needs_recheck", "last_checked": "2026-09-05", "package": "release-3009", "scope": "mesh_only", "issues": ["Not reopened after release-5009 installation."]},
-    {"id": "main-ribbon", "window": "Main Fluent Ribbon", "modules": ["fluent", "tree", "tree_FM", "label_only"], "status": "needs_recheck", "last_checked": "2026-09-24", "package": "beta-1-27104-qa-fix-20260922", "scope": "historical isolated-bioreactor-copy capture; main ribbon and visible navigation tree", "evidence": {"path": "build/visual-qa-20260922-qa-fix/main-ribbon.jpg", "sha256": "4a3b31f0f64ebf9b0ca418aa73f345f3eeb3f2dda88c8b17d467fbb8b51b2493"}, "issues": ["The tree-label corrections staged on 2026-09-24 require a rebuild, installation, and fresh capture before this frame can be accepted.", "User Window 1 is generated dynamically and remains English."]},
-    {"id": "physics-ribbon", "window": "Physics ribbon", "modules": ["fluent", "label_only"], "status": "partial", "last_checked": "2026-09-22", "package": "beta-1-27104-qa-fix-20260922", "scope": "isolated-bioreactor-copy; same full-ribbon frame as main-ribbon", "evidence": {"path": "build/visual-qa-20260922-qa-fix/main-ribbon.jpg", "sha256": "4a3b31f0f64ebf9b0ca418aa73f345f3eeb3f2dda88c8b17d467fbb8b51b2493"}, "issues": ["Visible Physics ribbon commands are Russian.", "User Window 1 is generated dynamically and remains English."]},
-    {"id": "models-tree", "window": "Models navigation tree", "modules": ["tree", "tree_FM", "label_only"], "status": "needs_recheck", "last_checked": "2026-09-24", "package": "beta-1-27104-qa-fix-20260922", "scope": "historical isolated-bioreactor-copy capture; expanded visible model tree", "evidence": {"path": "build/visual-qa-20260924-tier1/models-tree.png", "sha256": "f419dddaea8466e4bcef3bd557eccc5d77c7ffd05acfdc14aa385f5f321f87df"}, "issues": ["Corrections for the visible mixed model labels are staged and must be rebuilt, installed, and captured again before this frame can be accepted.", "The expanded tree is only the currently visible state; model dialogs and disabled subpages were not opened."]},
-    {"id": "multiphase-model", "window": "Multiphase Model", "modules": ["MultiphaseModel"], "status": "partial", "last_checked": "2026-09-22", "package": "beta-1-27104-qa-fix-20260922", "scope": "isolated-bioreactor-copy; model off", "evidence": {"path": "build/visual-qa-20260922-qa-fix/multiphase-model.jpg", "sha256": "fbfc0c894cf0997a455822602bd7678fe3f2a468812f535fc5082bb6dc3dcfd9"}, "issues": ["The visible Eulerian option now reads «Эйлерова модель» without the internal path.", "Disabled tabs and interface-modelling alternatives were not inspected; the model was not enabled."]},
-    {"id": "species-model", "window": "Species Model", "modules": ["SpeciesModel"], "status": "needs_recheck", "last_checked": "2026-09-10", "package": "release-5009", "scope": "mesh_only", "issues": ["Historical observation has no retained local capture and does not verify the current package."]},
-    {"id": "injection-properties", "window": "Set Injection Properties", "modules": ["SetInjectionProperties", "DiscretePhaseModel"], "status": "unverified", "issues": ["Opening the dialog would require enabling discrete phase modeling."]},
-    {"id": "materials", "window": "Materials", "modules": ["TaskPage_Materials", "Create_EditMaterials"], "status": "partial", "last_checked": "2026-09-22", "package": "beta-1-27104-qa-fix-20260922", "scope": "isolated-bioreactor-copy; materials task page", "beta_blocker": true, "evidence": {"path": "build/visual-qa-20260922-qa-fix/materials.jpg", "sha256": "07d07b360dc713c6c52425465c3922aa66ccaff132a07e1fa65d171aadca0032"}, "issues": ["Task-page headings are Russian, but system list categories Fluid and Solid remain English; air and aluminum are case material names.", "Create/Edit Materials dialog was not opened in this pass."]},
-    {"id": "energy-model", "window": "Energy", "modules": ["Energy"], "status": "verified", "last_checked": "2026-09-22", "package": "beta-1-27104-qa-fix-20260922", "scope": "isolated-bioreactor-copy; visible off-state dialog", "evidence": {"path": "build/visual-qa-20260922-qa-fix/energy-model.jpg", "sha256": "a443e424e050f4e9deb8f76a1c70af039be20e4a7139e8f06cfe63ae80d6fc1d"}, "issues": []},
-    {"id": "reference-values", "window": "Reference Values", "modules": ["TaskPage_ReferenceValues"], "status": "needs_recheck", "last_checked": "2026-09-10", "package": "release-5009", "scope": "mesh_only", "issues": ["Historical observation has no retained local capture and does not verify the current package."]},
-    {"id": "run-calculation", "window": "Run Calculation", "modules": ["TaskPage_RunCalculation"], "status": "partial", "last_checked": "2026-09-22", "package": "beta-1-27104-qa-fix-20260922", "scope": "isolated-bioreactor-copy; task page only; calculation not started", "beta_blocker": true, "evidence": {"path": "build/visual-qa-20260922-qa-fix/run-calculation.jpg", "sha256": "78b3965258b776af1f98ba3b705c6840c4f1178ec2fcca9fa5343dfce0171752"}, "issues": ["Automatic, Conservative and Current Session remain English as visible user choices."]},
-    {"id": "monitors", "window": "Monitors", "modules": ["TaskPage_Monitors"], "status": "needs_recheck", "last_checked": "2026-09-10", "package": "release-5009", "scope": "mesh_only", "issues": ["Historical observation has no retained local capture and does not verify the current package."]},
-    {"id": "report-definitions", "window": "Report Definitions", "modules": ["ReportDefinitions"], "status": "needs_recheck", "last_checked": "2026-09-10", "package": "release-5009", "scope": "mesh_only", "issues": ["Historical observation has no retained local capture and does not verify the current package."]},
-    {"id": "reports", "window": "Reports", "modules": ["TaskPage_Reports"], "status": "partial", "last_checked": "2026-09-22", "package": "beta-1-27104-qa-fix-20260922", "scope": "isolated-bioreactor-copy; task page", "beta_blocker": true, "evidence": {"path": "build/visual-qa-20260922-qa-fix/reports.jpg", "sha256": "a7feb176cfdce9a07d205e1067b62cf0f91cb9ad73146002fa7a7b4d712e0717"}, "issues": ["Page heading and buttons are Russian, but report type names and Unavailable remain English."]},
-    {"id": "plots", "window": "Plots", "modules": ["TaskPage_Plots"], "status": "partial", "last_checked": "2026-09-22", "package": "beta-1-27104-qa-fix-20260922", "scope": "isolated-bioreactor-copy; task page", "beta_blocker": true, "evidence": {"path": "build/visual-qa-20260922-qa-fix/plots.jpg", "sha256": "5a2ef61583f50de69f92996beb4ade26fc7b9d0e64d628dee2b684740863e7f7"}, "issues": ["Page heading and button are Russian, but XY Plot, Histogram, Data Sources, Profiles, FFT and Unavailable remain English."]},
-    {"id": "expression-manager", "window": "Expression Manager", "modules": ["ExpressionManager"], "status": "needs_recheck", "last_checked": "2026-09-10", "package": "release-5009", "scope": "mesh_only", "issues": ["Historical observation has no retained local capture and does not verify the current package."]},
-    {"id": "cell-registers", "window": "Manage Cell Registers", "modules": ["ManageCellRegisters"], "status": "needs_recheck", "last_checked": "2026-09-10", "package": "release-5009", "scope": "mesh_only", "issues": ["Historical observation has no retained local capture and does not verify the current package."]},
-    {"id": "adaptation-criteria", "window": "Manage Adaption Criteria", "modules": ["ManageAdaptionCriteria"], "status": "needs_recheck", "last_checked": "2026-09-10", "package": "release-5009", "scope": "mesh_only", "issues": ["Historical observation has no retained local capture and does not verify the current package."]},
-    {"id": "calculation-activities", "window": "Calculation Activities", "modules": ["TaskPage_CalculationActivities"], "status": "needs_recheck", "last_checked": "2026-09-10", "package": "release-5009", "scope": "mesh_only", "issues": ["Historical observation has no retained local capture and does not verify the current package."]},
-    {"id": "display-states", "window": "Display States", "modules": ["DisplayStates"], "status": "needs_recheck", "last_checked": "2026-09-10", "package": "release-27104-full", "scope": "installed_not_opened", "issues": ["Added grid-plane, lighting, reflection, and anti-aliasing labels. They are installed in release-27104-full; visual check is pending."]},
-    {"id": "auxiliary-geometry-definitions", "window": "Manage Auxiliary Geometry Definitions", "modules": ["tree", "label_only"], "status": "needs_recheck", "last_checked": "2026-09-24", "package": "beta-1-27104-qa-fix-20260922", "scope": "historical isolated-bioreactor-copy capture; empty manager dialog", "evidence": {"path": "build/visual-qa-20260922-qa-fix/auxiliary-geometry-definitions.jpg", "sha256": "04d4eeac2f70bc4c6aaa0471a3bd15753ccf8e1355e29cad5d8d45d79291c615"}, "issues": ["The navigation-label correction requires rebuild and fresh visual confirmation; the manager title and list heading still need translation work.", "No auxiliary geometry was created or edited."]},
-    {"id": "specialized-panels", "window": "Specialized physics, mesh, and post-processing panels", "modules": ["AdvancedHolePatching", "Pressure-DependentReaction", "OperatingConditions", "CHEMKINMechanismImport", "ImportCADGeometry", "FourierTransform", "PopulationBalanceModel", "TurboTopology"], "status": "needs_recheck", "last_checked": "2026-09-10", "package": "release-27104-full", "scope": "installed_not_opened", "issues": ["All eligible remaining labels were translated or classified as technical. They are installed in release-27104-full; visual checks are pending."]}
+    {
+      "id": "general",
+      "window": "General",
+      "modules": [
+        "TaskPage_General"
+      ],
+      "status": "verified",
+      "last_checked": "2026-09-25",
+      "package": "beta-1-27104-tree-qa-20260924",
+      "scope": "isolated-bioreactor-copy; fresh post-install General page",
+      "evidence": {
+        "path": "build/visual-qa-20260925-rerun/20260925T161302Z-bioreactor_2026R1_test_setup-Parallel-Fluent-Home-3d-pbns-sstkw-single-p-c60d6160f162.png",
+        "sha256": "c60d6160f1625e11004c91d2c92f2ddc30af0395f5f5e3a4539abb0ba1fd1c14"
+      },
+      "issues": []
+    },
+    {
+      "id": "viscous-model",
+      "window": "Viscous Model",
+      "modules": [
+        "ViscousModel"
+      ],
+      "status": "needs_recheck",
+      "last_checked": "2026-09-10",
+      "package": "release-5009",
+      "scope": "mesh_only",
+      "issues": [
+        "Historical observation has no retained local capture and does not verify the current package."
+      ]
+    },
+    {
+      "id": "cell-zone-conditions",
+      "window": "Cell Zone Conditions",
+      "modules": [
+        "TaskPage_CellZoneConditions",
+        "Fluid"
+      ],
+      "status": "partial",
+      "last_checked": "2026-09-24",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "isolated-bioreactor-copy; task page only",
+      "evidence": {
+        "path": "build/visual-qa-20260924-tier1/cell-zone-conditions.png",
+        "sha256": "66cc3727de21a6c107625b09ecb18405b06fb2f3ea09fdca3f67b7fa34976f9a"
+      },
+      "issues": [
+        "Visible task-page labels and commands are Russian.",
+        "Fluid zones fluid_mrf and fluid_tank are user-defined names and were preserved; per-zone editor dialogs were not opened."
+      ]
+    },
+    {
+      "id": "boundary-conditions",
+      "window": "Boundary Conditions",
+      "modules": [
+        "TaskPage_BoundaryConditions",
+        "Wall",
+        "VelocityInlet",
+        "PressureInlet",
+        "Mass-FlowInlet"
+      ],
+      "status": "partial",
+      "last_checked": "2026-09-22",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "isolated-bioreactor-copy; task page only",
+      "evidence": {
+        "path": "build/visual-qa-20260922-qa-fix/boundary-conditions.jpg",
+        "sha256": "2f914685dbff53cd15ddefd16ac9f2029d2debacbc688e4a00e9e57d3515aa42"
+      },
+      "issues": [
+        "Previously visible full context paths are now short Russian labels; Wall and inlet dialogs were not opened in this pass.",
+        "User-defined zone names were left unchanged."
+      ]
+    },
+    {
+      "id": "mesh-interfaces",
+      "window": "Mesh Interfaces",
+      "modules": [
+        "Create_EditMeshInterfaces",
+        "EditMeshInterfaces",
+        "MeshInterfaces"
+      ],
+      "status": "partial",
+      "last_checked": "2026-09-22",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "isolated-bioreactor-copy; interface manager",
+      "beta_blocker": true,
+      "evidence": {
+        "path": "build/visual-qa-20260922-qa-fix/mesh-interfaces.jpg",
+        "sha256": "bc8979163681c434f71c1f06c3a617ee7aee3ad0d224fb5acac856c01f5e7cd7"
+      },
+      "issues": [
+        "The system category headings Fluid and Wall remain English, while the manager title and commands are Russian.",
+        "No interface was created or edited."
+      ]
+    },
+    {
+      "id": "dynamic-mesh",
+      "window": "Dynamic Mesh",
+      "modules": [
+        "TaskPage_DynamicMesh",
+        "DynamicMeshZones",
+        "DynamicMeshEvents"
+      ],
+      "status": "partial",
+      "last_checked": "2026-09-22",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "isolated-bioreactor-copy; task page with model off",
+      "beta_blocker": true,
+      "evidence": {
+        "path": "build/visual-qa-20260922-qa-fix/dynamic-mesh.jpg",
+        "sha256": "455a19e63204cfedf17ef558bbf3e3a56bf8062211d6da1cef918b9169e546bf"
+      },
+      "issues": [
+        "Full internal context paths are replaced by short Russian labels, but the user-facing In-Cylinder option remains English.",
+        "Model was not enabled; subordinate dialogs were not opened."
+      ]
+    },
+    {
+      "id": "motion-definitions",
+      "window": "Motion Definitions",
+      "modules": [
+        "ZoneMotion"
+      ],
+      "status": "needs_recheck",
+      "last_checked": "2026-09-07",
+      "package": "release-5009",
+      "scope": "mesh_only",
+      "issues": [
+        "Historical observation has no retained local capture and does not verify the current package."
+      ]
+    },
+    {
+      "id": "reference-frame",
+      "window": "Reference Frame",
+      "modules": [
+        "ReferenceFrame"
+      ],
+      "status": "needs_recheck",
+      "last_checked": "2026-09-07",
+      "package": "release-5009",
+      "scope": "mesh_only",
+      "issues": [
+        "Historical observation has no retained local capture and does not verify the current package."
+      ]
+    },
+    {
+      "id": "curvilinear-coordinate-system",
+      "window": "Curvilinear Coordinate System",
+      "modules": [
+        "CurvilinearCoordinateSystem"
+      ],
+      "status": "needs_recheck",
+      "last_checked": "2026-09-07",
+      "package": "release-5009",
+      "scope": "mesh_only",
+      "issues": [
+        "Historical observation has no retained local capture and does not verify the current package."
+      ]
+    },
+    {
+      "id": "graphics",
+      "window": "Graphics and Animations",
+      "modules": [
+        "TaskPage_GraphicsandAnimations",
+        "Contours",
+        "Vectors",
+        "Pathlines",
+        "ParticleTracks",
+        "SweepSurface"
+      ],
+      "status": "partial",
+      "last_checked": "2026-09-22",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "isolated-bioreactor-copy; task page",
+      "beta_blocker": true,
+      "evidence": {
+        "path": "build/visual-qa-20260922-qa-fix/graphics.jpg",
+        "sha256": "f330119166b60f03fca98e5fac29f754ddc6fb5801a327b57a3b3b68ae052cb1"
+      },
+      "issues": [
+        "Task-page headings and buttons are Russian, but graphics and animation list entries and Unavailable remain English."
+      ]
+    },
+    {
+      "id": "surfaces",
+      "window": "Surfaces",
+      "modules": [
+        "Surfaces",
+        "PointSurface",
+        "Iso-Surface"
+      ],
+      "status": "partial",
+      "last_checked": "2026-09-22",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "isolated-bioreactor-copy; surface manager",
+      "beta_blocker": true,
+      "evidence": {
+        "path": "build/visual-qa-20260922-qa-fix/surfaces.jpg",
+        "sha256": "626d2cc35e62868f23c3b606811e5c5ff55e0663df9d021c1a5f195a10b3921a"
+      },
+      "issues": [
+        "0D/1D/2D elements, grouping commands and surface-type label are corrected, but the system categories Fluid, Internal, Iso-surface and Rendering Priority / Medium remain English.",
+        "User-defined surface and zone names were preserved."
+      ]
+    },
+    {
+      "id": "solution-methods",
+      "window": "Solution Methods",
+      "modules": [
+        "TaskPage_SolutionMethods"
+      ],
+      "status": "verified",
+      "last_checked": "2026-09-22",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "isolated-bioreactor-copy; visible task page",
+      "evidence": {
+        "path": "build/visual-qa-20260922-qa-fix/solution-methods.jpg",
+        "sha256": "360bb4d648d0ef2e2465671f1b6490c070b6670b095ecd3dedf98ca664791bb0"
+      },
+      "issues": []
+    },
+    {
+      "id": "solution-controls",
+      "window": "Solution Controls",
+      "modules": [
+        "TaskPage_SolutionControls"
+      ],
+      "status": "verified",
+      "last_checked": "2026-09-22",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "isolated-bioreactor-copy; visible task page",
+      "evidence": {
+        "path": "build/visual-qa-20260922-qa-fix/solution-controls.jpg",
+        "sha256": "c8e49c9cb5b343db1917eb4427fd63339b121dbc2a67c1018012c3dcf57d9000"
+      },
+      "issues": []
+    },
+    {
+      "id": "solution-initialization",
+      "window": "Solution Initialization",
+      "modules": [
+        "TaskPage_SolutionInitialization",
+        "HybridInitialization"
+      ],
+      "status": "verified",
+      "last_checked": "2026-09-22",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "isolated-bioreactor-copy; visible task page",
+      "evidence": {
+        "path": "build/visual-qa-20260922-qa-fix/solution-initialization.jpg",
+        "sha256": "190d495a95601282e6d5fc2ae1b0e32ec2b6a1b1b9db7858189455aeeaf12815"
+      },
+      "issues": []
+    },
+    {
+      "id": "mesh-display",
+      "window": "Mesh Display",
+      "modules": [
+        "DisplayGrid",
+        "MeshDisplay",
+        "GridColors"
+      ],
+      "status": "needs_recheck",
+      "last_checked": "2026-09-05",
+      "package": "release-3009",
+      "scope": "mesh_only",
+      "issues": [
+        "Not reopened after release-5009 installation."
+      ]
+    },
+    {
+      "id": "main-ribbon",
+      "window": "Main Fluent Ribbon",
+      "modules": [
+        "fluent",
+        "tree",
+        "tree_FM",
+        "label_only"
+      ],
+      "status": "partial",
+      "last_checked": "2026-09-25",
+      "package": "beta-1-27104-tree-qa-20260924",
+      "scope": "isolated-bioreactor-copy; fresh post-install ribbon and navigation tree",
+      "evidence": {
+        "path": "build/visual-qa-20260925-rerun/20260925T161302Z-bioreactor_2026R1_test_setup-Parallel-Fluent-Home-3d-pbns-sstkw-single-p-c60d6160f162.png",
+        "sha256": "c60d6160f1625e11004c91d2c92f2ddc30af0395f5f5e3a4539abb0ba1fd1c14"
+      },
+      "issues": [
+        "Visible ribbon and navigation labels are Russian after restart; the generated display-window title remains Mesh and is not a static ribbon label."
+      ]
+    },
+    {
+      "id": "physics-ribbon",
+      "window": "Physics ribbon",
+      "modules": [
+        "fluent",
+        "label_only"
+      ],
+      "status": "partial",
+      "last_checked": "2026-09-22",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "isolated-bioreactor-copy; same full-ribbon frame as main-ribbon",
+      "evidence": {
+        "path": "build/visual-qa-20260922-qa-fix/main-ribbon.jpg",
+        "sha256": "4a3b31f0f64ebf9b0ca418aa73f345f3eeb3f2dda88c8b17d467fbb8b51b2493"
+      },
+      "issues": [
+        "Visible Physics ribbon commands are Russian.",
+        "User Window 1 is generated dynamically and remains English."
+      ]
+    },
+    {
+      "id": "models-tree",
+      "window": "Models navigation tree",
+      "modules": [
+        "tree",
+        "tree_FM",
+        "label_only"
+      ],
+      "status": "needs_recheck",
+      "last_checked": "2026-09-24",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "historical isolated-bioreactor-copy capture; expanded visible model tree",
+      "evidence": {
+        "path": "build/visual-qa-20260924-tier1/models-tree.png",
+        "sha256": "f419dddaea8466e4bcef3bd557eccc5d77c7ffd05acfdc14aa385f5f321f87df"
+      },
+      "issues": [
+        "Corrections for the visible mixed model labels are staged and must be rebuilt, installed, and captured again before this frame can be accepted.",
+        "The expanded tree is only the currently visible state; model dialogs and disabled subpages were not opened."
+      ]
+    },
+    {
+      "id": "multiphase-model",
+      "window": "Multiphase Model",
+      "modules": [
+        "MultiphaseModel"
+      ],
+      "status": "partial",
+      "last_checked": "2026-09-22",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "isolated-bioreactor-copy; model off",
+      "evidence": {
+        "path": "build/visual-qa-20260922-qa-fix/multiphase-model.jpg",
+        "sha256": "fbfc0c894cf0997a455822602bd7678fe3f2a468812f535fc5082bb6dc3dcfd9"
+      },
+      "issues": [
+        "The visible Eulerian option now reads «Эйлерова модель» without the internal path.",
+        "Disabled tabs and interface-modelling alternatives were not inspected; the model was not enabled."
+      ]
+    },
+    {
+      "id": "species-model",
+      "window": "Species Model",
+      "modules": [
+        "SpeciesModel"
+      ],
+      "status": "needs_recheck",
+      "last_checked": "2026-09-10",
+      "package": "release-5009",
+      "scope": "mesh_only",
+      "issues": [
+        "Historical observation has no retained local capture and does not verify the current package."
+      ]
+    },
+    {
+      "id": "injection-properties",
+      "window": "Set Injection Properties",
+      "modules": [
+        "SetInjectionProperties",
+        "DiscretePhaseModel"
+      ],
+      "status": "unverified",
+      "issues": [
+        "Opening the dialog would require enabling discrete phase modeling."
+      ]
+    },
+    {
+      "id": "materials",
+      "window": "Materials",
+      "modules": [
+        "TaskPage_Materials",
+        "Create_EditMaterials"
+      ],
+      "status": "partial",
+      "last_checked": "2026-09-22",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "isolated-bioreactor-copy; materials task page",
+      "beta_blocker": true,
+      "evidence": {
+        "path": "build/visual-qa-20260922-qa-fix/materials.jpg",
+        "sha256": "07d07b360dc713c6c52425465c3922aa66ccaff132a07e1fa65d171aadca0032"
+      },
+      "issues": [
+        "Task-page headings are Russian, but system list categories Fluid and Solid remain English; air and aluminum are case material names.",
+        "Create/Edit Materials dialog was not opened in this pass."
+      ]
+    },
+    {
+      "id": "energy-model",
+      "window": "Energy",
+      "modules": [
+        "Energy"
+      ],
+      "status": "verified",
+      "last_checked": "2026-09-22",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "isolated-bioreactor-copy; visible off-state dialog",
+      "evidence": {
+        "path": "build/visual-qa-20260922-qa-fix/energy-model.jpg",
+        "sha256": "a443e424e050f4e9deb8f76a1c70af039be20e4a7139e8f06cfe63ae80d6fc1d"
+      },
+      "issues": []
+    },
+    {
+      "id": "reference-values",
+      "window": "Reference Values",
+      "modules": [
+        "TaskPage_ReferenceValues"
+      ],
+      "status": "needs_recheck",
+      "last_checked": "2026-09-10",
+      "package": "release-5009",
+      "scope": "mesh_only",
+      "issues": [
+        "Historical observation has no retained local capture and does not verify the current package."
+      ]
+    },
+    {
+      "id": "run-calculation",
+      "window": "Run Calculation",
+      "modules": [
+        "TaskPage_RunCalculation"
+      ],
+      "status": "partial",
+      "last_checked": "2026-09-22",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "isolated-bioreactor-copy; task page only; calculation not started",
+      "beta_blocker": true,
+      "evidence": {
+        "path": "build/visual-qa-20260922-qa-fix/run-calculation.jpg",
+        "sha256": "78b3965258b776af1f98ba3b705c6840c4f1178ec2fcca9fa5343dfce0171752"
+      },
+      "issues": [
+        "Automatic, Conservative and Current Session remain English as visible user choices."
+      ]
+    },
+    {
+      "id": "monitors",
+      "window": "Monitors",
+      "modules": [
+        "TaskPage_Monitors"
+      ],
+      "status": "needs_recheck",
+      "last_checked": "2026-09-10",
+      "package": "release-5009",
+      "scope": "mesh_only",
+      "issues": [
+        "Historical observation has no retained local capture and does not verify the current package."
+      ]
+    },
+    {
+      "id": "report-definitions",
+      "window": "Report Definitions",
+      "modules": [
+        "ReportDefinitions"
+      ],
+      "status": "needs_recheck",
+      "last_checked": "2026-09-10",
+      "package": "release-5009",
+      "scope": "mesh_only",
+      "issues": [
+        "Historical observation has no retained local capture and does not verify the current package."
+      ]
+    },
+    {
+      "id": "reports",
+      "window": "Reports",
+      "modules": [
+        "TaskPage_Reports"
+      ],
+      "status": "partial",
+      "last_checked": "2026-09-22",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "isolated-bioreactor-copy; task page",
+      "beta_blocker": true,
+      "evidence": {
+        "path": "build/visual-qa-20260922-qa-fix/reports.jpg",
+        "sha256": "a7feb176cfdce9a07d205e1067b62cf0f91cb9ad73146002fa7a7b4d712e0717"
+      },
+      "issues": [
+        "Page heading and buttons are Russian, but report type names and Unavailable remain English."
+      ]
+    },
+    {
+      "id": "plots",
+      "window": "Plots",
+      "modules": [
+        "TaskPage_Plots"
+      ],
+      "status": "partial",
+      "last_checked": "2026-09-22",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "isolated-bioreactor-copy; task page",
+      "beta_blocker": true,
+      "evidence": {
+        "path": "build/visual-qa-20260922-qa-fix/plots.jpg",
+        "sha256": "5a2ef61583f50de69f92996beb4ade26fc7b9d0e64d628dee2b684740863e7f7"
+      },
+      "issues": [
+        "Page heading and button are Russian, but XY Plot, Histogram, Data Sources, Profiles, FFT and Unavailable remain English."
+      ]
+    },
+    {
+      "id": "expression-manager",
+      "window": "Expression Manager",
+      "modules": [
+        "ExpressionManager"
+      ],
+      "status": "needs_recheck",
+      "last_checked": "2026-09-10",
+      "package": "release-5009",
+      "scope": "mesh_only",
+      "issues": [
+        "Historical observation has no retained local capture and does not verify the current package."
+      ]
+    },
+    {
+      "id": "cell-registers",
+      "window": "Manage Cell Registers",
+      "modules": [
+        "ManageCellRegisters"
+      ],
+      "status": "needs_recheck",
+      "last_checked": "2026-09-10",
+      "package": "release-5009",
+      "scope": "mesh_only",
+      "issues": [
+        "Historical observation has no retained local capture and does not verify the current package."
+      ]
+    },
+    {
+      "id": "adaptation-criteria",
+      "window": "Manage Adaption Criteria",
+      "modules": [
+        "ManageAdaptionCriteria"
+      ],
+      "status": "needs_recheck",
+      "last_checked": "2026-09-10",
+      "package": "release-5009",
+      "scope": "mesh_only",
+      "issues": [
+        "Historical observation has no retained local capture and does not verify the current package."
+      ]
+    },
+    {
+      "id": "calculation-activities",
+      "window": "Calculation Activities",
+      "modules": [
+        "TaskPage_CalculationActivities"
+      ],
+      "status": "needs_recheck",
+      "last_checked": "2026-09-10",
+      "package": "release-5009",
+      "scope": "mesh_only",
+      "issues": [
+        "Historical observation has no retained local capture and does not verify the current package."
+      ]
+    },
+    {
+      "id": "display-states",
+      "window": "Display States",
+      "modules": [
+        "DisplayStates"
+      ],
+      "status": "needs_recheck",
+      "last_checked": "2026-09-10",
+      "package": "release-27104-full",
+      "scope": "installed_not_opened",
+      "issues": [
+        "Added grid-plane, lighting, reflection, and anti-aliasing labels. They are installed in release-27104-full; visual check is pending."
+      ]
+    },
+    {
+      "id": "auxiliary-geometry-definitions",
+      "window": "Manage Auxiliary Geometry Definitions",
+      "modules": [
+        "tree",
+        "label_only"
+      ],
+      "status": "needs_recheck",
+      "last_checked": "2026-09-24",
+      "package": "beta-1-27104-qa-fix-20260922",
+      "scope": "historical isolated-bioreactor-copy capture; empty manager dialog",
+      "evidence": {
+        "path": "build/visual-qa-20260922-qa-fix/auxiliary-geometry-definitions.jpg",
+        "sha256": "04d4eeac2f70bc4c6aaa0471a3bd15753ccf8e1355e29cad5d8d45d79291c615"
+      },
+      "issues": [
+        "The navigation-label correction requires rebuild and fresh visual confirmation; the manager title and list heading still need translation work.",
+        "No auxiliary geometry was created or edited."
+      ]
+    },
+    {
+      "id": "specialized-panels",
+      "window": "Specialized physics, mesh, and post-processing panels",
+      "modules": [
+        "AdvancedHolePatching",
+        "Pressure-DependentReaction",
+        "OperatingConditions",
+        "CHEMKINMechanismImport",
+        "ImportCADGeometry",
+        "FourierTransform",
+        "PopulationBalanceModel",
+        "TurboTopology"
+      ],
+      "status": "needs_recheck",
+      "last_checked": "2026-09-10",
+      "package": "release-27104-full",
+      "scope": "installed_not_opened",
+      "issues": [
+        "All eligible remaining labels were translated or classified as technical. They are installed in release-27104-full; visual checks are pending."
+      ]
+    }
   ]
 }

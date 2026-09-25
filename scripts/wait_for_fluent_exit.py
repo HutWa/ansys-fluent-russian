@@ -40,6 +40,20 @@ def run_directory(output_root: Path, now: datetime | None = None) -> Path:
     return output_root / f"rerun-{now.strftime('%Y%m%dT%H%M%SZ')}"
 
 
+def fluent_processes_present() -> bool:
+    """Use process presence as a cross-session safety guard on Windows.
+
+    A background process may not see windows owned by the interactive desktop.
+    It must therefore never interpret an empty window enumeration as permission
+    to start another Fluent while any existing Fluent process remains alive.
+    """
+    completed = subprocess.run(
+        ["tasklist", "/FI", "IMAGENAME eq fluent.exe", "/FO", "CSV", "/NH"],
+        capture_output=True, text=True, check=False,
+    )
+    return "fluent.exe" in completed.stdout.casefold()
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Launch an isolated Fluent QA rerun after Home closes")
     parser.add_argument("--fluent-root", type=Path, required=True)
@@ -72,7 +86,7 @@ def main() -> int:
         return 0
     deadline = time.monotonic() + args.timeout_seconds
     while time.monotonic() < deadline:
-        if not find_windows(args.title_contains):
+        if not find_windows(args.title_contains) and not fluent_processes_present():
             target.mkdir(parents=True, exist_ok=False)
             metadata = target / "queued-rerun.json"
             metadata.write_text(json.dumps({
