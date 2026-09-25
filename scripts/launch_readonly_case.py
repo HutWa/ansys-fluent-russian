@@ -73,7 +73,8 @@ def main() -> int:
     watcher_log = output / "watcher.log"
     with watcher_log.open("a", encoding="utf-8") as log:
         watcher = subprocess.Popen([
-            sys.executable, str(capture_script), "--watch", "--exit-when-closed", "--output-dir", str(output),
+            sys.executable, str(capture_script), "--watch", "--exit-when-closed",
+            "--title-contains", "Fluent@Home", "--output-dir", str(output),
         ], env=localized_environment(), stdout=log, stderr=subprocess.STDOUT)
     process = subprocess.Popen(command, env=localized_environment())
     print(f"Read-only visual-QA watcher PID {watcher.pid}")
