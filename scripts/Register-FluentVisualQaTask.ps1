@@ -1,13 +1,14 @@
 [CmdletBinding()]
 param(
     [switch]$Run,
-    [switch]$Remove
+    [switch]$Remove,
+    [switch]$CaptureCurrent
 )
 
 $ErrorActionPreference = 'Stop'
-$taskName = 'Codex Fluent Visual QA'
+$taskName = if ($CaptureCurrent) { 'Codex Fluent QA Capture' } else { 'Codex Fluent Visual QA' }
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-$entryPoint = Join-Path $root 'scripts\run_visual_qa_task.cmd'
+$entryPoint = Join-Path $root $(if ($CaptureCurrent) { 'scripts\capture_current_fluent_task.cmd' } else { 'scripts\run_visual_qa_task.cmd' })
 
 if ($Remove) {
     Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue
@@ -25,7 +26,12 @@ if (-not (Test-Path -LiteralPath $entryPoint -PathType Leaf)) {
 $action = New-ScheduledTaskAction -Execute 'cmd.exe' -Argument ('/d /c ""{0}""' -f $entryPoint) -WorkingDirectory $root
 $principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType Interactive -RunLevel Limited
 $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Hours 2)
-$task = New-ScheduledTask -Action $action -Principal $principal -Settings $settings -Description 'Safe Fluent visual QA: opens only navigation pages and records local evidence. It never edits, saves, initializes, or solves a case.'
+$description = if ($CaptureCurrent) {
+    'Read-only Fluent visual-QA capture: records the current ready Fluent window without clicking or sending any command.'
+} else {
+    'Safe Fluent visual QA: opens only navigation pages and records local evidence. It never edits, saves, initializes, or solves a case.'
+}
+$task = New-ScheduledTask -Action $action -Principal $principal -Settings $settings -Description $description
 
 Register-ScheduledTask -TaskName $taskName -InputObject $task -Force | Out-Null
 Write-Host "Registered interactive task: $taskName"

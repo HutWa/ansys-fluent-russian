@@ -284,11 +284,11 @@
       "status": "partial",
       "last_checked": "2026-09-25",
       "package": "beta-1-27104-tree-qa-20260924",
-      "scope": "isolated-bioreactor-copy; fresh post-install ribbon and navigation tree",
-      "evidence": {
-        "path": "build/visual-qa-20260925-rerun/20260925T161302Z-bioreactor_2026R1_test_setup-Parallel-Fluent-Home-3d-pbns-sstkw-single-p-c60d6160f162.png",
-        "sha256": "c60d6160f1625e11004c91d2c92f2ddc30af0395f5f5e3a4539abb0ba1fd1c14"
-      },
+    "scope": "isolated-bioreactor-copy; fresh post-install ribbon and navigation tree; captured by interactive scheduled task",
+    "evidence": {
+      "path": "build/visual-qa-current-capture/20260925T162500Z-bioreactor_2026R1_test_setup-Parallel-Fluent-Home-3d-pbns-sstkw-single-p-acc5df46ab87.png",
+      "sha256": "acc5df46ab8734f0099cd326e678edba4d0c27e898831a84c945222be5950fd7"
+    },
       "issues": [
         "Visible ribbon and navigation labels are Russian after restart; the generated display-window title remains Mesh and is not a static ribbon label."
       ]

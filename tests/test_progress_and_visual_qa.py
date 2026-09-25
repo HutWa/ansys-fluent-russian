@@ -148,6 +148,10 @@ class VisualCaptureTests(unittest.TestCase):
         self.assertIn("-LogonType Interactive", installer)
         self.assertIn("-RunLevel Limited", installer)
         self.assertNotIn("-UserId 'SYSTEM'", installer)
+        self.assertIn("Codex Fluent QA Capture", installer)
+        capture = (ROOT / "scripts" / "capture_current_fluent_task.cmd").read_text(encoding="utf-8")
+        self.assertIn('--title-contains "Fluent@Home"', capture)
+        self.assertNotIn("navigate_", capture)
 
     def test_uia_navigation_has_only_whitelisted_task_pages(self) -> None:
         self.assertEqual(SAFE_TARGETS, {"run-calculation": "Запуск расчёта"})
