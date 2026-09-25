@@ -20,6 +20,7 @@ SAFE_TARGETS = {
     "solution-methods": "Методы",
     "solution-controls": "Управление",
     "solution-initialization": "Инициализация",
+    "materials": "Материалы",
 }
 
 TARGET_PAGE_HEADINGS = {
@@ -27,6 +28,7 @@ TARGET_PAGE_HEADINGS = {
     "solution-methods": "Методы решения",
     "solution-controls": "Управление решением",
     "solution-initialization": "Инициализация решения",
+    "materials": "Материалы",
 }
 
 
@@ -55,7 +57,18 @@ def assert_target_page(window, target: str) -> None:
     expected = TARGET_PAGE_HEADINGS.get(target)
     if expected is None:
         return
-    rendered = {item.window_text() for item in window.descendants() if item.window_text()}
+    # The navigation tree and the task page both expose labels such as
+    # "Материалы".  A window-wide text search would therefore treat merely
+    # selecting a tree item as proof that the page opened.  Task Page starts
+    # to the right of roughly one fifth of the Fluent window; only count
+    # labels rendered in that content area, below the ribbon.
+    rect = window.rectangle()
+    content_left = rect.left + round(rect.width() * 0.18)
+    content_top = rect.top + round(rect.height() * 0.18)
+    rendered = {
+        item.window_text() for item in window.descendants()
+        if item.window_text() and item.rectangle().left >= content_left and item.rectangle().top >= content_top
+    }
     if expected not in rendered:
         raise RuntimeError(f"Fluent did not render expected page heading: {expected}")
 

@@ -154,6 +154,7 @@ class VisualCaptureTests(unittest.TestCase):
         self.assertIn("Codex Fluent QA Solution Controls", installer)
         self.assertIn("Codex Fluent QA Solution Initialization", installer)
         self.assertIn("Codex Fluent QA Run Calculation", installer)
+        self.assertIn("Codex Fluent QA Materials", installer)
         capture = (ROOT / "scripts" / "capture_current_fluent_task.cmd").read_text(encoding="utf-8")
         self.assertIn('--title-contains "Fluent@Home"', capture)
         self.assertNotIn("navigate_", capture)
@@ -170,6 +171,8 @@ class VisualCaptureTests(unittest.TestCase):
         self.assertIn("--target solution-initialization", initialization)
         calculation = (ROOT / "scripts" / "run_calculation_visual_qa_task.cmd").read_text(encoding="utf-8")
         self.assertIn("--target run-calculation", calculation)
+        materials = (ROOT / "scripts" / "run_materials_visual_qa_task.cmd").read_text(encoding="utf-8")
+        self.assertIn("--target materials", materials)
 
     def test_uia_navigation_has_only_whitelisted_task_pages(self) -> None:
         self.assertEqual(SAFE_TARGETS, {
@@ -178,11 +181,13 @@ class VisualCaptureTests(unittest.TestCase):
             "solution-methods": "Методы",
             "solution-controls": "Управление",
             "solution-initialization": "Инициализация",
+            "materials": "Материалы",
         })
         uia_source = (ROOT / "scripts" / "navigate_fluent_uia.py").read_text(encoding="utf-8")
         self.assertIn("expander_x = item_rect.left - 12", uia_source)
         self.assertIn("Models tree expander is outside", uia_source)
         self.assertIn("Fluent did not render expected page heading", uia_source)
+        self.assertIn("content_left = rect.left + round(rect.width() * 0.18)", uia_source)
 
     def test_png_encoder_and_safe_name(self) -> None:
         png = encode_png_bgra(1, 1, bytes((10, 20, 30, 255)))
