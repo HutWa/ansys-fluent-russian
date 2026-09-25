@@ -19,6 +19,14 @@ SAFE_TARGETS = {
     "models-tree": "Модели",
     "solution-methods": "Методы",
     "solution-controls": "Управление",
+    "solution-initialization": "Инициализация",
+}
+
+TARGET_PAGE_HEADINGS = {
+    "run-calculation": "Запуск расчёта",
+    "solution-methods": "Методы решения",
+    "solution-controls": "Управление решением",
+    "solution-initialization": "Инициализация решения",
 }
 
 
@@ -40,6 +48,16 @@ def matching_tree_item(window, label: str):
     if len(matches) != 1:
         raise RuntimeError(f"Expected exactly one tree item named {label!r}; found {len(matches)}")
     return matches[0]
+
+
+def assert_target_page(window, target: str) -> None:
+    """Refuse to report a navigation success unless Fluent rendered its page."""
+    expected = TARGET_PAGE_HEADINGS.get(target)
+    if expected is None:
+        return
+    rendered = {item.window_text() for item in window.descendants() if item.window_text()}
+    if expected not in rendered:
+        raise RuntimeError(f"Fluent did not render expected page heading: {expected}")
 
 
 def open_target(target: str, settle_seconds: float) -> dict[str, str]:
@@ -75,6 +93,7 @@ def open_target(target: str, settle_seconds: float) -> dict[str, str]:
         item.type_keys("{ENTER}")
         action = "open"
     time.sleep(settle_seconds)
+    assert_target_page(window, target)
     trace = {"target": target, "label": label, "action": action, "window": window.window_text()}
     if target == "models-tree":
         trace["expander_point"] = f"{expander_x},{expander_y}"

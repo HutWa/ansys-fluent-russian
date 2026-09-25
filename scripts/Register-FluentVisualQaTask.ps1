@@ -5,17 +5,18 @@ param(
     [switch]$CaptureCurrent,
     [switch]$ModelsTree,
     [switch]$SolutionMethods,
-    [switch]$SolutionControls
+    [switch]$SolutionControls,
+    [switch]$SolutionInitialization
 )
 
 $ErrorActionPreference = 'Stop'
-$selectedModes = @($CaptureCurrent, $ModelsTree, $SolutionMethods, $SolutionControls) | Where-Object { $_ }
+$selectedModes = @($CaptureCurrent, $ModelsTree, $SolutionMethods, $SolutionControls, $SolutionInitialization) | Where-Object { $_ }
 if ($selectedModes.Count -gt 1) {
     throw 'Choose only one visual-QA task mode.'
 }
-$taskName = if ($CaptureCurrent) { 'Codex Fluent QA Capture' } elseif ($ModelsTree) { 'Codex Fluent QA Models Tree' } elseif ($SolutionMethods) { 'Codex Fluent QA Solution Methods' } elseif ($SolutionControls) { 'Codex Fluent QA Solution Controls' } else { 'Codex Fluent Visual QA' }
+$taskName = if ($CaptureCurrent) { 'Codex Fluent QA Capture' } elseif ($ModelsTree) { 'Codex Fluent QA Models Tree' } elseif ($SolutionMethods) { 'Codex Fluent QA Solution Methods' } elseif ($SolutionControls) { 'Codex Fluent QA Solution Controls' } elseif ($SolutionInitialization) { 'Codex Fluent QA Solution Initialization' } else { 'Codex Fluent Visual QA' }
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-$entryPoint = Join-Path $root $(if ($CaptureCurrent) { 'scripts\capture_current_fluent_task.cmd' } elseif ($ModelsTree) { 'scripts\run_models_tree_visual_qa_task.cmd' } elseif ($SolutionMethods) { 'scripts\run_solution_methods_visual_qa_task.cmd' } elseif ($SolutionControls) { 'scripts\run_solution_controls_visual_qa_task.cmd' } else { 'scripts\run_visual_qa_task.cmd' })
+$entryPoint = Join-Path $root $(if ($CaptureCurrent) { 'scripts\capture_current_fluent_task.cmd' } elseif ($ModelsTree) { 'scripts\run_models_tree_visual_qa_task.cmd' } elseif ($SolutionMethods) { 'scripts\run_solution_methods_visual_qa_task.cmd' } elseif ($SolutionControls) { 'scripts\run_solution_controls_visual_qa_task.cmd' } elseif ($SolutionInitialization) { 'scripts\run_solution_initialization_visual_qa_task.cmd' } else { 'scripts\run_visual_qa_task.cmd' })
 
 if ($Remove) {
     Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue
@@ -41,6 +42,8 @@ $description = if ($CaptureCurrent) {
     'Safe Fluent visual QA: opens only the Solution Methods task page and records a local frame. It never changes methods, saves, initializes, or solves a case.'
 } elseif ($SolutionControls) {
     'Safe Fluent visual QA: opens only the Solution Controls task page and records a local frame. It never changes controls, saves, initializes, or solves a case.'
+} elseif ($SolutionInitialization) {
+    'Safe Fluent visual QA: opens only the Solution Initialization task page and records a local frame. It never initializes, saves, or solves a case.'
 } else {
     'Safe Fluent visual QA: opens only navigation pages and records local evidence. It never edits, saves, initializes, or solves a case.'
 }
