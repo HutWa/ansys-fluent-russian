@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
 
 from scripts.check_visual_review import render_summary, validate_review, verify_local_evidence
@@ -12,6 +13,7 @@ from scripts.launch_fluent import fluent_command
 from scripts.check_visual_journal import unsafe_lines
 from scripts.navigate_fluent_visual_qa import FILE_RIBBON_STEPS, HOME_STEPS, MATERIALS_TREE_STEPS, MODELS_EXPAND_STEPS, MULTIPHASE_DIALOG_STEPS, MULTIPHASE_TREE_STEPS, PHYSICS_RIBBON_STEPS, RECT, SOLUTION_CONTROLS_STEPS, SOLUTION_INITIALIZATION_STEPS, SOLUTION_METHODS_STEPS, VK_DOWN, VK_RETURN, VK_RIGHT, route_steps, select_home_window
 from scripts.launch_readonly_case import read_only_journal
+from scripts.wait_for_fluent_exit import run_directory
 from scripts.navigate_fluent_uia import SAFE_TARGETS
 
 
@@ -184,6 +186,13 @@ class VisualCaptureTests(unittest.TestCase):
         self.assertEqual(journal.splitlines(), ["; Visual QA read-only bootstrap", '/file/read-case "build/case.cas.h5"'])
         self.assertNotIn("write", journal.casefold())
         self.assertNotIn("solve", journal.casefold())
+
+    def test_queued_rerun_directory_is_timestamped(self) -> None:
+        instant = datetime(2026, 9, 25, 12, 34, 56, tzinfo=timezone.utc)
+        self.assertEqual(
+            run_directory(Path("build") / "visual-qa", instant),
+            Path("build/visual-qa/rerun-20260925T123456Z"),
+        )
 
 
 if __name__ == "__main__":
