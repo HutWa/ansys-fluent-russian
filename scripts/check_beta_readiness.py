@@ -11,11 +11,13 @@ from typing import Any
 try:
     from scripts.check_visual_review import validate_review
     from scripts.install import load_build
+    from scripts.verify_installation import verify
     from scripts.qa import load_scenarios, scenario_steps
     from scripts.report_progress import load_catalog, load_inventory, metrics
 except ModuleNotFoundError:
     from check_visual_review import validate_review
     from install import load_build
+    from verify_installation import verify
     from qa import load_scenarios, scenario_steps
     from report_progress import load_catalog, load_inventory, metrics
 
@@ -73,9 +75,11 @@ def main() -> int:
     parser.add_argument("--reviews", type=Path, default=ROOT / "reviews" / "v2026R1" / "windows.yml")
     parser.add_argument("--package", required=True, help="Package identifier being evaluated, for example release-27104-full")
     parser.add_argument("--staging-dir", type=Path, help="Optional built package to verify using build-manifest.json")
+    parser.add_argument("--fluent-root", type=Path, help="Optional Fluent installation to verify against the build manifest")
     args = parser.parse_args()
     try:
-        current = metrics(load_catalog(args.catalog), load_inventory(args.inventory))
+        catalog = load_catalog(args.catalog)
+        current = metrics(catalog, load_inventory(args.inventory))
         windows, review_errors = validate_review(read_json(args.reviews))
         if review_errors:
             raise ValueError("\n".join(review_errors))
@@ -84,6 +88,20 @@ def main() -> int:
         if args.staging_dir:
             _, built = load_build(args.staging_dir)
             built_modules = len(built)
+            expected_modules = len({
+                str(entry["module"]) for entry in catalog["entries"]
+                if entry.get("status") != "do_not_translate"
+            })
+            if built_modules != expected_modules:
+                issues.append(
+                    f"Build manifest is incomplete: {built_modules} of {expected_modules} catalog modules are present."
+                )
+            if args.fluent_root:
+                mismatches = verify(args.fluent_root, args.staging_dir)
+                if mismatches:
+                    issues.append(f"Installed package does not match the build manifest: {len(mismatches)} module(s) differ.")
+        elif args.fluent_root:
+            raise ValueError("--fluent-root requires --staging-dir")
     except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
         print(f"Error: {error}", file=sys.stderr)
         return 2

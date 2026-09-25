@@ -8,6 +8,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from scripts.verify_installation import verify
+
 
 class InstallCycleTests(unittest.TestCase):
     def test_created_catalog_is_removed_on_uninstall(self) -> None:
@@ -49,6 +51,10 @@ class InstallCycleTests(unittest.TestCase):
             )
             installed = language_root / "ru" / catalog.name
             self.assertTrue(installed.is_file())
+            self.assertEqual(verify(fluent_root, staging), [])
+            installed.write_bytes(b"unexpected-content")
+            self.assertEqual(len(verify(fluent_root, staging)), 1)
+            installed.write_bytes(catalog.read_bytes())
             subprocess.run(
                 [
                     sys.executable, str(repository / "scripts" / "uninstall.py"),
