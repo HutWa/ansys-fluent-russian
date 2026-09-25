@@ -230,12 +230,12 @@
         "TaskPage_SolutionControls"
       ],
       "status": "verified",
-      "last_checked": "2026-09-22",
-      "package": "beta-1-27104-qa-fix-20260922",
-      "scope": "isolated-bioreactor-copy; visible task page",
+      "last_checked": "2026-09-25",
+      "package": "beta-1-27104-tree-qa-20260924",
+      "scope": "isolated-bioreactor-copy; visible task page; interactive scheduled task selected the UIA item Управление",
       "evidence": {
-        "path": "build/visual-qa-20260922-qa-fix/solution-controls.jpg",
-        "sha256": "c8e49c9cb5b343db1917eb4427fd63339b121dbc2a67c1018012c3dcf57d9000"
+        "path": "build/visual-qa-solution-controls/20260925T164404Z-bioreactor_2026R1_test_setup-Parallel-Fluent-Home-3d-pbns-sstkw-single-p-0ce9948c1167.png",
+        "sha256": "0ce9948c1167aa8e1f556ef9b535fe5488cb67ffde549968d253b2006b6c71ee"
       },
       "issues": []
     },

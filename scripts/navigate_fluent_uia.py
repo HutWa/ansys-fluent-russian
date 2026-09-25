@@ -18,6 +18,7 @@ SAFE_TARGETS = {
     "run-calculation": "Запуск расчёта",
     "models-tree": "Модели",
     "solution-methods": "Методы",
+    "solution-controls": "Управление",
 }
 
 
