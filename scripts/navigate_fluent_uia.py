@@ -21,6 +21,7 @@ SAFE_TARGETS = {
     "solution-controls": "Управление",
     "solution-initialization": "Инициализация",
     "materials": "Материалы",
+    "cell-zone-conditions": "Условия в ячеечных зонах",
 }
 
 TARGET_PAGE_HEADINGS = {
@@ -29,6 +30,7 @@ TARGET_PAGE_HEADINGS = {
     "solution-controls": "Управление решением",
     "solution-initialization": "Инициализация решения",
     "materials": "Материалы",
+    "cell-zone-conditions": "Условия ячеечных зон",
 }
 
 

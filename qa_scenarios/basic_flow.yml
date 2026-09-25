@@ -12,7 +12,7 @@
     {"id": "general", "target": "Настройка / Общие", "modules": ["TaskPage_General"], "capture": "general.jpg", "availability": "always_accessible"},
     {"id": "models-tree", "target": "Настройка / Модели", "modules": ["tree", "tree_FM", "label_only"], "capture": "models-tree.jpg", "availability": "requires_case", "route": "uia:models-tree"},
     {"id": "materials", "target": "Настройка / Материалы", "modules": ["TaskPage_Materials", "Create_EditMaterials"], "capture": "materials.jpg", "availability": "requires_case", "route": "uia:materials"},
-    {"id": "cell-zone-conditions", "target": "Настройка / Условия ячеечной зоны", "modules": ["TaskPage_CellZoneConditions", "Fluid"], "capture": "cell-zone-conditions.jpg", "availability": "requires_case"},
+    {"id": "cell-zone-conditions", "target": "Настройка / Условия ячеечной зоны", "modules": ["TaskPage_CellZoneConditions", "Fluid"], "capture": "cell-zone-conditions.jpg", "availability": "requires_case", "route": "uia:cell-zone-conditions"},
     {"id": "boundary-conditions", "target": "Настройка / Граничные условия", "modules": ["TaskPage_BoundaryConditions", "Wall", "VelocityInlet", "PressureInlet", "Mass-FlowInlet"], "capture": "boundary-conditions.jpg", "availability": "requires_case"},
     {"id": "mesh-interfaces", "target": "Настройка / Интерфейсы сетки", "modules": ["Create_EditMeshInterfaces", "EditMeshInterfaces", "MeshInterfaces"], "capture": "mesh-interfaces.jpg", "availability": "requires_case"},
     {"id": "solution-methods", "target": "Решение / Методы", "modules": ["TaskPage_SolutionMethods"], "capture": "solution-methods.jpg", "availability": "requires_case", "route": "uia:solution-methods"},

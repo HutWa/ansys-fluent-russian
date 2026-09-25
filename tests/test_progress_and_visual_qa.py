@@ -155,6 +155,7 @@ class VisualCaptureTests(unittest.TestCase):
         self.assertIn("Codex Fluent QA Solution Initialization", installer)
         self.assertIn("Codex Fluent QA Run Calculation", installer)
         self.assertIn("Codex Fluent QA Materials", installer)
+        self.assertIn("Codex Fluent QA Cell Zone Conditions", installer)
         capture = (ROOT / "scripts" / "capture_current_fluent_task.cmd").read_text(encoding="utf-8")
         self.assertIn('--title-contains "Fluent@Home"', capture)
         self.assertNotIn("navigate_", capture)
@@ -173,6 +174,8 @@ class VisualCaptureTests(unittest.TestCase):
         self.assertIn("--target run-calculation", calculation)
         materials = (ROOT / "scripts" / "run_materials_visual_qa_task.cmd").read_text(encoding="utf-8")
         self.assertIn("--target materials", materials)
+        cell_zone = (ROOT / "scripts" / "run_cell_zone_conditions_visual_qa_task.cmd").read_text(encoding="utf-8")
+        self.assertIn("--target cell-zone-conditions", cell_zone)
 
     def test_uia_navigation_has_only_whitelisted_task_pages(self) -> None:
         self.assertEqual(SAFE_TARGETS, {
@@ -182,6 +185,7 @@ class VisualCaptureTests(unittest.TestCase):
             "solution-controls": "Управление",
             "solution-initialization": "Инициализация",
             "materials": "Материалы",
+            "cell-zone-conditions": "Условия в ячеечных зонах",
         })
         uia_source = (ROOT / "scripts" / "navigate_fluent_uia.py").read_text(encoding="utf-8")
         self.assertIn("expander_x = item_rect.left - 12", uia_source)
