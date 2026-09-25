@@ -18,6 +18,9 @@ from scripts.wait_for_fluent_exit import fluent_processes_present, run_directory
 from scripts.navigate_fluent_uia import SAFE_TARGETS
 
 
+ROOT = Path(__file__).resolve().parents[1]
+
+
 class ProgressReportTests(unittest.TestCase):
     def setUp(self) -> None:
         self.catalog = {
@@ -140,6 +143,12 @@ class BetaReadinessTests(unittest.TestCase):
 
 
 class VisualCaptureTests(unittest.TestCase):
+    def test_interactive_task_registration_never_uses_system_or_elevation(self) -> None:
+        installer = (ROOT / "scripts" / "Register-FluentVisualQaTask.ps1").read_text(encoding="utf-8")
+        self.assertIn("-LogonType Interactive", installer)
+        self.assertIn("-RunLevel Limited", installer)
+        self.assertNotIn("-UserId 'SYSTEM'", installer)
+
     def test_uia_navigation_has_only_whitelisted_task_pages(self) -> None:
         self.assertEqual(SAFE_TARGETS, {"run-calculation": "Запуск расчёта"})
 
