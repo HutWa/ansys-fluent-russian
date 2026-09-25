@@ -321,18 +321,15 @@
         "tree_FM",
         "label_only"
       ],
-      "status": "needs_recheck",
-      "last_checked": "2026-09-24",
-      "package": "beta-1-27104-qa-fix-20260922",
-      "scope": "historical isolated-bioreactor-copy capture; expanded visible model tree",
+      "status": "verified",
+      "last_checked": "2026-09-25",
+      "package": "beta-1-27104-tree-qa-20260924",
+      "scope": "isolated-bioreactor-copy; expanded visible model tree only (no dialogs or disabled subpages); interactive scheduled task with UIA-derived expander",
       "evidence": {
-        "path": "build/visual-qa-20260924-tier1/models-tree.png",
-        "sha256": "f419dddaea8466e4bcef3bd557eccc5d77c7ffd05acfdc14aa385f5f321f87df"
+        "path": "build/visual-qa-models-tree/20260925T163549Z-bioreactor_2026R1_test_setup-Parallel-Fluent-Home-3d-pbns-sstkw-single-p-4101dbc56c0a.png",
+        "sha256": "4101dbc56c0ab5478ddde5748a7680c7dca5ec6d3afeff6808d238e182d7487b"
       },
-      "issues": [
-        "Corrections for the visible mixed model labels are staged and must be rebuilt, installed, and captured again before this frame can be accepted.",
-        "The expanded tree is only the currently visible state; model dialogs and disabled subpages were not opened."
-      ]
+      "issues": []
     },
     {
       "id": "multiphase-model",

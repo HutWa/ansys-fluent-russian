@@ -16,6 +16,7 @@ from pathlib import Path
 
 SAFE_TARGETS = {
     "run-calculation": "Запуск расчёта",
+    "models-tree": "Модели",
 }
 
 
@@ -53,10 +54,29 @@ def open_target(target: str, settle_seconds: float) -> dict[str, str]:
         mouse.scroll(coords=(120, window_bottom - 180), wheel_dist=-12)
         time.sleep(0.8)
         item = matching_tree_item(window, label)
-    item.double_click_input()
-    item.type_keys("{ENTER}")
+    if target == "models-tree":
+        # Fluent exposes no UIA ExpandCollapse pattern for this tree item.
+        # The tiny expander is immediately to the left of its *actual UIA*
+        # bounds; derive that point at runtime instead of using a screen
+        # coordinate.  Reject an implausible point before sending a click.
+        from pywinauto import mouse
+        item_rect = item.rectangle()
+        expander_x = item_rect.left - 12
+        expander_y = item_rect.top + item_rect.height() // 2
+        window_rect = window.rectangle()
+        if not (window_rect.left < expander_x < item_rect.left and window_rect.top < expander_y < window_rect.bottom):
+            raise RuntimeError("Models tree expander is outside the ready Fluent window")
+        mouse.click(button="left", coords=(expander_x, expander_y))
+        action = "expand-by-derived-expander"
+    else:
+        item.double_click_input()
+        item.type_keys("{ENTER}")
+        action = "open"
     time.sleep(settle_seconds)
-    return {"target": target, "label": label, "window": window.window_text()}
+    trace = {"target": target, "label": label, "action": action, "window": window.window_text()}
+    if target == "models-tree":
+        trace["expander_point"] = f"{expander_x},{expander_y}"
+    return trace
 
 
 def main() -> int:

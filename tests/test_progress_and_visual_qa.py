@@ -149,12 +149,23 @@ class VisualCaptureTests(unittest.TestCase):
         self.assertIn("-RunLevel Limited", installer)
         self.assertNotIn("-UserId 'SYSTEM'", installer)
         self.assertIn("Codex Fluent QA Capture", installer)
+        self.assertIn("Codex Fluent QA Models Tree", installer)
         capture = (ROOT / "scripts" / "capture_current_fluent_task.cmd").read_text(encoding="utf-8")
         self.assertIn('--title-contains "Fluent@Home"', capture)
         self.assertNotIn("navigate_", capture)
+        models = (ROOT / "scripts" / "run_models_tree_visual_qa_task.cmd").read_text(encoding="utf-8")
+        self.assertIn("--target models-tree", models)
+        self.assertIn('--title-contains "Fluent@Home"', models)
+        self.assertNotIn("--mode multiphase", models)
 
     def test_uia_navigation_has_only_whitelisted_task_pages(self) -> None:
-        self.assertEqual(SAFE_TARGETS, {"run-calculation": "Запуск расчёта"})
+        self.assertEqual(SAFE_TARGETS, {
+            "run-calculation": "Запуск расчёта",
+            "models-tree": "Модели",
+        })
+        uia_source = (ROOT / "scripts" / "navigate_fluent_uia.py").read_text(encoding="utf-8")
+        self.assertIn("expander_x = item_rect.left - 12", uia_source)
+        self.assertIn("Models tree expander is outside", uia_source)
 
     def test_png_encoder_and_safe_name(self) -> None:
         png = encode_png_bgra(1, 1, bytes((10, 20, 30, 255)))

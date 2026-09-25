@@ -2,13 +2,17 @@
 param(
     [switch]$Run,
     [switch]$Remove,
-    [switch]$CaptureCurrent
+    [switch]$CaptureCurrent,
+    [switch]$ModelsTree
 )
 
 $ErrorActionPreference = 'Stop'
-$taskName = if ($CaptureCurrent) { 'Codex Fluent QA Capture' } else { 'Codex Fluent Visual QA' }
+if ($CaptureCurrent -and $ModelsTree) {
+    throw 'Choose only one of -CaptureCurrent or -ModelsTree.'
+}
+$taskName = if ($CaptureCurrent) { 'Codex Fluent QA Capture' } elseif ($ModelsTree) { 'Codex Fluent QA Models Tree' } else { 'Codex Fluent Visual QA' }
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-$entryPoint = Join-Path $root $(if ($CaptureCurrent) { 'scripts\capture_current_fluent_task.cmd' } else { 'scripts\run_visual_qa_task.cmd' })
+$entryPoint = Join-Path $root $(if ($CaptureCurrent) { 'scripts\capture_current_fluent_task.cmd' } elseif ($ModelsTree) { 'scripts\run_models_tree_visual_qa_task.cmd' } else { 'scripts\run_visual_qa_task.cmd' })
 
 if ($Remove) {
     Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue
@@ -28,6 +32,8 @@ $principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" 
 $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Hours 2)
 $description = if ($CaptureCurrent) {
     'Read-only Fluent visual-QA capture: records the current ready Fluent window without clicking or sending any command.'
+} elseif ($ModelsTree) {
+    'Safe Fluent visual QA: expands only the visible Models navigation-tree node and records a local frame. It never changes model settings, saves, initializes, or solves a case.'
 } else {
     'Safe Fluent visual QA: opens only navigation pages and records local evidence. It never edits, saves, initializes, or solves a case.'
 }
