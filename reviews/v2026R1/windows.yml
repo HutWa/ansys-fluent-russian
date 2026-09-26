@@ -40,16 +40,16 @@
         "Fluid"
       ],
       "status": "partial",
-      "last_checked": "2026-09-24",
-      "package": "beta-1-27104-qa-fix-20260922",
-      "scope": "isolated-bioreactor-copy; task page only",
+      "last_checked": "2026-09-26",
+      "package": "beta-1-27104-tree-qa-20260924",
+      "scope": "isolated-bioreactor-copy; task page only; interactive scheduled task double-clicked only the UIA item Условия в ячеечных зонах",
       "evidence": {
-        "path": "build/visual-qa-20260924-tier1/cell-zone-conditions.png",
-        "sha256": "66cc3727de21a6c107625b09ecb18405b06fb2f3ea09fdca3f67b7fa34976f9a"
+        "path": "build/visual-qa-cell-zone-conditions/20260926T091249Z-bioreactor_2026R1_test_setup-Parallel-Fluent-Home-3d-pbns-sstkw-single-p-c533d1e03ba1.png",
+        "sha256": "c533d1e03ba18af70ec6b3170b8f6c42bd1afd7918a88ca5058db9094f33258c"
       },
       "issues": [
-        "Visible task-page labels and commands are Russian.",
-        "Fluid zones fluid_mrf and fluid_tank are user-defined names and were preserved; per-zone editor dialogs were not opened."
+        "Visible task-page labels and commands are Russian on the current package.",
+        "fluid_mrf and fluid_tank are user-defined zone names and were preserved; per-zone editor dialogs were not opened."
       ]
     },
     {

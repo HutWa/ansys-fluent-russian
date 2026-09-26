@@ -34,11 +34,9 @@ TARGET_PAGE_HEADINGS = {
 }
 
 # The UIA probe on the loaded v261 bioreactor case confirms these are visible
-# leaf rows in CxListTreeQt.  Cell Zone Conditions can invoke the previous
-# page when double-clicked, so it remains deliberately limited to one click.
-SINGLE_CLICK_TARGETS = frozenset({
-    "cell-zone-conditions",
-})
+# Kept as a named empty allowlist: targets are added only after a visual QA
+# run proves that a single click is the only safe way to open their page.
+SINGLE_CLICK_TARGETS = frozenset()
 
 EXPANDABLE_TARGETS = {
     "materials": "Жидкость",

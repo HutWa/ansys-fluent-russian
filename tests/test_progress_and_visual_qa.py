@@ -205,9 +205,7 @@ class VisualCaptureTests(unittest.TestCase):
             "materials": "Материалы",
             "cell-zone-conditions": "Условия в ячеечных зонах",
         })
-        self.assertEqual(SINGLE_CLICK_TARGETS, {
-            "cell-zone-conditions",
-        })
+        self.assertEqual(SINGLE_CLICK_TARGETS, set())
         self.assertEqual(EXPANDABLE_TARGETS, {"materials": "Жидкость", "cell-zone-conditions": "fluid_mrf"})
         uia_source = (ROOT / "scripts" / "navigate_fluent_uia.py").read_text(encoding="utf-8")
         self.assertIn("expander_x = item_rect.left - 12", uia_source)
