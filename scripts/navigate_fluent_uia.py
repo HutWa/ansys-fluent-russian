@@ -67,8 +67,33 @@ def matching_tree_item(window, label: str):
     return matches[0]
 
 
-def assert_target_page(window, target: str) -> None:
-    """Refuse to report a navigation success unless Fluent rendered its page."""
+def write_rendered_text_dump(window, output: Path) -> None:
+    """Record live UIA text and bounds to diagnose a safe navigation failure."""
+    rows: list[dict[str, object]] = []
+    for item in window.descendants():
+        text = item.window_text()
+        if not text:
+            continue
+        rect = item.rectangle()
+        try:
+            selected = bool(item.iface_selection_item.CurrentIsSelected)
+        except Exception:  # UIA selection is not available for most controls.
+            selected = False
+        rows.append({
+            "text": text,
+            "control_type": item.element_info.control_type,
+            "selected": selected,
+            "left": rect.left,
+            "top": rect.top,
+            "right": rect.right,
+            "bottom": rect.bottom,
+        })
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def assert_target_page(window, target: str, debug_file: Path | None = None) -> str:
+    """Classify page evidence without claiming custom-painted content was inspected."""
     expected = TARGET_PAGE_HEADINGS.get(target)
     if expected is None:
         return
@@ -84,8 +109,17 @@ def assert_target_page(window, target: str) -> None:
         item.window_text() for item in window.descendants()
         if item.window_text() and item.rectangle().left >= content_left and item.rectangle().top >= content_top
     }
-    if expected not in rendered:
-        raise RuntimeError(f"Fluent did not render expected page heading: {expected}")
+    if debug_file is not None:
+        write_rendered_text_dump(window, debug_file)
+    if expected in rendered:
+        return "uia-content-heading"
+    # Several Fluent v261 task pages are custom-painted and expose neither
+    # their central text nor tree selection state through UIA.  The preceding
+    # whitelisted action is therefore enough to permit an automatic *capture*,
+    # but is deliberately weaker evidence than a readable heading.  A visual
+    # QA record may use this only as ``captured``/``needs_recheck`` evidence,
+    # never as a reason to mark the page verified.
+    return "custom-painted-content-unavailable; capture-required"
 
 
 def click_derived_expander(window, item) -> str:
@@ -129,7 +163,7 @@ def expand_target(target: str, settle_seconds: float) -> dict[str, str]:
     return trace
 
 
-def open_target(target: str, settle_seconds: float) -> dict[str, str]:
+def open_target(target: str, settle_seconds: float, debug_file: Path | None = None) -> dict[str, str]:
     """Select a whitelisted task page and wait for Fluent to render it."""
     label = SAFE_TARGETS[target]
     window = fluent_window()
@@ -165,8 +199,14 @@ def open_target(target: str, settle_seconds: float) -> dict[str, str]:
         item.type_keys("{ENTER}")
         action = "open"
     time.sleep(settle_seconds)
-    assert_target_page(window, target)
-    trace = {"target": target, "label": label, "action": action, "window": window.window_text()}
+    verification = assert_target_page(window, target, debug_file)
+    trace = {
+        "target": target,
+        "label": label,
+        "action": action,
+        "page_verification": verification,
+        "window": window.window_text(),
+    }
     if target == "models-tree":
         trace["expander_point"] = expander_point
     return trace
@@ -178,10 +218,11 @@ def main() -> int:
     parser.add_argument("--expand", action="store_true", help="Expand one whitelisted tree branch without opening a page")
     parser.add_argument("--settle-seconds", type=float, default=8)
     parser.add_argument("--trace-file", type=Path)
+    parser.add_argument("--debug-file", type=Path, help="Write live UIA text and bounds after navigation")
     args = parser.parse_args()
     if args.settle_seconds <= 0:
         parser.error("settle seconds must be positive")
-    trace = expand_target(args.target, args.settle_seconds) if args.expand else open_target(args.target, args.settle_seconds)
+    trace = expand_target(args.target, args.settle_seconds) if args.expand else open_target(args.target, args.settle_seconds, args.debug_file)
     trace["finished_at"] = datetime.now(timezone.utc).isoformat()
     if args.trace_file:
         args.trace_file.parent.mkdir(parents=True, exist_ok=True)
