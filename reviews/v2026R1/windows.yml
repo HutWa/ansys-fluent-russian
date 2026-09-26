@@ -246,15 +246,17 @@
         "TaskPage_SolutionInitialization",
         "HybridInitialization"
       ],
-      "status": "verified",
-      "last_checked": "2026-09-22",
-      "package": "beta-1-27104-qa-fix-20260922",
-      "scope": "isolated-bioreactor-copy; visible task page",
+      "status": "needs_recheck",
+      "last_checked": "2026-09-26",
+      "package": "beta-1-27104-tree-qa-20260924",
+      "scope": "isolated-bioreactor-copy; interactive scheduled task selected the UIA item Инициализация once; central task page was not rendered",
       "evidence": {
-        "path": "build/visual-qa-20260922-qa-fix/solution-initialization.jpg",
-        "sha256": "190d495a95601282e6d5fc2ae1b0e32ec2b6a1b1b9db7858189455aeeaf12815"
+        "path": "build/visual-qa-solution-initialization/20260926T090543Z-bioreactor_2026R1_test_setup-Parallel-Fluent-Home-3d-pbns-sstkw-single-p-463c97591c28.png",
+        "sha256": "463c97591c283b1be7476926c285e02a72e7fb0a9e7a4cf39f86b6eb7bac03a6"
       },
-      "issues": []
+      "issues": [
+        "Fresh automated capture did not render the central Solution Initialization task page after the safe single-click route; previous-package verification is not carried forward."
+      ]
     },
     {
       "id": "mesh-display",
