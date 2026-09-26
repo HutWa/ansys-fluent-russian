@@ -15,6 +15,7 @@ from scripts.check_visual_journal import unsafe_lines
 from scripts.navigate_fluent_visual_qa import FILE_RIBBON_STEPS, HOME_STEPS, MATERIALS_TREE_STEPS, MODELS_EXPAND_STEPS, MULTIPHASE_DIALOG_STEPS, MULTIPHASE_TREE_STEPS, PHYSICS_RIBBON_STEPS, RECT, SOLUTION_CONTROLS_STEPS, SOLUTION_INITIALIZATION_STEPS, SOLUTION_METHODS_STEPS, VK_DOWN, VK_RETURN, VK_RIGHT, route_steps, select_home_window
 from scripts.launch_readonly_case import read_only_journal
 from scripts.wait_for_fluent_exit import fluent_processes_present, run_directory
+from scripts.inspect_fluent_uia import inspect_target
 from scripts.navigate_fluent_uia import SAFE_TARGETS
 
 
@@ -156,6 +157,7 @@ class VisualCaptureTests(unittest.TestCase):
         self.assertIn("Codex Fluent QA Run Calculation", installer)
         self.assertIn("Codex Fluent QA Materials", installer)
         self.assertIn("Codex Fluent QA Cell Zone Conditions", installer)
+        self.assertIn("Codex Fluent QA Navigation Probe", installer)
         capture = (ROOT / "scripts" / "capture_current_fluent_task.cmd").read_text(encoding="utf-8")
         self.assertIn('--title-contains "Fluent@Home"', capture)
         self.assertNotIn("navigate_", capture)
@@ -176,6 +178,9 @@ class VisualCaptureTests(unittest.TestCase):
         self.assertIn("--target materials", materials)
         cell_zone = (ROOT / "scripts" / "run_cell_zone_conditions_visual_qa_task.cmd").read_text(encoding="utf-8")
         self.assertIn("--target cell-zone-conditions", cell_zone)
+        probe = (ROOT / "scripts" / "run_navigation_probe_visual_qa_task.cmd").read_text(encoding="utf-8")
+        self.assertIn("inspect_fluent_uia.py", probe)
+        self.assertNotIn("capture_fluent_window.py", probe)
 
     def test_uia_navigation_has_only_whitelisted_task_pages(self) -> None:
         self.assertEqual(SAFE_TARGETS, {
@@ -192,6 +197,30 @@ class VisualCaptureTests(unittest.TestCase):
         self.assertIn("Models tree expander is outside", uia_source)
         self.assertIn("Fluent did not render expected page heading", uia_source)
         self.assertIn("content_left = rect.left + round(rect.width() * 0.18)", uia_source)
+
+    def test_uia_probe_only_collects_properties(self) -> None:
+        with mock.patch("scripts.inspect_fluent_uia.fluent_window") as window:
+            item = mock.Mock()
+            parent = mock.Mock()
+            item.window_text.return_value = "Материалы"
+            item.parent.return_value = parent
+            window.return_value.descendants.return_value = [item]
+            for wrapper, name in ((item, "Материалы"), (parent, "Настройка")):
+                wrapper.window_text.return_value = name
+                wrapper.is_enabled.return_value = True
+                wrapper.is_visible.return_value = True
+                wrapper.children.return_value = []
+                wrapper.element_info.control_type = "TreeItem"
+                wrapper.element_info.automation_id = "id"
+                wrapper.element_info.class_name = "class"
+                wrapper.rectangle.return_value.left = 1
+                wrapper.rectangle.return_value.top = 2
+                wrapper.rectangle.return_value.right = 3
+                wrapper.rectangle.return_value.bottom = 4
+            snapshot = inspect_target("materials")
+        self.assertEqual(snapshot["match_count"], 1)
+        item.double_click_input.assert_not_called()
+        item.type_keys.assert_not_called()
 
     def test_png_encoder_and_safe_name(self) -> None:
         png = encode_png_bgra(1, 1, bytes((10, 20, 30, 255)))
