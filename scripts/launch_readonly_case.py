@@ -13,6 +13,7 @@ import json
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 try:
@@ -39,6 +40,10 @@ def main() -> int:
     parser.add_argument("--fluent-root", type=Path, required=True)
     parser.add_argument("--source-case", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument(
+        "--runtime-dir", type=Path,
+        help="ASCII-only directory for the temporary case and Fluent journal; defaults safely when the output path contains non-ASCII characters",
+    )
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
@@ -49,8 +54,16 @@ def main() -> int:
         raise ValueError(f"Case file not found: {source}")
     launcher = find_launcher(fluent_root)
     output.mkdir(parents=True, exist_ok=True)
-    case_copy = output / source.name
-    journal = output / "read-only-bootstrap.jou"
+    # Fluent's journal reader can fail on a valid Windows path containing
+    # Cyrillic characters.  Keep the reproducible evidence in ``output`` but
+    # stage only the case copy and journal under an ASCII runtime path.
+    default_runtime = Path(tempfile.gettempdir()) / "ansys-fluent-russian-qa" / output.name
+    runtime = (args.runtime_dir or default_runtime).resolve()
+    if not str(runtime).isascii():
+        raise ValueError("Runtime directory for Fluent must contain ASCII characters only")
+    runtime.mkdir(parents=True, exist_ok=True)
+    case_copy = runtime / source.name
+    journal = runtime / "read-only-bootstrap.jou"
     metadata = output / "read-only-bootstrap.json"
     if args.dry_run:
         print(read_only_journal(case_copy), end="")
@@ -64,21 +77,30 @@ def main() -> int:
     command = [str(launcher), "3d", "-t1", "-i", str(journal)]
     metadata.write_text(json.dumps({
         "source_case": str(source), "source_sha256": source_digest,
+        "runtime_dir": str(runtime),
         "case_copy": str(case_copy), "copy_sha256": copy_digest,
         "journal": str(journal), "command": command,
-        "guarantees": ["source case is copied before Fluent starts", "bootstrap contains only /file/read-case", "no save or solver command"],
+        "guarantees": ["source case is copied before Fluent starts", "Fluent receives only an ASCII runtime path and working directory", "bootstrap contains only /file/read-case", "no save or solver command"],
     }, ensure_ascii=False, indent=2), encoding="utf-8")
 
     capture_script = Path(__file__).with_name("capture_fluent_window.py")
     watcher_log = output / "watcher.log"
+    fluent_log = output / "fluent-launch.log"
     with watcher_log.open("a", encoding="utf-8") as log:
         watcher = subprocess.Popen([
             sys.executable, str(capture_script), "--watch", "--exit-when-closed",
             "--title-contains", "Fluent@Home", "--output-dir", str(output),
         ], env=localized_environment(), stdout=log, stderr=subprocess.STDOUT)
-    process = subprocess.Popen(command, env=localized_environment())
+    # Fluent may end before a visible Home window exists (for example, because
+    # of a startup, licensing, or journal error).  Preserve its own output in
+    # the isolated run directory so the watcher cannot turn that failure into
+    # an unexplained absence of screenshots.
+    with fluent_log.open("a", encoding="utf-8") as log:
+        process = subprocess.Popen(
+            command, cwd=runtime, env=localized_environment(), stdout=log, stderr=subprocess.STDOUT,
+        )
     print(f"Read-only visual-QA watcher PID {watcher.pid}")
-    print(f"Fluent PID {process.pid}; source checksum verified before launch")
+    print(f"Fluent PID {process.pid}; source checksum verified before launch; log: {fluent_log}")
     return 0
 
 

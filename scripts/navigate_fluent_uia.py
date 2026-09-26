@@ -33,6 +33,15 @@ TARGET_PAGE_HEADINGS = {
     "cell-zone-conditions": "Условия ячеечных зон",
 }
 
+# The UIA probe on the loaded v261 bioreactor case confirms these are visible
+# leaf rows in CxListTreeQt.  Their double-click/Enter sequence can invoke the
+# previous page again, so selection is deliberately limited to one click.
+SINGLE_CLICK_TARGETS = frozenset({
+    "solution-initialization",
+    "materials",
+    "cell-zone-conditions",
+})
+
 
 def fluent_window():
     """Return the ready Fluent@Home window without choosing splash windows."""
@@ -103,6 +112,9 @@ def open_target(target: str, settle_seconds: float) -> dict[str, str]:
             raise RuntimeError("Models tree expander is outside the ready Fluent window")
         mouse.click(button="left", coords=(expander_x, expander_y))
         action = "expand-by-derived-expander"
+    elif target in SINGLE_CLICK_TARGETS:
+        item.click_input()
+        action = "select-once"
     else:
         item.double_click_input()
         item.type_keys("{ENTER}")

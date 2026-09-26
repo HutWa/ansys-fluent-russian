@@ -14,9 +14,10 @@ from scripts.launch_fluent import fluent_command
 from scripts.check_visual_journal import unsafe_lines
 from scripts.navigate_fluent_visual_qa import FILE_RIBBON_STEPS, HOME_STEPS, MATERIALS_TREE_STEPS, MODELS_EXPAND_STEPS, MULTIPHASE_DIALOG_STEPS, MULTIPHASE_TREE_STEPS, PHYSICS_RIBBON_STEPS, RECT, SOLUTION_CONTROLS_STEPS, SOLUTION_INITIALIZATION_STEPS, SOLUTION_METHODS_STEPS, VK_DOWN, VK_RETURN, VK_RIGHT, route_steps, select_home_window
 from scripts.launch_readonly_case import read_only_journal
+from scripts.wait_for_readonly_case_ready import classify
 from scripts.wait_for_fluent_exit import fluent_processes_present, run_directory
 from scripts.inspect_fluent_uia import inspect_target
-from scripts.navigate_fluent_uia import SAFE_TARGETS
+from scripts.navigate_fluent_uia import SAFE_TARGETS, SINGLE_CLICK_TARGETS
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -158,6 +159,7 @@ class VisualCaptureTests(unittest.TestCase):
         self.assertIn("Codex Fluent QA Materials", installer)
         self.assertIn("Codex Fluent QA Cell Zone Conditions", installer)
         self.assertIn("Codex Fluent QA Navigation Probe", installer)
+        self.assertIn("Codex Fluent QA Read-Only Bioreactor", installer)
         capture = (ROOT / "scripts" / "capture_current_fluent_task.cmd").read_text(encoding="utf-8")
         self.assertIn('--title-contains "Fluent@Home"', capture)
         self.assertNotIn("navigate_", capture)
@@ -181,6 +183,9 @@ class VisualCaptureTests(unittest.TestCase):
         probe = (ROOT / "scripts" / "run_navigation_probe_visual_qa_task.cmd").read_text(encoding="utf-8")
         self.assertIn("inspect_fluent_uia.py", probe)
         self.assertNotIn("capture_fluent_window.py", probe)
+        readonly_task = (ROOT / "scripts" / "run_readonly_bioreactor_task.cmd").read_text(encoding="utf-8")
+        self.assertIn("--runtime-dir \"%QA_OUTPUT%\"", readonly_task)
+        self.assertIn("wait_for_readonly_case_ready.py", readonly_task)
 
     def test_uia_navigation_has_only_whitelisted_task_pages(self) -> None:
         self.assertEqual(SAFE_TARGETS, {
@@ -192,11 +197,15 @@ class VisualCaptureTests(unittest.TestCase):
             "materials": "Материалы",
             "cell-zone-conditions": "Условия в ячеечных зонах",
         })
+        self.assertEqual(SINGLE_CLICK_TARGETS, {
+            "solution-initialization", "materials", "cell-zone-conditions",
+        })
         uia_source = (ROOT / "scripts" / "navigate_fluent_uia.py").read_text(encoding="utf-8")
         self.assertIn("expander_x = item_rect.left - 12", uia_source)
         self.assertIn("Models tree expander is outside", uia_source)
         self.assertIn("Fluent did not render expected page heading", uia_source)
         self.assertIn("content_left = rect.left + round(rect.width() * 0.18)", uia_source)
+        self.assertIn('action = "select-once"', uia_source)
 
     def test_uia_probe_only_collects_properties(self) -> None:
         with mock.patch("scripts.inspect_fluent_uia.fluent_window") as window:
@@ -266,6 +275,26 @@ class VisualCaptureTests(unittest.TestCase):
         self.assertEqual(journal.splitlines(), ["; Visual QA read-only bootstrap", '/file/read-case "build/case.cas.h5"'])
         self.assertNotIn("write", journal.casefold())
         self.assertNotIn("solve", journal.casefold())
+
+    def test_readonly_launcher_records_fluent_output(self) -> None:
+        launcher = (ROOT / "scripts" / "launch_readonly_case.py").read_text(encoding="utf-8")
+        self.assertIn('fluent_log = output / "fluent-launch.log"', launcher)
+        self.assertIn("stderr=subprocess.STDOUT", launcher)
+        self.assertIn("Runtime directory for Fluent must contain ASCII characters only", launcher)
+        self.assertIn('Path(tempfile.gettempdir()) / "ansys-fluent-russian-qa"', launcher)
+        self.assertIn("command, cwd=runtime, env=localized_environment()", launcher)
+
+    def test_readonly_startup_verifier_requires_loaded_case_and_detects_license(self) -> None:
+        self.assertEqual(
+            classify(["bioreactor_2026R1_test_setup Parallel Fluent@Home"], "bioreactor_2026R1_test_setup", ""),
+            ("ready", "Loaded QA case is visible in the Fluent@Home title."),
+        )
+        self.assertEqual(
+            classify(["Parallel Fluent@Home"], "bioreactor_2026R1_test_setup", "Unexpected license problem; exiting."),
+            ("license_error", "Fluent reported an unexpected license problem."),
+        )
+        verifier = (ROOT / "scripts" / "wait_for_readonly_case_ready.py").read_text(encoding="utf-8")
+        self.assertIn('("fluent-*-error.log", "fluent-*.trn")', verifier)
 
     def test_queued_rerun_directory_is_timestamped(self) -> None:
         instant = datetime(2026, 9, 25, 12, 34, 56, tzinfo=timezone.utc)
