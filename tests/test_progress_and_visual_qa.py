@@ -206,7 +206,7 @@ class VisualCaptureTests(unittest.TestCase):
             "cell-zone-conditions": "Условия в ячеечных зонах",
         })
         self.assertEqual(SINGLE_CLICK_TARGETS, {
-            "solution-initialization", "cell-zone-conditions",
+            "cell-zone-conditions",
         })
         self.assertEqual(EXPANDABLE_TARGETS, {"materials": "Жидкость", "cell-zone-conditions": "fluid_mrf"})
         uia_source = (ROOT / "scripts" / "navigate_fluent_uia.py").read_text(encoding="utf-8")

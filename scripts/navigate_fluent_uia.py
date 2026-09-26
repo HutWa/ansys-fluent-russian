@@ -34,10 +34,9 @@ TARGET_PAGE_HEADINGS = {
 }
 
 # The UIA probe on the loaded v261 bioreactor case confirms these are visible
-# leaf rows in CxListTreeQt.  Their double-click/Enter sequence can invoke the
-# previous page again, so selection is deliberately limited to one click.
+# leaf rows in CxListTreeQt.  Cell Zone Conditions can invoke the previous
+# page when double-clicked, so it remains deliberately limited to one click.
 SINGLE_CLICK_TARGETS = frozenset({
-    "solution-initialization",
     "cell-zone-conditions",
 })
 
