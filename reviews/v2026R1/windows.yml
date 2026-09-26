@@ -214,7 +214,7 @@
         "TaskPage_SolutionMethods"
       ],
       "status": "verified",
-      "last_checked": "2026-09-25",
+      "last_checked": "2026-09-26",
       "package": "beta-1-27104-tree-qa-20260924",
       "scope": "isolated-bioreactor-copy; visible task page; interactive scheduled task selected the UIA item Методы",
       "evidence": {
@@ -436,14 +436,14 @@
       "status": "partial",
       "last_checked": "2026-09-25",
       "package": "beta-1-27104-tree-qa-20260924",
-      "scope": "isolated-bioreactor-copy; task page only; calculation not started; interactive scheduled task selected the UIA item Запуск расчёта",
+      "scope": "isolated-bioreactor-copy; task page only; calculation not started; interactive scheduled task selected the UIA item Запуск расчёта and a separate capture task recorded the rendered page",
       "beta_blocker": true,
       "evidence": {
-        "path": "build/visual-qa-run-calculation/20260925T165220Z-bioreactor_2026R1_test_setup-Parallel-Fluent-Home-3d-pbns-sstkw-single-p-ee08452c903a.png",
-        "sha256": "ee08452c903aee38476a00d124b03cd208b5d295d28de56fe6da07c3e1fa59f6"
+        "path": "build/visual-qa-current-capture/20260926T084958Z-bioreactor_2026R1_test_setup-Parallel-Fluent-Home-3d-pbns-sstkw-single-p-44acd1a72c24.png",
+        "sha256": "44acd1a72c24c9a387c11b25fbb530fdadc01457c12d158943c64cdf02301cda"
       },
       "issues": [
-        "Automatic, Conservative and Current Session remain English as visible user choices on the current package."
+        "Fresh automated capture confirms that Automatic, Conservative and Current Session remain English as visible user choices. The independently rebuilt and installed Preferences.qm did not change the rendered values, so their runtime translation owner remains unresolved."
       ]
     },
     {
