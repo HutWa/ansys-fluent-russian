@@ -306,6 +306,7 @@ class VisualCaptureTests(unittest.TestCase):
         )
         verifier = (ROOT / "scripts" / "wait_for_readonly_case_ready.py").read_text(encoding="utf-8")
         self.assertIn('("fluent-*-error.log", "fluent-*.trn")', verifier)
+        self.assertIn("--ready-stable-seconds", verifier)
 
     def test_queued_rerun_directory_is_timestamped(self) -> None:
         instant = datetime(2026, 9, 25, 12, 34, 56, tzinfo=timezone.utc)

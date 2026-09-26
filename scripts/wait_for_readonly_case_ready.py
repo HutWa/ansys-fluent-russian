@@ -59,19 +59,29 @@ def main() -> int:
     parser.add_argument("--status-file", type=Path, required=True)
     parser.add_argument("--timeout-seconds", type=float, default=180.0)
     parser.add_argument("--poll-seconds", type=float, default=2.0)
+    parser.add_argument("--ready-stable-seconds", type=float, default=10.0)
     args = parser.parse_args()
-    if args.timeout_seconds <= 0 or args.poll_seconds <= 0:
-        parser.error("timeout and poll seconds must be positive")
+    if args.timeout_seconds <= 0 or args.poll_seconds <= 0 or args.ready_stable_seconds <= 0:
+        parser.error("timeout, poll, and ready-stable seconds must be positive")
     runtime = args.runtime_dir.resolve()
     started = time.time()
     deadline = time.monotonic() + args.timeout_seconds
+    ready_since: float | None = None
     while time.monotonic() < deadline:
         titles = [title for _, title in find_windows("Fluent@Home")]
         status, detail = classify(titles, args.case_title_fragment, current_startup_text(runtime, started))
-        if status != "waiting":
+        if status in {"license_error", "abnormal_exit"}:
             write_status(args.status_file, status, detail, titles)
             print(f"Fluent QA startup status: {status}: {detail}")
-            return 0 if status == "ready" else 2
+            return 2
+        if status == "ready":
+            ready_since = ready_since or time.monotonic()
+            if time.monotonic() - ready_since >= args.ready_stable_seconds:
+                write_status(args.status_file, status, detail, titles)
+                print(f"Fluent QA startup status: {status}: {detail}")
+                return 0
+        else:
+            ready_since = None
         time.sleep(args.poll_seconds)
     titles = [title for _, title in find_windows("Fluent@Home")]
     write_status(args.status_file, "timeout", "Timed out waiting for the loaded QA case.", titles)
