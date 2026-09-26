@@ -443,7 +443,7 @@
         "sha256": "44acd1a72c24c9a387c11b25fbb530fdadc01457c12d158943c64cdf02301cda"
       },
       "issues": [
-        "Fresh automated capture confirms that Automatic, Conservative and Current Session remain English as visible user choices. The independently rebuilt and installed Preferences.qm did not change the rendered values, so their runtime translation owner remains unresolved."
+        "Fresh automated capture confirms that Automatic, Conservative and Current Session remain English as visible user choices. The independently rebuilt and installed Preferences.qm did not change the rendered values. A read-only audit of all 553 current Qt modules found Current Session in none of them; raw Automatic only in MeshDisplay and Preferences, and raw Conservative only in Preferences. These values are therefore generated outside the available Qt translation lookup chain and require a separate supported localization mechanism."
       ]
     },
     {
