@@ -17,7 +17,7 @@ from scripts.launch_readonly_case import read_only_journal
 from scripts.wait_for_readonly_case_ready import classify
 from scripts.wait_for_fluent_exit import fluent_processes_present, run_directory
 from scripts.inspect_fluent_uia import inspect_target
-from scripts.navigate_fluent_uia import SAFE_TARGETS, SINGLE_CLICK_TARGETS
+from scripts.navigate_fluent_uia import EXPANDABLE_TARGETS, SAFE_TARGETS, SINGLE_CLICK_TARGETS
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -160,6 +160,7 @@ class VisualCaptureTests(unittest.TestCase):
         self.assertIn("Codex Fluent QA Cell Zone Conditions", installer)
         self.assertIn("Codex Fluent QA Navigation Probe", installer)
         self.assertIn("Codex Fluent QA Read-Only Bioreactor", installer)
+        self.assertIn("Codex Fluent QA Materials Tree Probe", installer)
         capture = (ROOT / "scripts" / "capture_current_fluent_task.cmd").read_text(encoding="utf-8")
         self.assertIn('--title-contains "Fluent@Home"', capture)
         self.assertNotIn("navigate_", capture)
@@ -186,6 +187,9 @@ class VisualCaptureTests(unittest.TestCase):
         readonly_task = (ROOT / "scripts" / "run_readonly_bioreactor_task.cmd").read_text(encoding="utf-8")
         self.assertIn("--runtime-dir \"%QA_OUTPUT%\"", readonly_task)
         self.assertIn("wait_for_readonly_case_ready.py", readonly_task)
+        materials_tree_probe = (ROOT / "scripts" / "run_materials_tree_probe_visual_qa_task.cmd").read_text(encoding="utf-8")
+        self.assertIn("--target materials --expand", materials_tree_probe)
+        self.assertNotIn("capture_fluent_window.py", materials_tree_probe)
 
     def test_uia_navigation_has_only_whitelisted_task_pages(self) -> None:
         self.assertEqual(SAFE_TARGETS, {
@@ -198,14 +202,17 @@ class VisualCaptureTests(unittest.TestCase):
             "cell-zone-conditions": "Условия в ячеечных зонах",
         })
         self.assertEqual(SINGLE_CLICK_TARGETS, {
-            "solution-initialization", "materials", "cell-zone-conditions",
+            "solution-initialization", "cell-zone-conditions",
         })
+        self.assertEqual(EXPANDABLE_TARGETS, {"materials": "Жидкость", "cell-zone-conditions": "fluid_mrf"})
         uia_source = (ROOT / "scripts" / "navigate_fluent_uia.py").read_text(encoding="utf-8")
         self.assertIn("expander_x = item_rect.left - 12", uia_source)
-        self.assertIn("Models tree expander is outside", uia_source)
+        self.assertIn("Tree expander is outside", uia_source)
         self.assertIn("Fluent did not render expected page heading", uia_source)
         self.assertIn("content_left = rect.left + round(rect.width() * 0.18)", uia_source)
         self.assertIn('action = "select-once"', uia_source)
+        self.assertIn('action = "open-materials-fluid-list"', uia_source)
+        self.assertIn("def expand_target", uia_source)
 
     def test_uia_probe_only_collects_properties(self) -> None:
         with mock.patch("scripts.inspect_fluent_uia.fluent_window") as window:

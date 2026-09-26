@@ -38,9 +38,13 @@ TARGET_PAGE_HEADINGS = {
 # previous page again, so selection is deliberately limited to one click.
 SINGLE_CLICK_TARGETS = frozenset({
     "solution-initialization",
-    "materials",
     "cell-zone-conditions",
 })
+
+EXPANDABLE_TARGETS = {
+    "materials": "Жидкость",
+    "cell-zone-conditions": "fluid_mrf",
+}
 
 
 def fluent_window():
@@ -84,6 +88,47 @@ def assert_target_page(window, target: str) -> None:
         raise RuntimeError(f"Fluent did not render expected page heading: {expected}")
 
 
+def click_derived_expander(window, item) -> str:
+    """Expand a visible tree row using only its live UIA geometry."""
+    from pywinauto import mouse
+    item_rect = item.rectangle()
+    expander_x = item_rect.left - 12
+    expander_y = item_rect.top + item_rect.height() // 2
+    window_rect = window.rectangle()
+    if not (window_rect.left < expander_x < item_rect.left and window_rect.top < expander_y < window_rect.bottom):
+        raise RuntimeError("Tree expander is outside the ready Fluent window")
+    mouse.click(button="left", coords=(expander_x, expander_y))
+    return f"{expander_x},{expander_y}"
+
+
+def expand_target(target: str, settle_seconds: float) -> dict[str, str]:
+    """Expand one whitelisted navigation branch without opening any page."""
+    if target not in EXPANDABLE_TARGETS:
+        raise RuntimeError(f"Target cannot be expanded safely: {target}")
+    label = SAFE_TARGETS[target]
+    window = fluent_window()
+    item = matching_tree_item(window, label)
+    child = EXPANDABLE_TARGETS[target]
+    visible_children = {candidate.window_text() for candidate in window.descendants(control_type="TreeItem")}
+    if child in visible_children:
+        action, expander_point = "already-expanded", None
+    else:
+        expander_point = click_derived_expander(window, item)
+        time.sleep(settle_seconds)
+        action = "expand-by-derived-expander"
+    if not any(candidate.window_text() == child for candidate in window.descendants(control_type="TreeItem")):
+        raise RuntimeError(f"Fluent did not render expected child after expanding {label}: {child}")
+    trace = {
+        "target": target,
+        "label": label,
+        "action": action,
+        "window": window.window_text(),
+    }
+    if expander_point is not None:
+        trace["expander_point"] = expander_point
+    return trace
+
+
 def open_target(target: str, settle_seconds: float) -> dict[str, str]:
     """Select a whitelisted task page and wait for Fluent to render it."""
     label = SAFE_TARGETS[target]
@@ -103,15 +148,15 @@ def open_target(target: str, settle_seconds: float) -> dict[str, str]:
         # The tiny expander is immediately to the left of its *actual UIA*
         # bounds; derive that point at runtime instead of using a screen
         # coordinate.  Reject an implausible point before sending a click.
-        from pywinauto import mouse
-        item_rect = item.rectangle()
-        expander_x = item_rect.left - 12
-        expander_y = item_rect.top + item_rect.height() // 2
-        window_rect = window.rectangle()
-        if not (window_rect.left < expander_x < item_rect.left and window_rect.top < expander_y < window_rect.bottom):
-            raise RuntimeError("Models tree expander is outside the ready Fluent window")
-        mouse.click(button="left", coords=(expander_x, expander_y))
+        expander_point = click_derived_expander(window, item)
         action = "expand-by-derived-expander"
+    elif target == "materials":
+        # The parent row only expands the category.  The read-only UIA probe
+        # established that its Russian child is the actual Fluid page entry.
+        expand_target("materials", settle_seconds)
+        item = matching_tree_item(window, EXPANDABLE_TARGETS["materials"])
+        item.double_click_input()
+        action = "open-materials-fluid-list"
     elif target in SINGLE_CLICK_TARGETS:
         item.click_input()
         action = "select-once"
@@ -123,19 +168,20 @@ def open_target(target: str, settle_seconds: float) -> dict[str, str]:
     assert_target_page(window, target)
     trace = {"target": target, "label": label, "action": action, "window": window.window_text()}
     if target == "models-tree":
-        trace["expander_point"] = f"{expander_x},{expander_y}"
+        trace["expander_point"] = expander_point
     return trace
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Safe Fluent UIA task-page navigation")
     parser.add_argument("--target", choices=tuple(SAFE_TARGETS), required=True)
+    parser.add_argument("--expand", action="store_true", help="Expand one whitelisted tree branch without opening a page")
     parser.add_argument("--settle-seconds", type=float, default=8)
     parser.add_argument("--trace-file", type=Path)
     args = parser.parse_args()
     if args.settle_seconds <= 0:
         parser.error("settle seconds must be positive")
-    trace = open_target(args.target, args.settle_seconds)
+    trace = expand_target(args.target, args.settle_seconds) if args.expand else open_target(args.target, args.settle_seconds)
     trace["finished_at"] = datetime.now(timezone.utc).isoformat()
     if args.trace_file:
         args.trace_file.parent.mkdir(parents=True, exist_ok=True)

@@ -11,17 +11,18 @@ param(
     [switch]$Materials,
     [switch]$CellZoneConditions,
     [switch]$NavigationProbe,
-    [switch]$ReadOnlyBioreactor
+    [switch]$ReadOnlyBioreactor,
+    [switch]$MaterialsTreeProbe
 )
 
 $ErrorActionPreference = 'Stop'
-$selectedModes = @($CaptureCurrent, $ModelsTree, $SolutionMethods, $SolutionControls, $SolutionInitialization, $RunCalculation, $Materials, $CellZoneConditions, $NavigationProbe, $ReadOnlyBioreactor) | Where-Object { $_ }
+$selectedModes = @($CaptureCurrent, $ModelsTree, $SolutionMethods, $SolutionControls, $SolutionInitialization, $RunCalculation, $Materials, $CellZoneConditions, $NavigationProbe, $ReadOnlyBioreactor, $MaterialsTreeProbe) | Where-Object { $_ }
 if ($selectedModes.Count -gt 1) {
     throw 'Choose only one visual-QA task mode.'
 }
-$taskName = if ($CaptureCurrent) { 'Codex Fluent QA Capture' } elseif ($ModelsTree) { 'Codex Fluent QA Models Tree' } elseif ($SolutionMethods) { 'Codex Fluent QA Solution Methods' } elseif ($SolutionControls) { 'Codex Fluent QA Solution Controls' } elseif ($SolutionInitialization) { 'Codex Fluent QA Solution Initialization' } elseif ($RunCalculation) { 'Codex Fluent QA Run Calculation' } elseif ($Materials) { 'Codex Fluent QA Materials' } elseif ($CellZoneConditions) { 'Codex Fluent QA Cell Zone Conditions' } elseif ($NavigationProbe) { 'Codex Fluent QA Navigation Probe' } elseif ($ReadOnlyBioreactor) { 'Codex Fluent QA Read-Only Bioreactor' } else { 'Codex Fluent Visual QA' }
+$taskName = if ($CaptureCurrent) { 'Codex Fluent QA Capture' } elseif ($ModelsTree) { 'Codex Fluent QA Models Tree' } elseif ($SolutionMethods) { 'Codex Fluent QA Solution Methods' } elseif ($SolutionControls) { 'Codex Fluent QA Solution Controls' } elseif ($SolutionInitialization) { 'Codex Fluent QA Solution Initialization' } elseif ($RunCalculation) { 'Codex Fluent QA Run Calculation' } elseif ($Materials) { 'Codex Fluent QA Materials' } elseif ($CellZoneConditions) { 'Codex Fluent QA Cell Zone Conditions' } elseif ($NavigationProbe) { 'Codex Fluent QA Navigation Probe' } elseif ($ReadOnlyBioreactor) { 'Codex Fluent QA Read-Only Bioreactor' } elseif ($MaterialsTreeProbe) { 'Codex Fluent QA Materials Tree Probe' } else { 'Codex Fluent Visual QA' }
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-$entryPoint = Join-Path $root $(if ($CaptureCurrent) { 'scripts\capture_current_fluent_task.cmd' } elseif ($ModelsTree) { 'scripts\run_models_tree_visual_qa_task.cmd' } elseif ($SolutionMethods) { 'scripts\run_solution_methods_visual_qa_task.cmd' } elseif ($SolutionControls) { 'scripts\run_solution_controls_visual_qa_task.cmd' } elseif ($SolutionInitialization) { 'scripts\run_solution_initialization_visual_qa_task.cmd' } elseif ($RunCalculation) { 'scripts\run_calculation_visual_qa_task.cmd' } elseif ($Materials) { 'scripts\run_materials_visual_qa_task.cmd' } elseif ($CellZoneConditions) { 'scripts\run_cell_zone_conditions_visual_qa_task.cmd' } elseif ($NavigationProbe) { 'scripts\run_navigation_probe_visual_qa_task.cmd' } elseif ($ReadOnlyBioreactor) { 'scripts\run_readonly_bioreactor_task.cmd' } else { 'scripts\run_visual_qa_task.cmd' })
+$entryPoint = Join-Path $root $(if ($CaptureCurrent) { 'scripts\capture_current_fluent_task.cmd' } elseif ($ModelsTree) { 'scripts\run_models_tree_visual_qa_task.cmd' } elseif ($SolutionMethods) { 'scripts\run_solution_methods_visual_qa_task.cmd' } elseif ($SolutionControls) { 'scripts\run_solution_controls_visual_qa_task.cmd' } elseif ($SolutionInitialization) { 'scripts\run_solution_initialization_visual_qa_task.cmd' } elseif ($RunCalculation) { 'scripts\run_calculation_visual_qa_task.cmd' } elseif ($Materials) { 'scripts\run_materials_visual_qa_task.cmd' } elseif ($CellZoneConditions) { 'scripts\run_cell_zone_conditions_visual_qa_task.cmd' } elseif ($NavigationProbe) { 'scripts\run_navigation_probe_visual_qa_task.cmd' } elseif ($ReadOnlyBioreactor) { 'scripts\run_readonly_bioreactor_task.cmd' } elseif ($MaterialsTreeProbe) { 'scripts\run_materials_tree_probe_visual_qa_task.cmd' } else { 'scripts\run_visual_qa_task.cmd' })
 
 if ($Remove) {
     Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue
@@ -59,6 +60,8 @@ $description = if ($CaptureCurrent) {
     'Read-only Fluent UIA inspection: records tree-item metadata for approved QA routes. It never clicks, sends keys, edits, saves, initializes, or solves a case.'
 } elseif ($ReadOnlyBioreactor) {
     'Read-only Fluent visual QA: copies the approved bioreactor case, verifies its checksum, and opens only that copy. It never saves, initializes, or solves a case.'
+} elseif ($MaterialsTreeProbe) {
+    'Safe Fluent visual QA: expands only the Materials tree branch and records its UIA structure. It never opens, edits, saves, initializes, or solves a case.'
 } else {
     'Safe Fluent visual QA: opens only navigation pages and records local evidence. It never edits, saves, initializes, or solves a case.'
 }
