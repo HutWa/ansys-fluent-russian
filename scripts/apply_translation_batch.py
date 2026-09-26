@@ -62,6 +62,15 @@ def main() -> int:
         choices=("translated", "reviewed", "needs_context", "needs_review", "do_not_translate"),
         help="set a status while applying the batch",
     )
+    parser.add_argument(
+        "--promote-do-not-translate",
+        action="store_true",
+        help="promote a visually confirmed non-technical DNT entry to translated",
+    )
+    parser.add_argument(
+        "--reason",
+        help="evidence-backed reason recorded when promoting a DNT entry",
+    )
     args = parser.parse_args()
 
     original = args.catalog.read_text(encoding="utf-8")
@@ -69,6 +78,8 @@ def main() -> int:
     batch = json.loads(args.batch.read_text(encoding="utf-8"))
     if not isinstance(batch, dict) or not all(isinstance(key, str) and isinstance(value, str) and value for key, value in batch.items()):
         raise ValueError("The batch must map entry IDs to non-empty translations.")
+    if args.promote_do_not_translate and (not args.reason or not args.reason.strip()):
+        raise ValueError("--promote-do-not-translate requires --reason")
 
     entries = {entry["id"]: entry for entry in catalog["entries"]}
     unknown = sorted(set(batch) - set(entries))
@@ -80,11 +91,15 @@ def main() -> int:
         entry = entries[entry_id]
         unresolved = entry["status"] in {"needs_context", "needs_review"}
         replaceable = args.replace_translated and entry["status"] in {"translated", "reviewed"}
-        if not unresolved and not replaceable:
+        promotable = args.promote_do_not_translate and entry["status"] == "do_not_translate"
+        if not unresolved and not replaceable and not promotable:
             raise ValueError(f"{entry_id} has status {entry['status']!r}, not an unresolved status")
         entry["translation"] = translation
         if args.set_status:
             entry["status"] = args.set_status
+        elif promotable:
+            entry["status"] = "translated"
+            entry["comment"] = args.reason.strip()
         elif unresolved:
             entry["status"] = "translated"
             entry["comment"] = "Primary translation prepared from the module and source label."

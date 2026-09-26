@@ -122,6 +122,10 @@ class TranslationBatchTests(unittest.TestCase):
         start, end = object_bounds(indented, "One:b")
         self.assertIn('"source": "B"', indented[start:end])
 
+    def test_batch_promoter_requires_evidence_reason(self) -> None:
+        source = (ROOT / "scripts" / "apply_translation_batch.py").read_text(encoding="utf-8")
+        self.assertIn("--promote-do-not-translate requires --reason", source)
+
 
 class BetaReadinessTests(unittest.TestCase):
     def test_requires_current_package_and_visual_status(self) -> None:
